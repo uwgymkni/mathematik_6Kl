@@ -2485,8 +2485,7 @@ var CH=[
   {n:2,t:"Änderungsmaße",s:"absolut, relativ, mittlere Änderungsrate, Änderungsfaktor"},
   {n:3,t:"Potenzen und Wurzeln",s:"Rechenregeln, negative und rationale Hochzahlen"},
   {n:4,t:"Potenz- und Polynomfunktionen",s:"a · xᶻ + b, indirekte Proportionalität, Grad und Verlauf"},
-  {n:5,t:"Logarithmus",s:"Definition, Rechenregeln, Exponentialgleichungen, Dezibel"},
-  {n:6,t:"Exponentialfunktionen",s:"c · aˣ, Wachstum und Zerfall, Halbwerts- und Verdopplungszeit"}
+  {n:5,col:6,t:"Exponentialfunktionen",s:"c · aˣ, Prozent und Faktor, Halbieren und Verdoppeln"}
 ];
 var TASKS=[], GEN={};
 /* Stationen, bei denen das Werkzeug ihrer Art nichts bringt oder zu nah an der Antwort wäre */
@@ -4233,271 +4232,30 @@ G("py.anz",4,"X","Mögliche Anzahlen",function(){
     tips:["Grundformen: U und W.","Verschieben ändert nur die Zahl der Nullstellen."],sol:{merk:PY_MERK,steps:["U-Form: 1 Extremstelle, 0 Wendestellen, 0 bis 2 Nullstellen.","W-Form: 3 Extremstellen, 2 Wendestellen, 0 bis 4 Nullstellen."]}};
 });
 
-/* ══════════ Linie 5 · Logarithmus ══════════ */
-var LG_MERK=M("log_a(b) = c")+" heißt "+M("a^c = b")+" (mit "+M("a > 0")+", "+M("a ≠ 1")+", "+M("b > 0")+"). Regeln: "+M("lg(u * v) = lg(u) + lg(v)")+", "+M("lg({u/v}) = lg(u) - lg(v)")+", "+M("lg(u^r) = r * lg(u)")+".";
-var LG_TIP="Frag: Mit welcher Hochzahl wird aus der Basis die Zahl?";
-function lgS(b){ return b===10?"lg":b==="e"?"ln":"log_"+b; }
-
-/* ---------- Zone 1 ---------- */
-T("g1",5,"L","lg.wert","Logarithmen ohne Rechner",SRC_K,function(){ return {
-  fmt:"input",q:"Berechne ohne Taschenrechner.",
-  fields:[{l:M("log_2(8) ="),r:3},{l:M("lg(0,001) ="),r:-3,w:M("10^(-3) = 0,001")+"."},{l:M("log_3({1/9}) ="),r:-2},{l:M("ln(e^2) ="),r:2}],
-  tips:[LG_TIP,"Brüche und Dezimalzahlen kleiner als 1 führen auf negative Hochzahlen."],
-  sol:{merk:LG_MERK,steps:[{t:"",m:M("2^3 = 8")},{t:"",m:M("10^(-3) = 0,001")},{t:"",m:M("3^(-2) = {1/9}")},{t:"",m:M("e^2 = e^2")}]}
-}; });
-T("g2",5,"L","lg.def","Logarithmus und Potenz",SRC_K,function(){
-  return zuOf([{s:M("log_2(32) = 5"),key:"a",w:M("2^5 = 32")+"."},{s:M("lg(1000) = 3"),key:"b",w:M("10^3 = 1000")+"."},{s:M("log_5({1/25}) = -2"),key:"c",w:M("5^(-2) = {1/25}")+"."},{s:M("log_4(2) = {1/2}"),key:"d",w:M("4^({1/2}) = 2")+"."}],
-    [{key:"a",s:M("2^5 = 32")},{key:"b",s:M("10^3 = 1000")},{key:"c",s:M("5^(-2) = {1/25}")},{key:"d",s:M("4^({1/2}) = 2")},{key:"x1",s:M("32^5 = 2")},{key:"x2",s:M("3^10 = 1000")}],
-    {keep:true,serif:true,serifOpts:true,q:"Ordne jeder Gleichung mit einem Logarithmus die gleichwertige Gleichung zu.",tips:["Die Basis des Logarithmus wird zur Basis der Potenz.","Das Ergebnis des Logarithmus ist die Hochzahl."],sol:{merk:LG_MERK,steps:["Basis bleibt Basis, das Ergebnis wird zur Hochzahl, das Argument zum Wert der Potenz."]}});
-});
-T("g3",5,"L","lg.def","Stimmt das?",SRC_O,function(){ return {
-  fmt:"tf",serif:true,q:"Entscheide in jeder Zeile.",yes:"stimmt",no:"stimmt nicht",
-  items:[{s:M("lg(1) = 0"),r:1,w:M("10^0 = 1")+"."},{s:M("log_a(a) = 1")+" für "+M("a > 0, a ≠ 1"),r:1,w:M("a^1 = a")+"."},{s:M("lg(-10) = -1"),r:0,w:"Logarithmen gibt es nur von positiven Zahlen."},
-    {s:M("log_2(0) = 0"),r:0,w:"Keine Hochzahl macht aus 2 die Zahl 0."},{s:M("ln(1) = 1"),r:0,w:M("e^0 = 1")+", also "+M("ln(1) = 0")+"."},{s:M("log_3(81) = 4"),r:1,w:M("3^4 = 81")+"."}],
-  tips:[LG_TIP,"Eine Potenz mit positiver Basis ist immer positiv."],sol:{merk:LG_MERK,steps:["Jede Gleichung in eine Potenz übersetzen und prüfen.","Für 0 und negative Zahlen gibt es keine passende Hochzahl."]}
-}; });
-T("g4",5,"L","lg.tab","Mit einer Tabelle",SRC_K,function(){ return {
-  fmt:"input",q:"Bestimme die Logarithmen mithilfe der Tabelle."+tblHTML(["<i>k</i>","2<sup><i>k</i></sup>"],[[1,2,3,4,5,6,7,8,9,10],[2,4,8,16,32,64,128,256,512,"1 024"]]),
-  fields:[{l:M("log_2(128) ="),r:7},{l:M("log_2(sqrt(8)) ="),r:1.5,w:M("sqrt(8) = 8^({1/2}) = 2^({3/2})")+"."},{l:M("log_2({1/256}) ="),r:-8}],
-  tips:["Such die Zahl in der unteren Zeile.","Wurzel heißt Hochzahl halbieren, Kehrwert heißt Vorzeichen wechseln."],
-  sol:{merk:LG_MERK,steps:[{t:"",m:M("2^7 = 128")},{t:"",m:M("log_2(sqrt(8)) = {1/2} * log_2(8) = {3/2}")},{t:"",m:M("log_2({1/256}) = -log_2(256) = -8")}]}
-}; });
-var LGRP=[{s:"lg(0,5)",v:Math.log10(.5)},{s:"lg(5)",v:Math.log10(5)},{s:"lg(50)",v:Math.log10(50)},{s:"log_2(3)",v:Math.log2(3)},{s:"ln(2)",v:Math.log(2)},{s:"log_3({1/3})",v:-1},{s:"lg(9)",v:Math.log10(9)},{s:"log_2(0,9)",v:Math.log2(.9)},
-  {s:"ln(10)",v:Math.log(10)},{s:"lg(0,01)",v:-2},{s:"log_5(4)",v:Math.log(4)/Math.log(5)},{s:"log_2(20)",v:Math.log2(20)}];
-var LGB=[{k:"n",t:"negativ"},{k:"m",t:"zwischen 0 und 1"},{k:"g",t:"größer als 1"}];
-function lgK(v){ return v<0?"n":v<1?"m":"g"; }
-T("g5",5,"L","lg.groesse","Wie groß ist der Logarithmus?",SRC_O,function(){ return {
-  fmt:"sort",q:"Sortiere die Logarithmen nach ihrem Wert, ohne Taschenrechner.",bins:LGB,cards:[0,1,2,3,4,5,6,7].map(function(i){ return {s:M(LGRP[i].s),k:lgK(LGRP[i].v),w:"≈ "+num(r2(LGRP[i].v))+"."}; }),
-  tips:["Ist die Zahl kleiner als 1, ist der Logarithmus negativ (bei Basis größer als 1).","Liegt die Zahl zwischen 1 und der Basis, liegt der Logarithmus zwischen 0 und 1."],
-  sol:{merk:"Für eine Basis "+M("a > 1")+": "+M("log_a(x) < 0")+" für "+M("x < 1")+", zwischen 0 und 1 für "+M("1 < x < a")+", größer als 1 für "+M("x > a")+".",steps:["Mit 1 und mit der Basis vergleichen.",M("lg(9)")+": 9 liegt zwischen 1 und 10. "+M("log_2(3)")+": 3 liegt über 2."]}
-}; });
-T("g6",5,"L","lg.ph","pH-Wert",SRC_S,function(){ return {
-  fmt:"input",q:"Der pH-Wert einer Lösung ist "+M("pH = -lg(c)")+", dabei ist "+M("c")+" die Konzentration der Wasserstoffionen in mol pro Liter. Berechne den pH-Wert.",
-  fields:[{l:M("c = 10^(-3)")+": pH =",r:3},{l:M("c = 2 * 10^(-4)")+": pH =",r:3.7,tol:.01,w:M("-lg(2) + 4 ≈ 3,70")+"."}],
-  tips:["Für die Zehnerpotenz brauchst du keinen Rechner.",M("lg(2 * 10^(-4)) = lg(2) + lg(10^(-4))")+"."],
-  sol:{merk:LG_MERK,steps:[{t:"",m:M("-lg(10^(-3)) = 3")},{t:"",m:M("-lg(2 * 10^(-4)) = -(lg(2) - 4) ≈ -(0,301 - 4) = 3,70")}]}
-}; });
-T("g7",5,"L","lg.begriffe","Wer ist wer?",SRC_K,function(){ return {
-  fmt:"mc",pick:1,q:"Gegeben ist die Gleichung "+M("a = log_b(c)")+". Kreuze die zutreffende Aussage an.",
-  items:[{s:M("a")+" ist der Logarithmus von "+M("c")+" zur Basis "+M("b")+".",r:1,w:"Das Ergebnis heißt Logarithmus, die Zahl in der Klammer Argument."},{s:M("a")+" ist der Logarithmus von "+M("b")+" zur Basis "+M("c")+".",r:0,w:"Basis und Argument vertauscht."},
-    {s:M("b")+" ist der Logarithmus von "+M("c")+".",r:0,w:M("b")+" ist die Basis."},{s:M("c")+" ist der Logarithmus von "+M("a")+".",r:0,w:"Umgekehrt: "+M("c = b^a")+"."}],
-  tips:["Übersetz in eine Potenz: "+M("b^a = c")+"."],sol:{merk:LG_MERK,steps:[{t:"",m:M("a = log_b(c)")+" &nbsp; ⇔ &nbsp; "+M("b^a = c")},M("a")+" ist die Hochzahl, also der Logarithmus von "+M("c")+" zur Basis "+M("b")+"."]}
-}; });
-
-/* ---------- Zone 2 ---------- */
-T("g8",5,"M","lg.umf","Als Summe schreiben",SRC_K,function(){ return {
-  fmt:"input",q:"Schreib den Term für "+M("x > 0")+" ohne Bruch und ohne Potenz im Argument des Logarithmus.",
-  fields:[{l:M("lg({x^3/10}) ="),kind:"term",r:"3lg(x) - 1",vars:["x"],pos:true,show:M("3 * lg(x) - 1"),chk:function(r){ return /lg\s*\(\s*x\s*\^|lg\s*\([^)]*\//.test(r)?"Im Argument steht noch eine Potenz oder ein Bruch.":null; }}],
-  tips:["Quotient im Argument: Differenz der Logarithmen.","Potenz im Argument: Hochzahl als Faktor vor den Logarithmus. Tippen: 3lg(x)−1."],
-  sol:{merk:LG_MERK,steps:[{t:"",m:M("lg({x^3/10}) = lg(x^3) - lg(10)")},{t:"",m:M("= 3 * lg(x) - 1")}]}
-}; });
-T("g9",5,"M","lg.regel","Rechenregeln",SRC_K,function(){ return {
-  fmt:"tf",serif:true,q:"Gilt die Gleichung für alle "+M("u, v > 0")+"?",yes:"stimmt",no:"stimmt nicht",
-  items:[{s:M("lg(u * v) = lg(u) + lg(v)"),r:1,w:"Mal wird Plus."},{s:M("lg(u + v) = lg(u) * lg(v)"),r:0,w:"Für Summen im Argument gibt es keine Regel."},{s:M("lg(u^3) = 3 * lg(u)"),r:1,w:"Hochzahl als Faktor."},
-    {s:M("lg({u/v}) = {lg(u)/lg(v)}"),r:0,w:"Geteilt wird zu Minus: "+M("lg(u) - lg(v)")+"."},{s:M("lg(sqrt(u)) = {1/2} * lg(u)"),r:1,w:M("sqrt(u) = u^({1/2})")+"."},{s:M("(lg(u))^2 = 2 * lg(u)"),r:0,w:"Hier wird der Logarithmus quadriert, nicht das Argument."}],
-  tips:["Teste mit "+M("u = 100")+", "+M("v = 10")+".","Regeln gelten für Produkte, Quotienten und Potenzen im Argument."],sol:{merk:LG_MERK,steps:[{t:"Test",m:M("lg(100 * 10) = 3 = 2 + 1")},{t:"Gegenbeispiel",m:M("lg({100/10}) = 1")+", aber "+M("{lg(100)/lg(10)} = 2")}]}
-}; });
-T("g10",5,"M","lg.gl","Gleichungen ohne Rechner",SRC_K,function(){ return {
-  fmt:"input",q:"Löse die Gleichungen ohne Taschenrechner.",
-  fields:[{l:M("2^x = 32")+": &nbsp;"+M("x ="),r:5},{l:M("5^(x + 1) = 125")+": &nbsp;"+M("x ="),r:2},{l:M("10^x = 0,01")+": &nbsp;"+M("x ="),r:-2}],
-  tips:["Schreib die rechte Seite als Potenz derselben Basis.","Dann die Hochzahlen gleichsetzen."],sol:{merk:"Gleiche Basis: gleiche Hochzahlen.",steps:[{t:"",m:M("32 = 2^5")},{t:"",m:M("125 = 5^3")+" &nbsp; also &nbsp; "+M("x + 1 = 3")},{t:"",m:M("0,01 = 10^(-2)")}]}
-}; });
-T("g11",5,"M","lg.gl","Mit dem Logarithmus lösen",SRC_K,function(){ return {
-  fmt:"input",q:"Löse die Gleichung "+M("3 * 1,05^x = 6")+". Runde auf zwei Nachkommastellen.",
-  fields:[{l:M("x ≈"),r:14.21,tol:.011,w:M("x = {lg(2)/lg(1,05)}")+"."}],
-  tips:["Zuerst durch 3 dividieren.","Dann auf beiden Seiten logarithmieren: "+M("lg(1,05^x) = x * lg(1,05)")+"."],
-  sol:{merk:"Exponentialgleichung: isolieren, logarithmieren, Hochzahl als Faktor herausholen.",steps:[{t:"",m:M("1,05^x = 2")},{t:"",m:M("x * lg(1,05) = lg(2)")},{t:"",m:M("x = {lg(2)/lg(1,05)} ≈ 14,21")}]}
-}; });
-T("g12",5,"M","lg.luecke","Lösung einer Exponentialgleichung",SRC_K,function(){ return {
-  fmt:"luecke",q:"Ergänze den Satz so, dass eine richtige Aussage entsteht.",
-  satz:"Die Gleichung "+M("3^x = 20")+" hat die Lösung ___, weil ___.",
-  gaps:[{o:[M("x = {lg(20)/lg(3)}"),M("x = lg({20/3})"),M("x = {20/3}")],r:0,w:"Logarithmieren und durch "+M("lg(3)")+" dividieren."},{o:["man beide Seiten logarithmieren kann und "+M("x * lg(3) = lg(20)")+" erhält",M("lg(3^x) = lg(3) + lg(x)")+" gilt","man beide Seiten durch 3 dividieren darf"],r:0,w:"Die Hochzahl wird beim Logarithmieren zum Faktor."}],
-  tips:["Was passiert mit der Hochzahl, wenn man logarithmiert?","Probe mit dem Rechner: "+M("3^(2,727) ≈ 20")+"."],sol:{merk:LG_MERK,steps:[{t:"",m:M("lg(3^x) = lg(20)")},{t:"",m:M("x * lg(3) = lg(20)")},{t:"",m:M("x = {lg(20)/lg(3)} ≈ 2,727")}]}
-}; });
-T("g13",5,"M","lg.db","Dezibel",SRC_S,function(){ return {
-  fmt:"input",q:"Der Schallpegel ist "+M("L = 10 * lg({I/I_0})")+" in Dezibel, dabei ist "+M("I")+" die Schallintensität und "+M("I_0")+" die Hörschwelle.",
-  fields:[{l:"Pegel bei "+M("I = 1000 * I_0")+":",r:30,u:"dB"},{l:"Um wie viel steigt der Pegel, wenn sich die Intensität verdoppelt?",r:3.01,tol:.011,u:"dB",w:M("10 * lg(2) ≈ 3,01")+"."}],
-  tips:[M("lg(1000) = 3")+".","Verdoppeln: "+M("lg({2I/I_0}) = lg(2) + lg({I/I_0})")+"."],
-  sol:{merk:"Jede Verzehnfachung der Intensität bringt 10 dB, jede Verdopplung etwa 3 dB.",steps:[{t:"",m:M("10 * lg(1000) = 30")},{t:"",m:M("10 * lg({2I/I_0}) = 10 * lg(2) + 10 * lg({I/I_0})")},"Der Zuwachs ist "+M("10 * lg(2) ≈ 3,01")+" dB, unabhängig vom Ausgangspegel."]}
-}; });
-T("g14",5,"M","lg.zahl","Logarithmus verorten",SRC_O,function(){ return {
-  fmt:"zline",q:"Markiere "+M("lg(50)")+" auf der Zahlengeraden, ohne Taschenrechner so genau wie möglich.",min:0,max:3,step:1,sub:.1,snap:.01,target:Math.log10(50),tol:.06,targetLabel:"lg 50",
-  tips:["50 liegt zwischen 10 und 100.",M("lg(50) = lg(100) - lg(2)")+", und "+M("lg(2) ≈ 0,3")+"."],
-  sol:{viz:vLine(0,3,1,.1),merk:LG_MERK,steps:[{t:"Zwischen 1 und 2.",a:function(V){ V.span(1,2,"--dx"); }},{t:"",m:M("lg(50) = 2 - lg(2) ≈ 1,70"),a:function(V){ V.mark(Math.log10(50),"lg 50","--dy"); }}]}
-}; });
-
-/* ---------- Zone 3 ---------- */
-T("g15",5,"X","lg.regel","Gleichungen mit Logarithmen",SRC_K,function(){ return {
-  fmt:"mc",pick:2,q:"Kreuze die beiden zutreffenden Aussagen an.",calc:true,
-  items:[{s:M("log_a(8) = 3")+" &nbsp;⇒&nbsp; "+M("a = 2"),r:1,w:M("2^3 = 8")+"."},{s:M("lg(a) = 3")+" &nbsp;⇒&nbsp; "+M("a = 0,001"),r:0,w:M("a = 10^3 = 1000")+"."},{s:M("log_3({1/3}) = a")+" &nbsp;⇒&nbsp; "+M("a = -1"),r:1,w:M("3^(-1) = {1/3}")+"."},
-    {s:M("log_5(sqrt(5)) = a")+" &nbsp;⇒&nbsp; "+M("a = 1"),r:0,w:M("a = {1/2}")+"."},{s:M("log_a(36) = 2")+" &nbsp;⇒&nbsp; "+M("a = 18"),r:0,w:M("a^2 = 36")+", also "+M("a = 6")+"."}],
-  tips:["Jede Gleichung als Potenz schreiben.","Bei "+M("log_a(36) = 2")+" ist die Basis gesucht."],sol:{merk:LG_MERK,steps:["Übersetzen und prüfen.",{t:"",m:M("a^2 = 36")+" ⇒ "+M("a = 6")}]}
-}; });
-T("g16",5,"X","lg.begriffe","Begriffe",SRC_P("Kompetenztraining 34"),function(){ return {
-  fmt:"mc",pick:1,q:"Gegeben ist die Gleichung "+M("a = log_b(c)")+" mit "+M("b > 0")+", "+M("b ≠ 1")+", "+M("c > 0")+". Kreuze die zutreffende Aussage an.",
-  items:[{s:M("a")+" ist der Logarithmus von "+M("b")+".",r:0,w:M("b")+" ist die Basis."},{s:M("a")+" ist der Logarithmus von "+M("c")+".",r:1,w:M("b^a = c")+"."},{s:M("b")+" ist der Logarithmus von "+M("a")+".",r:0,w:"Nein."},
-    {s:M("b")+" ist der Logarithmus von "+M("c")+".",r:0,w:M("b")+" ist die Basis."},{s:M("c")+" ist der Logarithmus von "+M("a")+".",r:0,w:M("c")+" ist das Argument."}],
-  tips:["Übersetz in "+M("b^a = c")+"."],sol:{merk:LG_MERK,steps:[{t:"",m:M("b^a = c")},M("a")+" ist die Hochzahl: der Logarithmus von "+M("c")+" zur Basis "+M("b")+"."]}
-}; });
-T("g17",5,"X","lg.db","Zehnfache Intensität",SRC_S,function(){ return {
-  fmt:"luecke",q:"Für den Schallpegel gilt "+M("L = 10 * lg({I/I_0})")+". Ergänze den Satz so, dass eine richtige Aussage entsteht.",
-  satz:"Steigt die Schallintensität auf das Zehnfache, so steigt der Pegel um ___, weil ___.",
-  gaps:[{o:["10 dB","das Zehnfache","1 dB"],r:0,w:M("10 * lg(10) = 10")+"."},{o:[M("lg({10I/I_0}) = 1 + lg({I/I_0})")+" gilt",M("lg(10I) = 10 * lg(I)")+" gilt","der Pegel proportional zur Intensität ist"],r:0,w:"Mal wird Plus."}],
-  tips:["Setz "+M("10I")+" ein.","Welche Regel macht aus dem Produkt eine Summe?"],sol:{merk:"Logarithmische Skalen machen aus Vervielfachen ein Addieren.",steps:[{t:"",m:M("10 * lg({10I/I_0}) = 10 * (1 + lg({I/I_0})) = 10 + L")}]}
-}; });
-T("g18",5,"X","lg.zuord","Gleichung und Lösung",SRC_O,function(){
-  return zuOf([{s:M("lg(x) = 2"),key:"a",w:M("x = 10^2")+"."},{s:M("log_2(x) = -1"),key:"b",w:M("x = 2^(-1)")+"."}],[{key:"a",s:M("x = 100")},{key:"b",s:M("x = 0,5")},{key:"x1",s:M("x = 20")},{key:"x2",s:M("x = -2")}],
-    {keep:true,serif:true,serifOpts:true,q:"Ordne jeder Gleichung ihre Lösung zu.",tips:["In eine Potenz übersetzen.","Ein Logarithmus kann negativ sein, sein Argument nicht."],sol:{merk:LG_MERK,steps:[{t:"",m:M("lg(x) = 2")+" ⇔ "+M("x = 10^2 = 100")},{t:"",m:M("log_2(x) = -1")+" ⇔ "+M("x = 2^(-1) = 0,5")}]}});
-});
-T("g19",5,"X","lg.zahl","Logarithmus zur Basis 2",SRC_O,function(){ return {
-  fmt:"zline",q:"Markiere "+M("log_2(10)")+" auf der Zahlengeraden so genau wie möglich.",min:0,max:5,step:1,sub:.25,snap:.01,target:Math.log2(10),tol:.1,targetLabel:"log₂ 10",
-  tips:[M("2^3 = 8")+" und "+M("2^4 = 16")+".","10 liegt näher bei 8 als bei 16."],
-  sol:{viz:vLine(0,5,1,.25),merk:LG_MERK,steps:[{t:"Zwischen 3 und 4.",a:function(V){ V.span(3,4,"--dx"); }},{t:"",m:M("log_2(10) = {lg(10)/lg(2)} ≈ 3,32"),a:function(V){ V.mark(Math.log2(10),"log₂ 10","--dy"); }}]}
-}; });
-T("g20",5,"X","lg.gl","Verdopplung am Sparbuch",SRC_P("1_744"),function(){ return {
-  fmt:"input",q:"Ein Kapital wird mit 1 % pro Jahr verzinst. Steuern, Gebühren und weitere Ein- oder Auszahlungen bleiben unberücksichtigt. Berechne, nach wie vielen Jahren sich das Kapital verdoppelt hat. Runde auf zwei Nachkommastellen.",
-  fields:[{l:M("n ≈"),r:69.66,tol:.011,u:"Jahre",w:M("{lg(2)/lg(1,01)} ≈ 69,66")+"."}],
-  tips:["Ansatz: "+M("1,01^n = 2")+". Das Anfangskapital kürzt sich weg.","Logarithmieren."],
-  sol:{merk:"Verdopplungszeit: "+M("a^n = 2")+" lösen.",steps:[{t:"",m:M("K_0 * 1,01^n = 2 * K_0")+" &nbsp; ⇔ &nbsp; "+M("1,01^n = 2")},{t:"",m:M("n = {lg(2)/lg(1,01)} ≈ 69,66")},"Erst im 70. Jahr ist das Doppelte erreicht."]}
-}; });
-T("g21",5,"X","lg.begr","Warum lg 2 + lg 5 = 1",SRC_K,function(){ return {
-  fmt:"offen",q:"Begründe mithilfe der Rechenregeln für Logarithmen, warum "+M("lg(2) + lg(5) = 1")+" ist.",
-  model:"Nach der Produktregel ist "+M("lg(2) + lg(5) = lg(2 * 5) = lg(10)")+". Und "+M("lg(10) = 1")+", weil "+M("10^1 = 10")+".",
-  points:["Produktregel "+M("lg(u) + lg(v) = lg(u * v)")+" verwendet",M("2 * 5 = 10")+" zusammengefasst",M("lg(10) = 1")+" begründet"],
-  tips:["Welche Regel macht aus einer Summe von Logarithmen einen einzigen?","Was ist "+M("lg(10)")+"?"],sol:{merk:LG_MERK,steps:[{t:"",m:M("lg(2) + lg(5) = lg(10) = 1")}]}
-}; });
-T("g22",5,"X","lg.regel","Allgemeine Regeln",SRC_K,function(){ return {
-  fmt:"mc",pick:2,calc:true,q:"Für alle "+M("a, b > 0")+" und "+M("n ∈ ℕ")+" gilt: Kreuze die beiden zutreffenden Aussagen an.",
-  items:[{s:M("lg(a * b) = lg(a) + lg(b)"),r:1,w:"Produktregel."},{s:M("lg(a^n) = n * lg(a)"),r:1,w:"Potenzregel."},{s:M("lg(a + b) = lg(a) + lg(b)"),r:0,w:"Für Summen gibt es keine Regel."},
-    {s:M("lg({a/b}) = {lg(a)/lg(b)}"),r:0,w:"Quotientenregel: Differenz."},{s:M("lg(sqrt(a)) = sqrt(lg(a))"),r:0,w:M("lg(sqrt(a)) = {1/2} * lg(a)")+"."}],
-  tips:["Teste mit "+M("a = 100, b = 10")+".","Ein Gegenbeispiel genügt."],sol:{merk:LG_MERK,steps:[{t:"Gegenbeispiel",m:M("lg(100 + 10) ≈ 2,04")+", aber "+M("lg(100) + lg(10) = 3")}]}
-}; });
-T("g23",5,"X","lg.ph","Saurer Regen",SRC_S,function(){ return {
-  fmt:"input",q:"Für den pH-Wert gilt "+M("pH = -lg(c)")+" ("+M("c")+" in mol pro Liter). Berechne.",
-  fields:[{l:"Konzentration "+M("c")+" bei pH 2,5:",r:.003162,tol:.00001,u:"mol/l",w:M("c = 10^(-2,5) ≈ 0,003 16")+"."},{l:"Um welchen Faktor ist "+M("c")+" bei pH 4 größer als bei pH 6?",r:100}],
-  tips:["Umformen: "+M("c = 10^(-pH)")+".","Zwei pH-Stufen Unterschied."],
-  sol:{merk:"Eine pH-Stufe weniger heißt zehnmal so viele Wasserstoffionen.",steps:[{t:"",m:M("c = 10^(-2,5) ≈ 0,00316")},{t:"",m:M("{10^(-4)/10^(-6)} = 10^2 = 100")}]}
-}; });
-
-/* ---------- Generatoren ---------- */
-var LWP=[[2,16,4],[2,64,6],[2,.5,-1],[2,.125,-3],[3,27,3],[3,1/27,-3],[5,125,3],[5,.2,-1],[10,10000,4],[10,.1,-1],[10,.0001,-4],[4,2,.5],[9,3,.5],[8,2,1/3],[2,Math.SQRT2,.5],[10,1,0],["e","e^3",3],["e","{1/e}",-1],[7,49,2],[6,1/36,-2]];
-function lgArg(b,v){ if(typeof v==="string") return v; var q=fracOf(v); return v===Math.SQRT2?"sqrt(2)":(q.indexOf("{")>=0?q:num(v)); }
-G("lg.wert",5,"L","Logarithmen ohne Rechner",function(){
-  var c=sample(LWP,3);
-  return {fmt:"input",q:"Berechne ohne Taschenrechner.",fields:c.map(function(w){ return {l:M(lgS(w[0])+"("+lgArg(w[0],w[1])+") ="),r:w[2]}; }),tips:[LG_TIP,"Kleiner als 1: negative Hochzahl. Wurzel: Bruch als Hochzahl."],
-    sol:{merk:LG_MERK,steps:c.map(function(w){ return {t:"",m:M((w[0]==="e"?"e":w[0])+"^("+fracOf(w[2]).replace(/[{}]/g,"")+") = "+lgArg(w[0],w[1]))}; })}};
-});
-G("lg.def",5,"L","Logarithmus und Potenz",function(){
-  var c, g=0; do{ c=sample(LWP.filter(function(w){ return w[0]!=="e"&&w[2]!==0; }),4); g++; }while(!distinct(c.map(function(w){ return w[0]+"|"+w[2]; }))&&g<100);
-  function pw(w){ return w[0]+"^("+fracOf(w[2]).replace(/[{}]/g,"")+") = "+lgArg(w[0],w[1]); }
-  var w0=c[0], dis=[{key:"x1",s:M(lgArg(w0[0],w0[1])+"^("+fracOf(w0[2]).replace(/[{}]/g,"")+") = "+w0[0])},{key:"x2",s:M(fracOf(w0[2]).replace(/[{}]/g,"")+"^"+w0[0]+" = "+lgArg(w0[0],w0[1]))}];
-  return zuOf(c.map(function(w,i){ return {s:M(lgS(w[0])+"("+lgArg(w[0],w[1])+") = "+fracOf(w[2])),key:"k"+i,w:M(pw(w))+"."}; }),c.map(function(w,i){ return {key:"k"+i,s:M(pw(w))}; }).concat(dis),
-    {serif:true,serifOpts:true,q:"Ordne jeder Gleichung mit einem Logarithmus die gleichwertige Gleichung zu.",tips:["Basis bleibt Basis.","Das Ergebnis des Logarithmus wird zur Hochzahl."],sol:{merk:LG_MERK,steps:["Basis, Hochzahl und Wert zuordnen."]}});
-});
-var LDEFP=[["lg(1) = 0",1,M("10^0 = 1")],["lg(10) = 1",1,"Basis hoch 1."],["lg(-10) = -1",0,"Nur positive Argumente."],["log_2(0) = 0",0,"Keine Hochzahl ergibt 0."],["ln(1) = 1",0,M("e^0 = 1")],["log_3(81) = 4",1,M("3^4 = 81")],
-  ["lg(0,1) = -1",1,M("10^(-1) = 0,1")],["log_2(8) = 4",0,M("2^3 = 8")],["ln(e) = 1",1,"Basis hoch 1."],["log_4(16) = 2",1,M("4^2 = 16")],["lg(100) = 10",0,M("10^2 = 100")],["log_5(1) = 5",0,"Immer 0."]];
-GV("lg.def","tf",function(){ return {fmt:"tf",serif:true,q:"Entscheide in jeder Zeile.",yes:"stimmt",no:"stimmt nicht",items:pickPool(LDEFP.map(function(p){ return {s:M(p[0]),r:p[1],w:p[2]+"."}; }),6,"x"),tips:[LG_TIP,"Für 0 und negative Zahlen gibt es keinen Logarithmus."],sol:{merk:LG_MERK,steps:["Jede Gleichung als Potenz schreiben."]}}; });
-G("lg.tab",5,"L","Mit einer Tabelle",function(){
-  var b=pick([2,3]), N=b===2?10:7, row=[]; for(var k=1;k<=N;k++) row.push(num(Math.pow(b,k)));
-  var k1=ri(3,N), k2=pick([2,4,6].filter(function(x){ return x<=N; })), k3=ri(2,N);
-  return {fmt:"input",q:"Bestimme die Logarithmen mithilfe der Tabelle."+tblHTML(["<i>k</i>",b+"<sup><i>k</i></sup>"],[Array.from({length:N},function(_,i){ return i+1; }),row]),
-    fields:[{l:M("log_"+b+"("+num(Math.pow(b,k1)).replace(/\s/g,"")+") ="),r:k1},{l:M("log_"+b+"(sqrt("+num(Math.pow(b,k2)).replace(/\s/g,"")+")) ="),r:k2/2},{l:M("log_"+b+"({1/"+num(Math.pow(b,k3)).replace(/\s/g,"")+"}) ="),r:-k3}],
-    tips:["Such die Zahl in der Tabelle.","Wurzel: Hochzahl halbieren. Kehrwert: Vorzeichen wechseln."],sol:{merk:LG_MERK,steps:["Hochzahl in der Tabelle ablesen.","Wurzel halbiert, Kehrwert dreht das Vorzeichen."]}};
-});
-G("lg.groesse",5,"L","Wie groß ist der Logarithmus?",function(){
-  var c; do{ c=sample(LGRP,7); }while(["n","m","g"].some(function(k){ return !c.some(function(x){ return lgK(x.v)===k; }); }));
-  return {fmt:"sort",q:"Sortiere die Logarithmen nach ihrem Wert, ohne Taschenrechner.",bins:LGB,cards:c.map(function(x){ return {s:M(x.s),k:lgK(x.v),w:"≈ "+num(r2(x.v))+"."}; }),tips:["Mit 1 und mit der Basis vergleichen."],sol:{merk:"Basis größer als 1: Zahlen unter 1 ergeben negative Logarithmen.",steps:["Argument mit 1 und mit der Basis vergleichen."]}};
-});
-G("lg.ph",5,"L","pH-Wert",function(){
-  var k=ri(2,9), m=pick([2,3,5,4]), pH2=-Math.log10(m*Math.pow(10,-k));
-  return {fmt:"input",q:"Für den pH-Wert gilt "+M("pH = -lg(c)")+". Berechne den pH-Wert.",fields:[{l:M("c = 10^(-"+k+")")+": pH =",r:k},{l:M("c = "+m+" * 10^(-"+k+")")+": pH =",r:r2(pH2),tol:.011}],
-    tips:["Zehnerpotenz: die Hochzahl ablesen.","Produktregel für den zweiten Wert."],sol:{merk:LG_MERK,steps:[{t:"",m:M("-lg(10^(-"+k+")) = "+k)},{t:"",m:M("-("+"lg("+m+") - "+k+") ≈ "+fk(r2(pH2)))}]}};
-});
-G("lg.begriffe",5,"X","Begriffe",function(){
-  var L=sample(["a","b","c","p","q","r","u","v","w"],3), A=L[0], B=L[1], C=L[2];
-  var its=[{s:M(A)+" ist der Logarithmus von "+M(C)+" zur Basis "+M(B)+".",r:1,w:M(B+"^"+A+" = "+C)+"."},{s:M(A)+" ist der Logarithmus von "+M(B)+".",r:0,w:M(B)+" ist die Basis."},{s:M(B)+" ist der Logarithmus von "+M(C)+".",r:0,w:M(B)+" ist die Basis."},
-    {s:M(C)+" ist der Logarithmus von "+M(A)+".",r:0,w:M(C)+" ist das Argument."},{s:M(C)+" ist die Basis des Logarithmus.",r:0,w:"Die Basis ist "+M(B)+"."}];
-  return {fmt:"mc",pick:1,q:"Gegeben ist die Gleichung "+M(A+" = log_"+B+"("+C+")")+". Kreuze die zutreffende Aussage an.",items:shuffle(its),tips:["Übersetz in "+M(B+"^"+A+" = "+C)+"."],sol:{merk:LG_MERK,steps:[{t:"",m:M(B+"^"+A+" = "+C)}]}};
-});
-GV("lg.begriffe","1aus4",function(){ var sp=GEN["lg.begriffe"].make(); sp.items=[sp.items.filter(function(i){ return i.r; })[0]].concat(sample(sp.items.filter(function(i){ return !i.r; }),3)); sp.items=shuffle(sp.items); return sp; });
-var UMFP=[["lg({x^3/10})","3lg(x) - 1"],["lg(100x^2)","2 + 2lg(x)"],["lg(sqrt(x))","lg(x)/2"],["lg({1000/x})","3 - lg(x)"],["lg(10x^4)","1 + 4lg(x)"],["ln(e^2 * x)","2 + ln(x)"],["ln({x^5/e})","5ln(x) - 1"],["lg({sqrt(x)/100})","lg(x)/2 - 2"]];
-G("lg.umf",5,"M","Logarithmen umformen",function(){
-  var u=pick(UMFP);
-  return {fmt:"input",q:"Schreib den Term für "+M("x > 0")+" ohne Bruch, Wurzel und Potenz im Argument des Logarithmus.",
-    fields:[{l:M(u[0]+" ="),kind:"term",r:u[1],vars:["x"],pos:true,show:M(u[1].replace(/(\d)(lg|ln)/,"$1 * $2").replace("lg(x)/2","{1/2} * lg(x)")),chk:function(r){ return /(lg|ln)\s*\(\s*[^)]*[\^\/√]|(lg|ln)\s*\(\s*sqrt|(lg|ln)\s*\(\s*\d+\s*\*?\s*x/.test(r)?"Im Argument steht noch ein Bruch, eine Potenz, eine Wurzel oder ein Produkt.":null; }}],
-    tips:["Produkt: Summe. Quotient: Differenz. Potenz und Wurzel: Faktor.","Tippen etwa so: 2+2lg(x)."],sol:{merk:LG_MERK,steps:[{t:"",m:M(u[0]+" = "+u[1].replace("lg(x)/2","{1/2} * lg(x)"))}]}};
-});
-var LRP=[["lg(u * v) = lg(u) + lg(v)",1],["lg(u + v) = lg(u) * lg(v)",0],["lg(u^3) = 3 * lg(u)",1],["lg({u/v}) = {lg(u)/lg(v)}",0],["lg(sqrt(u)) = {1/2} * lg(u)",1],["(lg(u))^2 = 2 * lg(u)",0],["lg({u/v}) = lg(u) - lg(v)",1],["lg(u + v) = lg(u) + lg(v)",0],["lg({1/u}) = -lg(u)",1],["lg(10u) = 10 * lg(u)",0],["lg(10u) = 1 + lg(u)",1],["lg(u - v) = lg(u) - lg(v)",0]];
-G("lg.regel",5,"M","Rechenregeln",function(){ return {fmt:"tf",serif:true,q:"Gilt die Gleichung für alle "+M("u, v > 0")+"?",yes:"stimmt",no:"stimmt nicht",items:pickPool(LRP.map(function(p){ return {s:M(p[0]),r:p[1],w:p[1]?"Eine der Logarithmusregeln.":"Gegenbeispiel mit "+M("u = 100")+", "+M("v = 10")+"."}; }),6,"x"),
-  tips:["Mit "+M("u = 100, v = 10")+" testen.","Regeln gibt es nur für Produkte, Quotienten und Potenzen im Argument."],sol:{merk:LG_MERK,steps:["Jede Gleichung mit Zahlen testen."]}}; });
-GV("lg.regel","2aus5",function(){ return {fmt:"mc",pick:2,calc:true,q:"Für alle "+M("u, v > 0")+": Kreuze die beiden zutreffenden Aussagen an.",items:pickPool(LRP.map(function(p){ return {s:M(p[0]),r:p[1],w:p[1]?"Logarithmusregel.":"Gegenbeispiel mit "+M("u = 100")+", "+M("v = 10")+"."}; }),5,2),tips:["Mit Zahlen testen."],sol:{merk:LG_MERK,steps:["Jede Gleichung mit "+M("u = 100, v = 10")+" testen."]}}; });
-G("lg.gl",5,"M","Exponentialgleichungen",function(){
-  if(Math.random()<.5){ var b=pick([2,3,5,10]), e=ri(-3,5), s=ri(0,2); var rhs=Math.pow(b,e+s);
-    return {fmt:"input",q:"Löse ohne Taschenrechner: "+M(b+"^(x"+(s?" + "+s:"")+") = "+(rhs<1?fracOf(rhs).replace(/[{}]/g,""):num(rhs).replace(/\s/g,""))),fields:[{l:M("x ="),r:e}],tips:["Rechte Seite als Potenz von "+b+" schreiben.","Hochzahlen gleichsetzen."],sol:{merk:"Gleiche Basis: gleiche Hochzahlen.",steps:[{t:"",m:M(fk(rhs)+" = "+b+"^("+(e+s)+")")},{t:"",m:M("x = "+(e+s)+" - "+s+" = "+e)}]}}; }
-  var c=pick([2,3,4,5,10]), q=pick([1.02,1.05,1.08,1.1,.9,.95,.8]), k=pick([2,3,.5,.25]), d=c*k, x=Math.log(k)/Math.log(q);
-  return {fmt:"input",q:"Löse die Gleichung "+M(c+" * "+fk(q)+"^x = "+fk(d))+". Runde auf zwei Nachkommastellen.",fields:[{l:M("x ≈"),r:r2(x),tol:.011}],tips:["Zuerst durch "+c+" dividieren.","Logarithmieren: "+M("x * lg("+fk(q)+") = lg("+fk(k)+")")+"."],
-    sol:{merk:"Isolieren, logarithmieren, auflösen.",steps:[{t:"",m:M(fk(q)+"^x = "+fk(k))},{t:"",m:M("x = {lg("+fk(k)+")/lg("+fk(q)+")} ≈ "+fk(r2(x)))}]}};
-});
-G("lg.luecke",5,"M","Lösung einer Exponentialgleichung",function(){
-  var a=pick([2,3,5,7,1.5]), b=pick([10,20,30,50,0.4]);
-  var g1=shGap([M("x = {lg("+fk(b)+")/lg("+fk(a)+")}"),M("x = lg({"+fk(b)+"/"+fk(a)+"})"),M("x = {"+fk(b)+"/"+fk(a)+"}")],0), g2=shGap(["man beide Seiten logarithmieren kann und "+M("x * lg("+fk(a)+") = lg("+fk(b)+")")+" erhält",M("lg("+fk(a)+"^x) = lg("+fk(a)+") + lg(x)")+" gilt","man beide Seiten durch "+fk(a)+" dividieren darf"],0);
-  g1.w="Logarithmieren und dividieren."; g2.w="Die Hochzahl wird zum Faktor.";
-  return {fmt:"luecke",q:"Ergänze den Satz so, dass eine richtige Aussage entsteht.",satz:"Die Gleichung "+M(fk(a)+"^x = "+fk(b))+" hat die Lösung ___, weil ___.",gaps:[g1,g2],tips:["Was passiert mit der Hochzahl beim Logarithmieren?"],sol:{merk:LG_MERK,steps:[{t:"",m:M("x * lg("+fk(a)+") = lg("+fk(b)+")")}]}};
-});
-G("lg.db",5,"M","Dezibel",function(){
-  var k=ri(2,9), f=pick([2,4,5,100,1000]);
-  return {fmt:"input",q:"Der Schallpegel ist "+M("L = 10 * lg({I/I_0})")+" in Dezibel.",fields:[{l:"Pegel bei "+M("I = 10^"+k+" * I_0")+":",r:10*k,u:"dB"},{l:"Um wie viel steigt der Pegel, wenn die Intensität auf das "+num(f)+"-Fache steigt?",r:r2(10*Math.log10(f)),tol:.011,u:"dB"}],
-    tips:[M("lg(10^"+k+") = "+k)+".","Mal wird Plus: Der Zuwachs ist "+M("10 * lg(Faktor)")+"."],sol:{merk:"Pegelzuwachs = "+M("10 * lg")+"(Faktor der Intensität).",steps:[{t:"",m:M("10 * "+k+" = "+(10*k))},{t:"",m:M("10 * lg("+f+") ≈ "+fk(r2(10*Math.log10(f))))}]}};
-});
-GV("lg.db","luecke",function(){
-  var f=pick([[100,"20 dB","das Hundertfache","2 dB",2],[1000,"30 dB","das Tausendfache","3 dB",3],[10,"10 dB","das Zehnfache","1 dB",1]]);
-  var g1=shGap([f[1],f[2],f[3]],0), g2=shGap([M("lg({"+f[0]+"I/I_0}) = "+f[4]+" + lg({I/I_0})")+" gilt",M("lg("+f[0]+"I) = "+f[0]+" * lg(I)")+" gilt","der Pegel proportional zur Intensität ist"],0);
-  g1.w=M("10 * lg("+f[0]+") = "+10*f[4])+"."; g2.w="Mal wird Plus.";
-  return {fmt:"luecke",q:"Für den Schallpegel gilt "+M("L = 10 * lg({I/I_0})")+". Ergänze den Satz so, dass eine richtige Aussage entsteht.",satz:"Steigt die Intensität auf das "+num(f[0])+"-Fache, steigt der Pegel um ___, weil ___.",gaps:[g1,g2],tips:["Setz die neue Intensität ein."],sol:{merk:"Vervielfachen wird zu Addieren.",steps:[{t:"",m:M("10 * lg({"+f[0]+"I/I_0}) = "+10*f[4]+" + L")}]}};
-});
-var LZP=[["lg(50)",Math.log10(50),[0,3],1,.1],["lg(2)",Math.log10(2),[0,1],.25,.05],["lg(300)",Math.log10(300),[0,3],1,.1],["log_2(10)",Math.log2(10),[0,5],1,.25],["log_2(3)",Math.log2(3),[0,3],1,.25],["log_3(10)",Math.log(10)/Math.log(3),[0,3],1,.25],["lg(0,5)",Math.log10(.5),[-1,1],.5,.1],["ln(10)",Math.log(10),[0,3],1,.1]];
-G("lg.zahl",5,"M","Logarithmus verorten",function(){
-  var z=pick(LZP), sp=z[2][1]-z[2][0];
-  return {fmt:"zline",q:"Markiere "+M(z[0])+" auf der Zahlengeraden so genau wie möglich.",min:z[2][0],max:z[2][1],step:z[3],sub:z[4],snap:sp/300,target:z[1],tol:sp*.03,targetLabel:z[0].replace(/_2/,"₂").replace(/_3/,"₃").replace(/[()]/g," ").trim(),
-    tips:["Zwischen welchen ganzen Zahlen liegt der Wert?","Nützlich: "+M("lg(2) ≈ 0,3")+", "+M("lg(3) ≈ 0,48")+"."],sol:{viz:vLine(z[2][0],z[2][1],z[3],z[4]),merk:LG_MERK,steps:[{t:"",m:M(z[0]+" ≈ "+fk(r2(z[1]))),a:function(V){ V.mark(z[1],"","--dy"); }}]}};
-});
-G("lg.zuord",5,"X","Gleichung und Lösung",function(){
-  var c, g=0; do{ c=sample(LWP.filter(function(w){ return w[0]!=="e"&&w[2]!==0; }),2); g++; }while(c[0][1]===c[1][1]&&g<50);
-  var vals=c.map(function(w){ return w[1]; }), dis=[c[0][0]*c[0][2],-Math.abs(c[1][2])-1].filter(function(v){ return vals.indexOf(v)<0; });
-  while(dis.length<2) dis.push(vals[0]*10+dis.length);
-  return zuOf(c.map(function(w,i){ return {s:M(lgS(w[0])+"(x) = "+fracOf(w[2])),key:"k"+i,w:M("x = "+w[0]+"^("+fracOf(w[2]).replace(/[{}]/g,"")+")")+"."}; }),c.map(function(w,i){ return {key:"k"+i,s:M("x = "+lgArg(w[0],w[1]))}; }).concat(dis.slice(0,2).map(function(v,i){ return {key:"x"+i,s:M("x = "+fk(v))}; })),
-    {keep:true,serif:true,serifOpts:true,q:"Ordne jeder Gleichung ihre Lösung zu.",tips:["In eine Potenz übersetzen.","Das Argument eines Logarithmus ist positiv."],sol:{merk:LG_MERK,steps:["Basis hoch Ergebnis ergibt die Lösung."]}});
-});
-var LBP=[{q:"Begründe mithilfe der Rechenregeln für Logarithmen, warum "+M("lg(2) + lg(5) = 1")+" ist.",m:M("lg(2) + lg(5) = lg(10) = 1")+".",p:["Produktregel verwendet",M("lg(10) = 1")+" begründet"]},
-  {q:"Begründe mithilfe der Rechenregeln für Logarithmen, warum "+M("lg(200) - lg(2) = 2")+" ist.",m:M("lg(200) - lg(2) = lg({200/2}) = lg(100) = 2")+".",p:["Quotientenregel verwendet",M("lg(100) = 2")+" begründet"]},
-  {q:"Begründe, warum "+M("log_2(8^5) = 15")+" ist.",m:M("log_2(8^5) = 5 * log_2(8) = 5 * 3 = 15")+".",p:["Potenzregel verwendet",M("log_2(8) = 3")+" begründet"]},
-  {q:"Begründe, warum es keine reelle Zahl "+M("x")+" mit "+M("lg(x) = lg(-x)")+" gibt.",m:"Für "+M("lg(x)")+" muss "+M("x > 0")+" sein, für "+M("lg(-x)")+" muss "+M("x < 0")+" sein. Beides zugleich geht nicht.",p:["Definitionsbereich des Logarithmus genannt","Widerspruch erkannt"]}];
-G("lg.begr",5,"X","Rechenregeln begründen",function(){ var b=pick(LBP); return {fmt:"offen",q:b.q,model:b.m,points:b.p,tips:["Welche Regel passt?"],sol:{merk:LG_MERK,steps:["Passende Regel anwenden."]}}; });
-
-/* ══════════ Linie 6 · Exponentialfunktionen ══════════ */
+/* ══════════ Linie 5 (Farbe 6) · Exponentialfunktionen ══════════ */
 var EX_MERK="Exponentialfunktion "+M("f(x) = c * a^x")+": "+M("c = f(0)")+" ist der Startwert, "+M("a")+" der Faktor pro Schritt. "+M("a > 1")+": Wachstum um "+M("(a - 1) * 100")+" %. "+M("0 < a < 1")+": Abnahme um "+M("(1 - a) * 100")+" %.";
 function expF(c,a){ return function(x){ return c*Math.pow(a,x); }; }
 
 /* ---------- Zone 1 ---------- */
-T("e1",6,"L","ex.param","Startwert und Basis",SRC_P("1_575"),function(){ return {
+T("e1",5,"L","ex.param","Startwert und Basis",SRC_P("1_575"),function(){ return {
   fmt:"input",q:"Von einer Exponentialfunktion "+M("f(x) = c * a^x")+" ist bekannt: "+M("f(0) = 12")+" und "+M("f(4) = 192")+". Gib "+M("c")+" und "+M("a")+" an.",
   fields:[{l:M("c ="),r:12},{l:M("a ="),r:2,w:M("a^4 = {192/12} = 16")+"."}],
   tips:[M("c = f(0)")+".","In vier Schritten wird aus 12 die Zahl 192. Mit welchem Faktor pro Schritt?"],
   sol:{viz:vTab([0,1,2,3,4]),merk:EX_MERK,steps:[{t:"Startwert",m:M("c = 12"),a:function(V){ V.val(0,12); V.val(4,192,null,.3); }},{t:"Vier Schritte",m:M("a^4 = 16")+" &nbsp; also &nbsp; "+M("a = 2"),a:function(V){ [24,48,96].forEach(function(v,i){ V.val(i+1,v,"--ink-3",i*.2); }); [0,1,2,3].forEach(function(i){ V.arc(i,i+1,"· 2","--right",i*.2); }); }}]}
 }; });
-T("e2",6,"L","ex.proz","Zellkulturen",SRC_P("1_624"),function(){
+T("e2",5,"L","ex.proz","Zellkulturen",SRC_P("1_624"),function(){
   return zuOf([{s:"Die Anzahl der Zellen verdoppelt sich pro Tag.",key:"2",w:"Faktor 2."},{s:"Die Anzahl der Zellen nimmt pro Tag um 85 % zu.",key:"1.85",w:"100 % + 85 %."},{s:"Die Anzahl der Zellen nimmt pro Tag um 85 % ab.",key:"0.15",w:"Es bleiben 15 %."},{s:"Die Anzahl der Zellen nimmt pro Tag um die Hälfte ab.",key:"0.5",w:"Es bleibt die Hälfte."}],
     [{key:"0.15",s:M("N(t) = N(0) * 0,15^t")},{key:"0.5",s:M("N(t) = N(0) * 0,5^t")},{key:"0.85",s:M("N(t) = N(0) * 0,85^t")},{key:"1.5",s:M("N(t) = N(0) * 1,5^t")},{key:"1.85",s:M("N(t) = N(0) * 1,85^t")},{key:"2",s:M("N(t) = N(0) * 2^t")}],
     {keep:true,serifOpts:true,q:"Ordne jeder Beschreibung die passende Funktionsgleichung zu. "+M("N(t)")+" ist die Anzahl der Zellen "+M("t")+" Tage nach Beginn.",
      tips:["Zunahme um "+M("p")+" %: Faktor "+M("1 + {p/100}")+".","Abnahme um 85 %: Es bleiben 15 %."],sol:{merk:EX_MERK,steps:["Verdoppeln: Faktor 2.","+85 %: 1,85. −85 %: 0,15.","Halbieren: 0,5. Übrig: 0,85 und 1,5."]}});
 });
-T("e3",6,"L","ex.wert","Tabelle fortsetzen",SRC_P("1_340"),function(){ return {
+T("e3",5,"L","ex.wert","Tabelle fortsetzen",SRC_P("1_340"),function(){ return {
   fmt:"input",q:"Die Funktion "+M("f(t) = c * a^t")+" beschreibt einen Wachstumsprozess. Es gilt "+M("f(0) = 400")+" und "+M("f(1) = 600")+". Ermittle "+M("f(2)")+" und "+M("f(3)")+".",
   fields:[{l:M("f(2) ="),r:900},{l:M("f(3) ="),r:1350}],
   tips:["Mit welchem Faktor wird aus 400 die Zahl 600?","Dieser Faktor gilt für jeden Schritt."],
   sol:{viz:vTab([0,1,2,3],{xl:"t",yl:"f(t)"}),merk:EX_MERK,steps:[{t:"",m:M("a = {600/400} = 1,5"),a:function(V){ V.val(0,400); V.val(1,600,null,.2); V.arc(0,1,"· 1,5"); }},{t:"",m:M("600 * 1,5 = 900")+", &nbsp; "+M("900 * 1,5 = 1350"),a:function(V){ V.val(2,900); V.val(3,1350,null,.3); V.arc(1,2,"· 1,5"); V.arc(2,3,"· 1,5","--right",.3); }}]}
 }; });
-T("e4",6,"L","ex.erkenn","Exponentiell oder nicht?",SRC_P("1_889"),function(){ return {
+T("e4",5,"L","ex.erkenn","Exponentiell oder nicht?",SRC_P("1_889"),function(){ return {
   fmt:"tf",yes:"exponentiell",no:"nicht exponentiell",q:"Lässt sich der Vorgang mit einer Exponentialfunktion beschreiben?",
   items:[{s:"Eine Bevölkerung ist jedes Jahr um 5 % größer als im Vorjahr.",r:1,w:"Jedes Jahr mal 1,05."},{s:"Eine Bevölkerung ist jedes Jahr um 20 000 größer als im Vorjahr.",r:0,w:"Gleich viel dazu: linear."},
     {s:"Jedes Jahr kommt ein Zehntel der Vorjahresbevölkerung dazu.",r:1,w:"Faktor 1,1."},{s:"Die Zunahmen betragen 10 000, 20 000, 30 000, …",r:0,w:"Weder gleiche Summanden noch gleiche Faktoren."},
@@ -4507,17 +4265,17 @@ T("e4",6,"L","ex.erkenn","Exponentiell oder nicht?",SRC_P("1_889"),function(){ r
 var LINE=[{s:"2, 6, 18, 54",k:"e",w:"Immer mal 3."},{s:"5, 8, 11, 14",k:"l",w:"Immer plus 3."},{s:"100, 80, 64, 51,2",k:"e",w:"Immer mal 0,8."},{s:"1, 4, 9, 16",k:"k",w:"Quadratzahlen."},{s:"10, 7, 4, 1",k:"l",w:"Immer minus 3."},
   {s:"1, 2, 4, 7",k:"k",w:"Weder gleiche Differenzen noch gleiche Quotienten."},{s:"64, 32, 16, 8",k:"e",w:"Immer mal 0,5."},{s:"3, 4,5, 6, 7,5",k:"l",w:"Immer plus 1,5."},{s:"1, 3, 6, 10",k:"k",w:"Differenzen 2, 3, 4."},{s:"5, 10, 20, 40",k:"e",w:"Immer mal 2."}];
 var LINB=[{k:"l",t:"linear"},{k:"e",t:"exponentiell"},{k:"k",t:"keins von beiden"}];
-T("e5",6,"L","ex.lin","Linear oder exponentiell?",SRC_O,function(){ return {
+T("e5",5,"L","ex.lin","Linear oder exponentiell?",SRC_O,function(){ return {
   fmt:"sort",q:"Die Zahlen sind aufeinanderfolgende Funktionswerte an den Stellen 0, 1, 2, 3. Sortiere die Folgen.",bins:LINB,cards:[0,1,2,3,4,5,6,7].map(function(i){ return {s:LINE[i].s,k:LINE[i].k,w:LINE[i].w}; }),
   tips:["Bilde Differenzen benachbarter Werte. Sind sie gleich: linear.","Bilde Quotienten. Sind sie gleich: exponentiell."],sol:{viz:vTab([0,1,2,3]),merk:"Gleiche Differenzen: linear. Gleiche Quotienten: exponentiell.",steps:[{t:"Beispiel 100, 80, 64, 51,2",a:function(V){ [100,80,64,"51,2"].forEach(function(v,i){ V.val(i,v); }); [0,1,2].forEach(function(i){ V.arc(i,i+1,"· 0,8","--right",i*.2); }); }},"Die Differenzen −20, −16, −12,8 sind verschieden, die Quotienten alle 0,8."]}
 }; });
-T("e6",6,"L","ex.proz","Prozent und Basis",SRC_K,function(){ return {
+T("e6",5,"L","ex.proz","Prozent und Basis",SRC_K,function(){ return {
   fmt:"input",q:"Gib jeweils die Basis "+M("a")+" der Exponentialfunktion "+M("f(t) = c * a^t")+" an, bzw. den Prozentsatz.",
   fields:[{l:"Wachstum um 3,5 % pro Jahr: "+M("a ="),r:1.035},{l:"Abnahme um 12 % pro Stunde: "+M("a ="),r:.88},{l:M("a = 0,97")+": Abnahme um",r:3,u:"% pro Schritt"}],
   tips:["Zunahme: 1 plus Prozentsatz als Dezimalzahl.","Abnahme: 1 minus Prozentsatz."],sol:{merk:EX_MERK,steps:[{t:"",m:M("1 + 0,035 = 1,035")},{t:"",m:M("1 - 0,12 = 0,88")},{t:"",m:M("1 - 0,97 = 0,03")+" = 3 %"}]}
 }; });
 var E7=expF(25,.8);
-T("e7",6,"L","ex.param","Gleichung aus dem Graphen",SRC_P("1_435"),function(){ return {
+T("e7",5,"L","ex.param","Gleichung aus dem Graphen",SRC_P("1_435"),function(){ return {
   fmt:"mc",pick:1,calc:true,q:"Die Abbildung zeigt den Graphen einer Exponentialfunktion "+M("f(x) = c * a^x")+" durch "+M("P = (0 | 25)")+" und "+M("Q = (1 | 20)")+". Kreuze die passende Gleichung an.",
   fig:gfig(480,340,[-1,11],[0,32],"x","f(x)",1,5,function(P){ P.fn(E7,"--dx",3); P.pt(0,25,"--dx","P"); P.pt(1,20,"--dx","Q",{dx:8}); }),
   items:[{s:M("f(x) = 25 * 0,8^x"),r:1,w:M("{20/25} = 0,8")+"."},{s:M("f(x) = 20 * 0,8^x"),r:0,w:M("f(0)")+" wäre 20."},{s:M("f(x) = 25 * 1,25^x"),r:0,w:"Das wäre Wachstum."},{s:M("f(x) = 25 * 0,2^x"),r:0,w:"Abnahme um 20 % heißt Faktor 0,8, nicht 0,2."}],
@@ -4525,107 +4283,114 @@ T("e7",6,"L","ex.param","Gleichung aus dem Graphen",SRC_P("1_435"),function(){ r
 }; });
 
 /* ---------- Zone 2 ---------- */
-T("e8",6,"M","ex.hwz","Halbwertszeit aus zwei Messungen",SRC_P("1_649"),function(){ return {
-  fmt:"input",q:"Die Masse einer radioaktiven Substanz nimmt exponentiell ab. Zu Beginn sind 100 mg vorhanden, nach vier Stunden noch 75 mg. Bestimme die Halbwertszeit in Stunden. Runde auf zwei Nachkommastellen.",
-  fields:[{l:M("T ≈"),r:9.64,tol:.011,u:"h",w:M("0,75^({T/4}) = 0,5")+"."}],
-  tips:["In 4 Stunden bleibt der Faktor 0,75.","Ansatz: "+M("0,75^({T/4}) = 0,5")+", logarithmieren."],
-  sol:{merk:"Halbwertszeit: die Zeit, nach der nur noch die Hälfte da ist. Sie ist unabhängig von der Anfangsmenge.",steps:[{t:"",m:M("m(t) = 100 * 0,75^({t/4})")},{t:"",m:M("0,75^({T/4}) = 0,5")+" &nbsp; ⇔ &nbsp; "+M("{T/4} = {lg(0,5)/lg(0,75)}")},{t:"",m:M("T = 4 * {lg(0,5)/lg(0,75)} ≈ 9,64")}]}
+T("e8",5,"M","ex.hwz","Halbwertszeit zählen",SRC_O,function(){ return {
+  fmt:"input",help:helpHalb(),q:"Von einem Medikament sind zu Beginn 200 mg im Blut. Die Halbwertszeit beträgt 6 Stunden. Gib an, wie viel nach 18 Stunden noch im Blut ist und nach wie vielen Stunden nur noch 12,5 mg vorhanden sind.",
+  fields:[{l:"Menge nach 18 h:",r:25,u:"mg",w:"18 h sind drei Halbwertszeiten."},{l:"nur noch 12,5 mg nach",r:24,u:"h",w:M("200 → 100 → 50 → 25 → 12,5")+": viermal halbiert."}],
+  tips:["Halbwertszeit 6 h heißt: alle 6 Stunden halbiert sich die Menge.","Wie oft passt 6 in 18? Wie oft muss man 200 halbieren, bis 12,5 herauskommt?"],
+  sol:{viz:vTab([0,6,12,18,24],{xl:"t in h",yl:"mg"}),merk:"Nach "+M("n")+" Halbwertszeiten ist noch der Anteil "+M("0,5^n")+" da.",steps:[
+    {t:"Alle 6 Stunden halbieren.",a:function(V){ [200,100,50,25,"12,5"].forEach(function(v,i){ V.val(i,v,null,i*.2); }); [0,1,2,3].forEach(function(i){ V.arc(i,i+1,"· 0,5","--right",i*.2); }); }},
+    {t:"",m:M("200 * 0,5^3 = 25")+" mg nach 18 h"},{t:"",m:M("200 * 0,5^4 = 12,5")+": nach "+M("4 * 6 = 24")+" Stunden"}]}
 }; });
-T("e9",6,"M","ex.hwz","Verdopplungszeit",SRC_P("1_768"),function(){ return {
-  fmt:"input",q:"Die Anzahl der Tiere einer Art wächst um 1,8 % pro Jahr. Bestimme, nach wie vielen Jahren sich die Anzahl verdoppelt hat. Runde auf zwei Nachkommastellen.",
-  fields:[{l:"Verdopplungszeit ≈",r:38.85,tol:.011,u:"Jahre"}],tips:["Ansatz: "+M("1,018^t = 2")+".","Logarithmieren."],
-  sol:{merk:"Verdopplungszeit: "+M("a^T = 2")+".",steps:[{t:"",m:M("t = {lg(2)/lg(1,018)} ≈ 38,85")}]}
+T("e9",5,"M","ex.hwz","Verdopplungszeit",SRC_O,function(){ return {
+  fmt:"input",help:helpHalb(),q:"In einer Nährlösung sind zu Beginn 500 Bakterien. Ihre Anzahl verdoppelt sich alle 20 Minuten. Gib an, wie viele Bakterien es nach 2 Stunden sind und nach wie vielen Minuten es 8 000 Bakterien sind.",
+  fields:[{l:"nach 2 Stunden:",r:32000,u:"Bakterien",w:"2 Stunden sind 6 Verdopplungen."},{l:"8 000 Bakterien nach",r:80,u:"Minuten",w:M("8000 = 500 * 16 = 500 * 2^4")+"."}],
+  tips:["Wie viele Verdopplungen passen in 2 Stunden?",M("{8000/500} = 16")+". Wie oft muss man verdoppeln, um auf 16 zu kommen?"],
+  sol:{merk:"Nach "+M("n")+" Verdopplungszeiten ist der Bestand "+M("2^n")+"-mal so groß.",steps:[{t:"",m:M("120 : 20 = 6")+" Verdopplungen"},{t:"",m:M("500 * 2^6 = 500 * 64 = 32000")},{t:"",m:M("2^4 = 16")+": 4 Verdopplungen, also "+M("4 * 20 = 80")+" Minuten"}]}
 }; });
-T("e10",6,"M","ex.e","Mit der Zahl e",SRC_P("1_648"),function(){ return {
-  fmt:"input",q:"Schreib die Funktionen in der Form "+M("c * e^(λ x)")+". Gib "+M("λ")+" auf vier Nachkommastellen an.",
-  fields:[{l:M("f(x) = 2 * 0,5^x")+": &nbsp;"+M("λ ≈"),r:-.6931,tol:.0002,w:M("λ = ln(0,5)")+"."},{l:M("g(x) = 5 * e^(λ x)")+" mit "+M("g(x + 1) = 2 * g(x)")+": &nbsp;"+M("λ ≈"),r:.6931,tol:.0002,w:M("e^λ = 2")+"."}],
-  tips:[M("a^x = e^(ln(a) * x)")+".","Für "+M("g")+": Ein Schritt verdoppelt, also "+M("e^λ = 2")+"."],
-  sol:{merk:"Jede Basis "+M("a > 0")+" lässt sich als "+M("e^(ln(a))")+" schreiben. Dann ist "+M("λ = ln(a)")+": positiv bei Wachstum, negativ bei Abnahme.",steps:[{t:"",m:M("0,5 = e^(ln(0,5))")+" &nbsp; also &nbsp; "+M("λ = ln(0,5) ≈ -0,6931")},{t:"",m:M("g(x + 1) = 5 * e^(λ x) * e^λ")+" &nbsp; also &nbsp; "+M("e^λ = 2")+", "+M("λ = ln(2)")}]}
+T("e10",5,"M","ex.anw","Wertverlust eines Autos",SRC_O,function(){ return {
+  fmt:"input",q:"Ein neues Auto kostet 30 000 €. Sein Wert nimmt pro Jahr um 15 % ab. Der Wert nach "+M("t")+" Jahren wird durch "+M("W(t) = c * a^t")+" beschrieben. Gib "+M("a")+" an und berechne den Wert nach 3 Jahren.",
+  fields:[{l:M("a ="),r:.85,w:"Es bleiben 85 % des Werts."},{l:M("W(3) ="),r:18423.75,tol:.011,u:"€",w:M("30000 * 0,85^3")+"."}],
+  tips:["Abnahme um 15 %: Es bleiben 85 %.",M("c = 30000")+", dann dreimal mit "+M("a")+" multiplizieren."],
+  sol:{viz:vTab([0,1,2,3],{xl:"t",yl:"W(t)"}),merk:EX_MERK,steps:[{t:"",m:M("a = 1 - 0,15 = 0,85")},
+    {t:"Jahr für Jahr mal 0,85.",a:function(V){ ["30 000","25 500","21 675","18 423,75"].forEach(function(v,i){ V.val(i,v,null,i*.2); }); [0,1,2].forEach(function(i){ V.arc(i,i+1,"· 0,85","--right",i*.2); }); }},
+    {t:"",m:M("W(3) = 30000 * 0,85^3 = 18423,75")+" €"}]}
 }; });
 var E11F=expF(3,1.3), E11G=expF(1.5,1.5);
-T("e11",6,"M","ex.luecke","Zwei Exponentialfunktionen",SRC_P("1_482"),function(){ return {
+T("e11",5,"M","ex.luecke","Zwei Exponentialfunktionen",SRC_P("1_482"),function(){ return {
   fmt:"luecke",q:"Die Abbildung zeigt die Graphen von "+M("f(x) = c * a^x")+" und "+M("g(x) = d * b^x")+" mit "+M("a, b, c, d > 0")+". Ergänze den Satz so, dass eine richtige Aussage entsteht.",
   fig:gfig(480,380,[-2,6],[0,14],"x","y",1,2,function(P){ P.fn(E11F,"--dx",3); P.fn(E11G,"--dy",3); P.label(5.2,E11F(5.2)-1.4,"f","--dx"); P.label(4.5,E11G(4.5)+1.3,"g","--dy"); }),
   satz:"Für die Parameter gilt ___ und ___.",
   gaps:[{o:[M("c < d"),M("c = d"),M("c > d")],r:2,w:"An der Stelle 0 liegt "+M("f")+" höher: "+M("f(0) = c")+", "+M("g(0) = d")+"."},{o:[M("a < b"),M("a = b"),M("a > b")],r:0,w:M("g")+" holt "+M("f")+" ein und überholt: "+M("g")+" wächst schneller."}],
   tips:["Lies die Werte an der Stelle 0 ab.","Welcher Graph wächst schneller?"],sol:{merk:EX_MERK,steps:["An der Stelle 0: "+M("c = 3 > d = 1,5")+".","Weiter rechts überholt "+M("g")+" den Graphen von "+M("f")+": Seine Basis ist größer."]}
 }; });
-T("e12",6,"M","ex.lin","Linear gegen exponentiell",SRC_O,function(){ return {
+T("e12",5,"M","ex.lin","Linear gegen exponentiell",SRC_O,function(){ return {
   fmt:"tf",q:"Entscheide in jeder Zeile.",yes:"stimmt",no:"stimmt nicht",
   items:[{s:"Bei einer linearen Funktion sind die Differenzen aufeinanderfolgender Werte gleich.",r:1,w:"Immer plus "+M("k")+"."},{s:"Bei einer Exponentialfunktion sind die Differenzen aufeinanderfolgender Werte gleich.",r:0,w:"Die Quotienten sind gleich."},
     {s:"Jede exponentiell wachsende Funktion überholt irgendwann jede linear wachsende.",r:1,w:"Mal wächst auf Dauer schneller als Plus."},{s:"Eine Exponentialfunktion "+M("c * a^x")+" mit "+M("c > 0")+" hat genau eine Nullstelle.",r:0,w:"Keine: "+M("a^x > 0")+"."},
     {s:"Wächst ein Bestand jährlich um denselben Betrag, ist das exponentielles Wachstum.",r:0,w:"Linear."},{s:"Bei einer Abnahme um 10 % pro Jahr wird die jährliche Abnahme in absoluten Zahlen immer kleiner.",r:1,w:"10 % von immer weniger."}],
   tips:["Plus: linear. Mal: exponentiell.","Teste mit kleinen Tabellen."],sol:{merk:"Linear: gleiche Differenzen. Exponentiell: gleiche Quotienten.",steps:["Jede Aussage mit einer kleinen Wertetabelle prüfen."]}
 }; });
-T("e13",6,"M","ex.mod","Körperliche Leistungsfähigkeit",SRC_P("1_888"),function(){ return {
-  fmt:"input",q:"Lenas Punktzahl in einem Fitnesstest nimmt mit dem Alter modellhaft exponentiell ab. Mit 55 Jahren hatte sie 1 800 Punkte, mit 60 Jahren 1 650. Ermittle, ab welchem Alter sie voraussichtlich höchstens 1 200 Punkte erreicht. Runde auf eine Nachkommastelle.",
-  fields:[{l:"Alter ≈",r:78.3,tol:.051,u:"Jahre",w:"Etwa 23,3 Jahre nach dem 55. Lebensjahr."}],
-  tips:["Faktor für 5 Jahre: "+M("{1650/1800}")+".","Ansatz: "+M("1800 * ({1650/1800})^({t/5}) = 1200")+", "+M("t")+" in Jahren ab 55."],
-  sol:{merk:"Zwei Werte legen eine Exponentialfunktion fest. Den Faktor gibt es oft zuerst für einen längeren Schritt.",steps:[{t:"",m:M("P(t) = 1800 * ({1650/1800})^({t/5})")},{t:"",m:M("{t/5} = {lg({1200/1800})/lg({1650/1800})} ≈ 4,66")},{t:"",m:M("t ≈ 23,3")+", also mit etwa 78,3 Jahren"}]}
+T("e13",5,"M","ex.mod","Einwohnerzahl",SRC_O,function(){ return {
+  fmt:"input",q:"Eine Stadt hatte Anfang 2020 genau 12 000 Einwohner, Anfang 2021 waren es 12 300. Die Einwohnerzahl wächst exponentiell, "+M("N(t) = c * a^t")+" mit "+M("t")+" in Jahren ab Anfang 2020. Gib "+M("a")+" an und berechne die Einwohnerzahl für Anfang 2025. Runde auf ganze Einwohner.",
+  fields:[{l:M("a ="),r:1.025,w:M("{12300/12000} = 1,025")+"."},{l:M("N(5) ≈"),r:13577,tol:1.01,u:"Einwohner"}],
+  tips:["Faktor pro Jahr: "+M("{12300/12000}")+".","Anfang 2025 ist "+M("t = 5")+"."],
+  sol:{merk:"Zwei Werte im Abstand von einem Schritt: "+M("a = {neuer Wert/alter Wert}")+".",steps:[{t:"",m:M("a = {12300/12000} = 1,025")+", also 2,5 % pro Jahr"},{t:"",m:M("N(5) = 12000 * 1,025^5 ≈ 13576,9")},"Anfang 2025 sind es etwa 13 577 Einwohner."]}
 }; });
-T("e14",6,"M","ex.param","Funktionsterm aus einer Eigenschaft",SRC_P("1_841"),function(){ return {
+T("e14",5,"M","ex.param","Funktionsterm aus einer Eigenschaft",SRC_P("1_841"),function(){ return {
   fmt:"input",q:"Für eine Funktion "+M("f: ℝ → ℝ^+")+" gilt "+M("f(1) = 3")+", und für alle "+M("x")+" ist "+M("f(x + 1)")+" um 50 % größer als "+M("f(x)")+". Gib einen Funktionsterm an.",
   fields:[{l:M("f(x) ="),kind:"term",r:"2*1.5^x",vars:["x"],show:M("2 * 1,5^x"),w:"Basis 1,5; "+M("c = {3/1,5} = 2")+"."}],
   tips:["50 % größer: Faktor 1,5.","Rechne vom Wert bei 1 einen Schritt zurück."],sol:{merk:EX_MERK,steps:[{t:"",m:M("a = 1,5")},{t:"",m:M("c = f(0) = {3/1,5} = 2")}]}
 }; });
 
 /* ---------- Zone 3 ---------- */
-T("e15",6,"X","ex.eig","Eigenschaften einer Exponentialfunktion",SRC_P("1_459"),function(){ return {
+T("e15",5,"X","ex.eig","Eigenschaften einer Exponentialfunktion",SRC_P("1_459"),function(){ return {
   fmt:"mc",pick:2,q:"Gegeben ist "+M("f(x) = 50 * 1,97^x")+". Kreuze die beiden zutreffenden Aussagen an.",
   items:[{s:"Der Graph von "+M("f")+" verläuft durch "+M("P = (50 | 0)")+".",r:0,w:"Durch "+M("(0 | 50)")+"."},{s:M("f")+" ist im Intervall "+M("[0; 5]")+" streng monoton steigend.",r:1,w:"Basis größer als 1."},
     {s:M("f")+" ist im Intervall "+M("[0; 5]")+" rechtsgekrümmt.",r:0,w:"Linksgekrümmt."},{s:"Wird "+M("x")+" um 5 vergrößert, wird der Funktionswert 50-mal so groß.",r:0,w:"Um den Faktor "+M("1,97^5 ≈ 29,7")+"."},
     {s:"Wird "+M("x")+" um 1 vergrößert, wird der Funktionswert um 97 % größer.",r:1,w:"Faktor 1,97."}],
   tips:["Was bedeuten 50 und 1,97?","Ein Schritt um 1: mal 1,97."],sol:{merk:EX_MERK,steps:["Startwert 50, Faktor 1,97 pro Schritt.","Wachsend und linksgekrümmt."]}
 }; });
-T("e16",6,"X","ex.sicher","Welcher Vorgang passt?",SRC_P("1_599"),function(){ return {
+T("e16",5,"X","ex.sicher","Welcher Vorgang passt?",SRC_P("1_599"),function(){ return {
   fmt:"mc",pick:1,q:"Durch "+M("N(t) = 1,2 * 0,98^t")+" wird ein Änderungsprozess beschrieben ("+M("t")+" ist die Zeit). Kreuze den Prozess an, der damit beschrieben werden kann.",
   items:[{s:"Von einer radioaktiven Substanz zerfallen pro Zeiteinheit 0,02 % der vorhandenen Menge.",r:0,w:"0,98 heißt 2 %."},{s:"In ein Speicherbecken fließen pro Zeiteinheit 0,02 m³ Wasser zu.",r:0,w:"Konstanter Zufluss: linear."},
     {s:"Vom Wirkstoff eines Medikaments werden pro Zeiteinheit 1,2 mg abgebaut.",r:0,w:"1,2 ist der Startwert."},{s:"Die Einwohnerzahl eines Landes nimmt pro Zeiteinheit um 1,2 % zu.",r:0,w:"0,98 heißt Abnahme."},
     {s:"Pro Zeiteinheit nimmt die Temperatur eines Körpers um 2 % ab.",r:1,w:"Faktor 0,98: minus 2 % pro Schritt."}],
   tips:["1,2 ist der Startwert.","0,98 = 1 − 0,02."],sol:{merk:EX_MERK,steps:["Startwert 1,2, Faktor 0,98: Abnahme um 2 % pro Zeiteinheit."]}
 }; });
-T("e17",6,"X","ex.luecke","Eine Eigenschaft der Basis",SRC_P("1_387"),function(){ return {
+T("e17",5,"X","ex.luecke","Eine Eigenschaft der Basis",SRC_P("1_387"),function(){ return {
   fmt:"luecke",q:"Von "+M("f(x) = 25 * b^x")+" mit "+M("b > 0")+", "+M("b ≠ 1")+" ist bekannt: Wird "+M("x")+" um 1 erhöht, sinkt der Funktionswert auf 25 % des Ausgangswertes. Ergänze den Satz so, dass eine richtige Aussage entsteht.",
   satz:"Es gilt ___, und "+M("f")+" ist ___.",
   gaps:[{o:[M("b = 0,25"),M("b = 0,75"),M("b = -0,25")],r:0,w:"Auf 25 % sinken heißt Faktor 0,25."},{o:["streng monoton fallend","streng monoton steigend","konstant"],r:0,w:"Basis zwischen 0 und 1."}],
   tips:["„auf 25 %“ ist nicht „um 25 %“.","Eine negative Basis gibt es bei Exponentialfunktionen nicht."],sol:{merk:EX_MERK,steps:["Auf 25 %: Faktor 0,25.","Basis zwischen 0 und 1: fallend."]}
 }; });
-T("e18",6,"X","ex.zuord2","Verdopplungszeiten",SRC_P("1_1302"),function(){
+T("e18",5,"X","ex.zuord2","Verdopplungszeiten",SRC_P("1_1302"),function(){
   return zuOf([{s:"Die Anzahl der Bakterien verdoppelt sich einmal pro Stunde.",key:"2",w:"Faktor 2 pro Stunde."},{s:"Die Anzahl der Bakterien verdoppelt sich zweimal pro Stunde.",key:"4",w:"Zweimal verdoppeln: mal 4."}],
     [{key:"1.5",s:M("N(t) = N(0) * 1,5^t")},{key:"2",s:M("N(t) = N(0) * 2^t")},{key:"4",s:M("N(t) = N(0) * 4^t")},{key:"16",s:M("N(t) = N(0) * 16^t")}],
     {keep:true,serifOpts:true,q:"Ordne jeder Aussage die passende Funktionsgleichung zu ("+M("t")+" in Stunden).",tips:["Zweimal verdoppeln heißt "+M("2 * 2")+".","Der Faktor gilt pro Stunde."],sol:{merk:EX_MERK,steps:["Einmal pro Stunde: Faktor 2.","Zweimal: Faktor 4. 16 wäre viermal verdoppeln."]}});
 });
-T("e19",6,"X","ex.konstr","Halbwertszeit zeichnen",SRC_P("1_816"),function(){ return {
+T("e19",5,"X","ex.konstr","Halbwertszeit zeichnen",SRC_P("1_816"),function(){ return {
   fmt:"konstr",curve:"exp",q:"Das Isotop Cäsium-137 hat eine Halbwertszeit von etwa 30 Jahren. "+M("f(t)")+" gibt an, wie viel Prozent der Ausgangsmenge nach "+M("t")+" Jahren noch vorhanden sind. Zeichne den Graphen von "+M("f")+" im Zeitintervall "+M("[0; 60]")+". Setz dazu zwei passende Punkte.",
   W:520,H:420,xr:[0,64],yr:[0,110],xl:"t in Jahren",yl:"f(t) in %",sx:10,sy:10,snapX:10,snapY:5,c:100,a:Math.pow(.5,1/30),
   tips:["Zu Beginn sind 100 % da.","Nach 30 Jahren noch 50 %, nach 60 Jahren 25 %."],
   sol:{viz:vPlane([0,64],[0,110],{W:520,H:420,xl:"t",yl:"%",sx:10,sy:10}),merk:"Mit der Halbwertszeit "+M("T")+": "+M("f(t) = 100 * 0,5^({t/T})")+".",steps:[{t:"Startpunkt und Halbwertszeit.",a:function(V){ V.Pt(0,100,"(0 | 100)","--dy"); V.Pt(30,50,"(30 | 50)","--dy",.3); V.Pt(60,25,"(60 | 25)","--dy",.6); }},{t:"Die Kurve durch diese Punkte.",a:function(V){ V.F(expF(100,Math.pow(.5,1/30)),"--dx"); }}]}
 }; });
-T("e20",6,"X","ex.mod","Aufrufe eines Videos",SRC_P("1_1326"),function(){ return {
-  fmt:"input",q:"Ein Video wird hochgeladen. Die Anzahl der bisherigen Aufrufe wird durch eine Exponentialfunktion beschrieben."+tblHTML(["Stunden","Aufrufe"],[["0","1","2","3",M("t_1")],["500","700","980","1 372","10 330"]])+"Berechne "+M("t_1")+".",
-  fields:[{l:M("t_1 ≈"),r:9,tol:.02,u:"h",w:M("500 * 1,4^(t_1) = 10330")+"."}],
-  tips:["Faktor pro Stunde: "+M("{700/500}")+".","Ansatz "+M("500 * 1,4^t = 10330")+"."],sol:{merk:EX_MERK,steps:[{t:"",m:M("a = 1,4")},{t:"",m:M("1,4^t = 20,66")+" &nbsp; ⇔ &nbsp; "+M("t = {lg(20,66)/lg(1,4)} ≈ 9")}]}
+T("e20",5,"X","ex.mod","Aufrufe eines Videos",SRC_P("1_1326"),function(){ return {
+  fmt:"input",q:"Ein Video wird hochgeladen. Die Anzahl der bisherigen Aufrufe wird durch eine Exponentialfunktion beschrieben."+tblHTML(["Stunden","Aufrufe"],[["0","1","2","3"],["500","700","980","1 372"]])+"Gib an, um wie viel Prozent die Aufrufe pro Stunde zunehmen, und berechne die Anzahl der Aufrufe nach 6 Stunden. Runde auf ganze Aufrufe.",
+  fields:[{l:"Zunahme pro Stunde:",r:40,u:"%",w:M("{700/500} = 1,4")+"."},{l:"nach 6 Stunden ≈",r:3765,tol:1.01,u:"Aufrufe",w:M("500 * 1,4^6")+"."}],
+  tips:["Faktor pro Stunde: "+M("{700/500}")+".","Funktionsterm "+M("A(t) = 500 * 1,4^t")+", dann "+M("t = 6")+" einsetzen."],
+  sol:{merk:EX_MERK,steps:[{t:"",m:M("a = {700/500} = 1,4")+": plus 40 % pro Stunde"},{t:"",m:M("A(6) = 500 * 1,4^6 ≈ 3764,8")},"Nach 6 Stunden sind es etwa 3 765 Aufrufe."]}
 }; });
-T("e21",6,"X","ex.offen","Ist das Medikament weg?",SRC_O,function(){ return {
+T("e21",5,"X","ex.offen","Ist das Medikament weg?",SRC_O,function(){ return {
   fmt:"offen",q:"Vom Wirkstoff eines Medikaments werden pro Stunde 10 % der im Blut vorhandenen Menge abgebaut. Jemand behauptet: „Nach 10 Stunden ist der Wirkstoff vollständig abgebaut, denn 10 · 10 % = 100 %.“ Nimm Stellung.",
   model:"Die Behauptung stimmt nicht. Jede Stunde bleiben 90 % der jeweils vorhandenen Menge, also nach 10 Stunden "+M("0,9^10 ≈ 0,35")+": etwa 35 % sind noch da. Bei einer exponentiellen Abnahme wird die Menge nie genau 0.",
   points:["Faktor 0,9 pro Stunde erkannt","etwa 35 % nach 10 Stunden berechnet","erklärt, warum man Prozentsätze hier nicht addiert"],
   tips:["Die 10 % beziehen sich auf die jeweils noch vorhandene Menge.","Rechne "+M("0,9^10")+"."],sol:{merk:"Prozentuale Abnahme wird multipliziert, nicht addiert.",steps:[{t:"",m:M("0,9^10 ≈ 0,349")},"Es bleibt gut ein Drittel."]}
 }; });
-T("e22",6,"X","ex.eig","Jede Exponentialfunktion",SRC_P("1_1298"),function(){ return {
+T("e22",5,"X","ex.eig","Jede Exponentialfunktion",SRC_P("1_1298"),function(){ return {
   fmt:"mc",pick:2,q:"Gegeben ist "+M("f: ℝ → ℝ")+" mit "+M("f(x) = a * b^x")+", "+M("a, b > 0")+", "+M("b ≠ 1")+". Kreuze die beiden Aussagen an, die auf jede solche Funktion zutreffen.",
   items:[{s:M("f")+" hat keine Nullstellen.",r:1,w:"Der Wert ist immer positiv."},{s:M("f")+" ist streng monoton steigend.",r:0,w:"Nur für "+M("b > 1")+"."},{s:M("f")+" hat mindestens eine lokale Extremstelle.",r:0,w:"Streng monoton: keine."},
     {s:"Der Graph von "+M("f")+" ist positiv gekrümmt (linksgekrümmt).",r:1,w:"Für "+M("b > 1")+" und für "+M("0 < b < 1")+"."},{s:"Der Graph von "+M("f")+" nähert sich für "+M("x → ∞")+" der positiven "+M("x")+"-Achse.",r:0,w:"Nur für "+M("0 < b < 1")+"."}],
   tips:["Denk an beide Fälle: Wachstum und Abnahme.","Skizziere je einen Graphen."],sol:{merk:EX_MERK,steps:["Beide Fälle skizzieren.","Gemeinsam: positiv, keine Nullstelle, Schüssel-Form."]}
 }; });
-T("e23",6,"X","ex.hwz","Drei Halbwertszeiten",SRC_P("1_792"),function(){ return {
-  fmt:"input",q:"Die Funktion "+M("f(t) = 80 * b^t")+" beschreibt die Masse einer radioaktiven Substanz in mg nach "+M("t")+" Stunden. Die Halbwertszeit beträgt 4 h.",
-  fields:[{l:"Masse nach drei Halbwertszeiten:",r:10,u:"mg"},{l:M("b ≈"),r:.8409,tol:.0002,w:M("b = 0,5^({1/4})")+"."}],
-  tips:["Drei Halbwertszeiten: dreimal halbieren.",M("b^4 = 0,5")+"."],sol:{merk:"Nach "+M("n")+" Halbwertszeiten ist der Anteil "+M("0,5^n")+".",steps:[{t:"",m:M("80 * 0,5^3 = 10")},{t:"",m:M("b = root(4,0,5) ≈ 0,8409")}]}
+T("e23",5,"X","ex.hwz","Drei Halbwertszeiten",SRC_P("1_792"),function(){ return {
+  fmt:"input",help:helpHalb(),q:"Von einer radioaktiven Substanz sind zu Beginn 80 mg vorhanden. Die Halbwertszeit beträgt 4 Stunden.",
+  fields:[{l:"Masse nach drei Halbwertszeiten:",r:10,u:"mg"},{l:"nur noch 5 mg nach",r:16,u:"h",w:M("80 → 40 → 20 → 10 → 5")+"."},{l:"nach 8 h noch",r:25,u:"% der Anfangsmenge",w:"Zweimal halbiert: ein Viertel."}],
+  tips:["Drei Halbwertszeiten: dreimal halbieren.","Zähle die Halbierungen von 80 bis 5."],
+  sol:{merk:"Nach "+M("n")+" Halbwertszeiten ist der Anteil "+M("0,5^n")+".",steps:[{t:"",m:M("80 * 0,5^3 = 10")},{t:"",m:M("80 * 0,5^4 = 5")+": 4 Halbwertszeiten, also 16 Stunden"},{t:"",m:M("0,5^2 = 0,25")+" = 25 %"}]}
 }; });
 
 /* ---------- Generatoren ---------- */
-G("ex.param",6,"L","Startwert und Basis",function(){
+G("ex.param",5,"L","Startwert und Basis",function(){
   var c=pick([2,3,4,5,10,12,20,50]), a=pick([2,3,.5,1.5,4]), k=pick([2,3,4]);
   return {fmt:"input",q:"Von "+M("f(x) = c * a^x")+" ist bekannt: "+M("f(0) = "+fk(c))+" und "+M("f("+k+") = "+fk(r4(c*Math.pow(a,k))))+". Gib "+M("c")+" und "+M("a")+" an.",
     fields:[{l:M("c ="),r:c},{l:M("a ="),r:a}],tips:[M("c = f(0)")+".",M("a^"+k+" = {f("+k+")/f(0)}")+"."],sol:{merk:EX_MERK,steps:[{t:"",m:M("c = "+fk(c))},{t:"",m:M("a^"+k+" = "+fk(r4(Math.pow(a,k))))+" &nbsp; also &nbsp; "+M("a = "+fk(a))}]}};
@@ -4637,7 +4402,7 @@ GV("ex.param","1aus4",function(){
     fig:gfig(480,340,[-1,11],[0,Math.ceil(ymax/5)*5],"x","f(x)",1,Math.ceil(ymax/30)*5||5,function(P){ P.fn(f,"--dx",3); P.pt(0,c,"--dx","P"); P.pt(1,y1,"--dx","Q",{dx:8}); }),items:shuffle(its),
     tips:[M("c = f(0)")+".",M("a = {f(1)/f(0)}")+"."],sol:{merk:EX_MERK,steps:[{t:"",m:M("c = "+fk(c)+", a = "+fk(a))}]}};
 });
-G("ex.proz",6,"L","Prozent und Basis",function(){
+G("ex.proz",5,"L","Prozent und Basis",function(){
   var ps=sample([5,10,15,20,25,30,40,50,60,75,85,90],3), its=[], ops=[];
   ps.forEach(function(p,i){ var up=i%2===0; its.push({s:"Der Bestand "+(up?"nimmt pro Tag um "+p+" % zu.":"nimmt pro Tag um "+p+" % ab."),key:"k"+i,w:"Faktor "+num(up?1+p/100:1-p/100)+"."}); ops.push({key:"k"+i,s:M("N(t) = N(0) * "+fk(up?1+p/100:1-p/100)+"^t")}); });
   its.push({s:"Der Bestand verdoppelt sich pro Tag.",key:"k3",w:"Faktor 2."}); ops.push({key:"k3",s:M("N(t) = N(0) * 2^t")});
@@ -4652,39 +4417,44 @@ GV("ex.proz","input",function(){
     fields:[{l:"Wachstum um "+num(p1)+" % pro Jahr: "+M("a ="),r:1+p1/100},{l:"Abnahme um "+num(p2)+" % pro Stunde: "+M("a ="),r:1-p2/100},{l:M("a = "+fk(a3))+": Abnahme um",r:r2((1-a3)*100),u:"% pro Schritt"}],
     tips:["Zunahme: 1 plus.","Abnahme: 1 minus."],sol:{merk:EX_MERK,steps:[{t:"",m:M("1 + "+fk(p1/100)+" = "+fk(1+p1/100))},{t:"",m:M("1 - "+fk(p2/100)+" = "+fk(1-p2/100))}]}};
 });
-G("ex.wert",6,"L","Werte berechnen",function(){
+G("ex.wert",5,"L","Werte berechnen",function(){
   var c=pick([100,200,400,500,800,1000]), a=pick([1.5,2,1.2,.5,.8,1.1]);
   return {fmt:"input",q:M("f(t) = c * a^t")+" beschreibt einen exponentiellen Prozess mit "+M("f(0) = "+fk(c))+" und "+M("f(1) = "+fk(r4(c*a)))+". Ermittle "+M("f(2)")+" und "+M("f(3)")+".",
     fields:[{l:M("f(2) ="),r:r4(c*a*a)},{l:M("f(3) ="),r:r4(c*a*a*a)}],tips:["Faktor aus den ersten zwei Werten.","Mit demselben Faktor weiter."],sol:{merk:EX_MERK,steps:[{t:"",m:M("a = "+fk(a))},{t:"",m:M("f(2) = "+fk(r4(c*a*a))+", f(3) = "+fk(r4(c*a*a*a)))}]}};
 });
 var ERKP=[["Eine Bevölkerung wächst jedes Jahr um 5 %.",1],["Eine Bevölkerung wächst jedes Jahr um 20 000.",0],["Jedes Jahr kommt ein Zehntel des Vorjahresbestands dazu.",1],["Die Zunahmen betragen 10 000, 20 000, 30 000, …",0],["Pro Tag zerfallen 0,02 % der vorhandenen Menge.",1],["In ein Becken fließen pro Minute 20 Liter.",0],
   ["Ein Kapital wird jährlich mit 2 % verzinst, die Zinsen bleiben am Konto.",1],["Eine Kerze wird pro Stunde um 2 cm kürzer.",0],["Die Lichtintensität sinkt pro Meter Wassertiefe um 8 %.",1],["Ein Sparschwein bekommt jede Woche 5 € dazu.",0],["Ein Auto verliert jedes Jahr 15 % seines Werts.",1],["Ein Handy verliert jedes Jahr 60 € an Wert.",0]];
-G("ex.erkenn",6,"L","Exponentiell oder nicht?",function(){ return {fmt:"tf",yes:"exponentiell",no:"nicht exponentiell",q:"Lässt sich der Vorgang mit einer Exponentialfunktion beschreiben?",items:pickPool(ERKP.map(function(p){ return {s:p[0],r:p[1],w:p[1]?"Gleicher Prozentsatz vom jeweiligen Bestand.":"Gleicher Betrag: linear."}; }),6,"x"),tips:["Prozent vom aktuellen Bestand: exponentiell."],sol:{merk:"Gleicher Faktor: exponentiell. Gleicher Summand: linear.",steps:["Auf Prozent oder festen Betrag achten."]}}; });
-G("ex.lin",6,"L","Linear oder exponentiell?",function(){
+G("ex.erkenn",5,"L","Exponentiell oder nicht?",function(){ return {fmt:"tf",yes:"exponentiell",no:"nicht exponentiell",q:"Lässt sich der Vorgang mit einer Exponentialfunktion beschreiben?",items:pickPool(ERKP.map(function(p){ return {s:p[0],r:p[1],w:p[1]?"Gleicher Prozentsatz vom jeweiligen Bestand.":"Gleicher Betrag: linear."}; }),6,"x"),tips:["Prozent vom aktuellen Bestand: exponentiell."],sol:{merk:"Gleicher Faktor: exponentiell. Gleicher Summand: linear.",steps:["Auf Prozent oder festen Betrag achten."]}}; });
+G("ex.lin",5,"L","Linear oder exponentiell?",function(){
   var c; do{ c=sample(LINE,7); }while(["l","e","k"].some(function(k){ return !c.some(function(x){ return x.k===k; }); }));
   return {fmt:"sort",q:"Die Zahlen sind aufeinanderfolgende Funktionswerte an den Stellen 0, 1, 2, 3. Sortiere die Folgen.",bins:LINB,cards:c.map(function(x){ return {s:x.s,k:x.k,w:x.w}; }),tips:["Differenzen gleich: linear.","Quotienten gleich: exponentiell."],sol:{merk:"Gleiche Differenzen: linear. Gleiche Quotienten: exponentiell.",steps:["Differenzen und Quotienten bilden."]}};
 });
 var LINTF=[["Bei einer linearen Funktion sind die Differenzen aufeinanderfolgender Werte gleich.",1],["Bei einer Exponentialfunktion sind die Differenzen aufeinanderfolgender Werte gleich.",0],["Jede exponentiell wachsende Funktion überholt irgendwann jede linear wachsende.",1],["Eine Exponentialfunktion mit positivem Startwert hat genau eine Nullstelle.",0],
   ["Bei einer Abnahme um 10 % pro Jahr wird die absolute Abnahme immer kleiner.",1],["Bei einer Exponentialfunktion sind die Quotienten aufeinanderfolgender Werte gleich.",1],["Eine lineare Funktion mit positiver Steigung wächst auf Dauer schneller als jede Exponentialfunktion.",0],["Der Graph einer Exponentialfunktion kann die x-Achse schneiden.",0]];
 GV("ex.lin","tf",function(){ return {fmt:"tf",q:"Entscheide in jeder Zeile.",yes:"stimmt",no:"stimmt nicht",items:pickPool(LINTF.map(function(p){ return {s:p[0],r:p[1],w:p[1]?"Stimmt.":"Gegenbeispiel mit einer kleinen Tabelle."}; }),6,"x"),tips:["Plus: linear. Mal: exponentiell."],sol:{merk:"Linear: gleiche Differenzen. Exponentiell: gleiche Quotienten.",steps:["Mit kleinen Tabellen prüfen."]}}; });
-G("ex.hwz",6,"M","Halbwerts- und Verdopplungszeit",function(){
-  var t=pick(["halb","dopp","n"]);
-  if(t==="halb"){ var m0=pick([100,200,80,50]), h0=pick([2,3,4,5,6]), q=pick([.6,.7,.75,.8,.9]), T=h0*Math.log(.5)/Math.log(q);
-    return {fmt:"input",q:"Eine Substanz nimmt exponentiell ab: Zu Beginn sind "+m0+" mg da, nach "+h0+" Stunden noch "+num(m0*q)+" mg. Bestimme die Halbwertszeit. Runde auf zwei Nachkommastellen.",fields:[{l:M("T ≈"),r:r2(T),tol:.011,u:"h"}],
-      tips:["In "+h0+" h bleibt der Faktor "+fk(q)+".","Ansatz "+M(fk(q)+"^({T/"+h0+"}) = 0,5")+"."],sol:{merk:"Halbwertszeit unabhängig von der Anfangsmenge.",steps:[{t:"",m:M("T = "+h0+" * {lg(0,5)/lg("+fk(q)+")} ≈ "+fk(r2(T)))}]}}; }
-  if(t==="dopp"){ var p=pick([1.5,2,3,4,5,7,10]), D=Math.log(2)/Math.log(1+p/100);
-    return {fmt:"input",q:"Ein Bestand wächst um "+num(p)+" % pro Jahr. Berechne die Verdopplungszeit. Runde auf zwei Nachkommastellen.",fields:[{l:"Verdopplungszeit ≈",r:r2(D),tol:.011,u:"Jahre"}],tips:["Ansatz "+M(fk(1+p/100)+"^t = 2")+"."],sol:{merk:"Verdopplungszeit: "+M("a^T = 2")+".",steps:[{t:"",m:M("t = {lg(2)/lg("+fk(1+p/100)+")} ≈ "+fk(r2(D)))}]}}; }
-  var m1=pick([80,160,64,96]), T2=pick([2,3,4,5]), n=pick([2,3,4]), b=Math.pow(.5,1/T2);
-  return {fmt:"input",q:M("f(t) = "+m1+" * b^t")+" beschreibt die Masse (in mg) einer Substanz nach "+M("t")+" Stunden, die Halbwertszeit beträgt "+T2+" h.",fields:[{l:"Masse nach "+n+" Halbwertszeiten:",r:m1/Math.pow(2,n),u:"mg"},{l:M("b ≈"),r:r4(b),tol:.0002}],
-    tips:[n+"-mal halbieren.",M("b^"+T2+" = 0,5")+"."],sol:{merk:"Nach "+M("n")+" Halbwertszeiten: Anteil "+M("0,5^n")+".",steps:[{t:"",m:M(m1+" * 0,5^"+n+" = "+fk(m1/Math.pow(2,n)))},{t:"",m:M("b = root("+T2+",0,5) ≈ "+fk(r4(b)))}]}};
+G("ex.hwz",5,"M","Halbwerts- und Verdopplungszeit",function(){
+  if(Math.random()<.5){ var m0=pick([80,160,200,320,640]), T=pick([2,3,4,5,6,8]), n=pick([2,3,4]), k=pick([1,2,3,4,5].filter(function(v){ return v!==n; }));
+    return {fmt:"input",help:helpHalb(),q:"Von einem Stoff sind zu Beginn "+num(m0)+" mg vorhanden, die Halbwertszeit beträgt "+T+" Stunden. Gib an, wie viel nach "+(n*T)+" Stunden noch da ist und nach wie vielen Stunden nur noch "+num(m0/Math.pow(2,k))+" mg vorhanden sind.",
+      fields:[{l:"nach "+(n*T)+" h:",r:m0/Math.pow(2,n),u:"mg"},{l:"nur noch "+num(m0/Math.pow(2,k))+" mg nach",r:k*T,u:"h"}],
+      tips:["Alle "+T+" Stunden halbiert sich die Menge.","Zähle die Halbierungen."],sol:{merk:"Nach "+M("n")+" Halbwertszeiten: Anteil "+M("0,5^n")+".",steps:[{t:"",m:M(num(m0)+" * 0,5^"+n+" = "+fk(m0/Math.pow(2,n)))},{t:"",m:k+" Halbierungen, also "+M(k+" * "+T+" = "+(k*T))+" Stunden"}]}}; }
+  var N0=pick([100,200,250,500]), D=pick([10,15,20,30]), n2=pick([3,4,5,6]), k2=pick([2,3,4,5].filter(function(v){ return v!==n2; }));
+  return {fmt:"input",help:helpHalb(),q:"Eine Bakterienkultur hat zu Beginn "+num(N0)+" Bakterien und verdoppelt sich alle "+D+" Minuten. Gib an, wie viele Bakterien es nach "+(n2*D)+" Minuten sind und nach wie vielen Minuten es "+num(N0*Math.pow(2,k2))+" Bakterien sind.",
+    fields:[{l:"nach "+(n2*D)+" min:",r:N0*Math.pow(2,n2),u:"Bakterien"},{l:num(N0*Math.pow(2,k2))+" Bakterien nach",r:k2*D,u:"min"}],
+    tips:["Wie viele Verdopplungen passen in die Zeit?",M("{"+(N0*Math.pow(2,k2))+"/"+N0+"} = "+Math.pow(2,k2))+": Wie oft verdoppeln?"],
+    sol:{merk:"Nach "+M("n")+" Verdopplungszeiten: "+M("2^n")+"-mal so viel.",steps:[{t:"",m:M(num(N0)+" * 2^"+n2+" = "+num(N0*Math.pow(2,n2)))},{t:"",m:M("2^"+k2+" = "+Math.pow(2,k2))+", also "+M(k2+" * "+D+" = "+(k2*D))+" Minuten"}]}};
 });
-G("ex.e",6,"M","Mit der Zahl e",function(){
-  var a=pick([.5,2,1.5,.8,3,.9]), c=pick([2,3,5,10]), k=pick([2,3,.5]);
-  return {fmt:"input",q:"Schreib die Funktionen in der Form "+M("c * e^(λ x)")+". Gib "+M("λ")+" auf vier Nachkommastellen an.",
-    fields:[{l:M("f(x) = "+c+" * "+fk(a)+"^x")+": &nbsp;"+M("λ ≈"),r:r4(Math.log(a)),tol:.0002},{l:M("g(x) = "+c+" * e^(λ x)")+" mit "+M("g(x + 1) = "+fk(k)+" * g(x)")+": &nbsp;"+M("λ ≈"),r:r4(Math.log(k)),tol:.0002}],
-    tips:[M("a^x = e^(ln(a) * x)")+".","Ein Schritt multipliziert mit "+M("e^λ")+"."],sol:{merk:M("λ = ln(a)")+".",steps:[{t:"",m:M("λ = ln("+fk(a)+") ≈ "+fk(r4(Math.log(a))))},{t:"",m:M("e^λ = "+fk(k))+" &nbsp; also &nbsp; "+M("λ = ln("+fk(k)+")")}]}};
+var ANWP=[{t:"Ein Auto kostet neu",u:"€",v:[20000,25000,30000,40000],p:[10,12,15,20],dn:1,s:"Sein Wert sinkt pro Jahr um {p} %.",z:"Jahren",f:"W"},
+  {t:"Auf einem Sparbuch liegen",u:"€",v:[1000,2000,5000],p:[2,3,4,5],dn:0,s:"Durch die Zinsen wächst das Guthaben pro Jahr um {p} %.",z:"Jahren",f:"K"},
+  {t:"In einem Teich bedecken Algen",u:"m²",v:[10,20,40],p:[20,25,30,50],dn:0,s:"Die bedeckte Fläche wächst pro Woche um {p} %.",z:"Wochen",f:"A"},
+  {t:"Ein Handy kostet neu",u:"€",v:[400,600,800,1000],p:[20,25,30],dn:1,s:"Sein Wert sinkt pro Jahr um {p} %.",z:"Jahren",f:"W"}];
+G("ex.anw",5,"M","Prozent pro Schritt anwenden",function(){
+  var b=pick(ANWP), c=pick(b.v), p=pick(b.p), n=pick([2,3,4]), a=b.dn?1-p/100:1+p/100, v=c*Math.pow(a,n);
+  return {fmt:"input",q:b.t+" "+num(c)+" "+b.u+". "+b.s.replace("{p}",p)+" Beschreibe den Verlauf durch "+M(b.f+"(t) = c * a^t")+" und berechne den Wert nach "+n+" "+b.z+". Runde auf zwei Nachkommastellen.",
+    fields:[{l:M("a ="),r:a},{l:M(b.f+"("+n+") ≈"),r:r2(v),tol:.011,u:b.u}],
+    tips:[b.dn?"Abnahme um "+p+" %: Es bleiben "+(100-p)+" %.":"Zunahme um "+p+" %: "+(100+p)+" %.",M("c = "+num(c))+", dann "+n+"-mal mit "+M("a")+" multiplizieren."],
+    sol:{merk:EX_MERK,steps:[{t:"",m:M("a = "+fk(a))},{t:"",m:M(b.f+"("+n+") = "+num(c)+" * "+fk(a)+"^"+n+" ≈ "+fk(r2(v)))}]}};
 });
-G("ex.luecke",6,"M","Parameter vergleichen",function(){
+G("ex.luecke",5,"M","Parameter vergleichen",function(){
   if(Math.random()<.5){ var p=pick([10,20,25,40,50,75]), down=Math.random()<.5, b=down?p/100:1+p/100;
     var g1=down?shGap([M("b = "+fk(p/100)),M("b = "+fk(1-p/100)),M("b = -"+fk(p/100))],0):shGap([M("b = "+fk(1+p/100)),M("b = "+fk(p/100)),M("b = "+fk(1-p/100))],0);
     var g2=shGap(["streng monoton "+(down?"fallend":"steigend"),"streng monoton "+(down?"steigend":"fallend"),"konstant"],0); g1.w=down?"„auf "+p+" %“: Faktor "+fk(p/100)+".":"„um "+p+" % größer“: Faktor "+fk(1+p/100)+"."; g2.w=down?"Basis zwischen 0 und 1.":"Basis größer als 1.";
@@ -4697,32 +4467,31 @@ G("ex.luecke",6,"M","Parameter vergleichen",function(){
     satz:"Für die Parameter gilt ___ und ___.",gaps:[(function(){ var x=shGap([M("c < d"),M("c = d"),M("c > d")],c<d?0:2); x.w="Werte an der Stelle 0."; return x; })(),(function(){ var x=shGap([M("a < b"),M("a = b"),M("a > b")],a<b2?0:2); x.w="Wer wächst schneller?"; return x; })()],
     tips:["Werte bei 0 vergleichen.","Steilheit weiter rechts vergleichen."],sol:{merk:EX_MERK,steps:["Startwerte: "+M("c = "+fk(c)+", d = "+fk(d))+".","Basen: "+M("a = "+fk(a)+", b = "+fk(b2))+"."]}};
 });
-G("ex.mod",6,"M","Modell aus zwei Werten",function(){
-  var t0=0, v0=pick([1000,2000,500,800]), dt=pick([2,4,5]), q=pick([1.2,1.3,1.1,.9,.8,.85]), v1=Math.round(v0*q), gr=q>1, k=gr?pick([2,3]):pick([.5,.4]);
-  var tt=dt*Math.log(k)/Math.log(v1/v0);
-  return {fmt:"input",q:"Ein Bestand ändert sich exponentiell. Zu Beginn beträgt er "+num(v0)+", nach "+dt+" Wochen "+num(v1)+". Nach wie vielen Wochen hat er "+(gr?"erstmals das "+num(k)+"-Fache":"nur noch "+num(k*100)+" %")+" des Anfangswerts erreicht? Runde auf eine Nachkommastelle.",
-    fields:[{l:M("t ≈"),r:Math.round(tt*10)/10,tol:.051,u:"Wochen"}],tips:["Faktor für "+dt+" Wochen: "+M("{"+v1+"/"+v0+"}")+".","Ansatz "+M("({"+v1+"/"+v0+"})^({t/"+dt+"}) = "+fk(k))+"."],
-    sol:{merk:"Zwei Werte legen die Exponentialfunktion fest.",steps:[{t:"",m:M("t = "+dt+" * {lg("+fk(k)+")/lg({"+v1+"/"+v0+"})} ≈ "+fk(Math.round(tt*10)/10))}]}};
+G("ex.mod",5,"M","Modell aus zwei Werten",function(){
+  var v0=pick([1000,2000,5000,800,4000]), q=pick([1.02,1.04,1.05,1.1,1.2,.9,.95,.8]), v1=r4(v0*q), n=pick([3,4,5,6]), vn=v0*Math.pow(q,n);
+  return {fmt:"input",q:"Ein Bestand ändert sich exponentiell. Zu Beginn beträgt er "+num(v0)+", nach einer Woche "+num(v1)+". Gib den Faktor "+M("a")+" pro Woche an und berechne den Bestand nach "+n+" Wochen. Runde auf zwei Nachkommastellen.",
+    fields:[{l:M("a ="),r:q},{l:"nach "+n+" Wochen ≈",r:r2(vn),tol:.011}],tips:["Faktor: "+M("{"+v1+"/"+v0+"}")+".","Dann "+M(num(v0)+" * a^"+n)+"."],
+    sol:{merk:"Zwei Werte im Abstand von einem Schritt legen die Exponentialfunktion fest.",steps:[{t:"",m:M("a = {"+fk(v1)+"/"+v0+"} = "+fk(q))},{t:"",m:M(num(v0)+" * "+fk(q)+"^"+n+" ≈ "+fk(r2(vn)))}]}};
 });
 var EIGP=[["Der Graph hat keine Nullstellen.",1],["Der Graph ist positiv gekrümmt.",1],["Die Funktion hat keine lokale Extremstelle.",1],["Der Graph schneidet die y-Achse im Punkt (0 | c).",1],["Die Funktion ist streng monoton steigend.",0],["Der Graph nähert sich für x → ∞ der x-Achse.",0],["Die Funktion hat genau eine Nullstelle.",0],["Der Graph ist negativ gekrümmt.",0],["Der Graph geht durch den Ursprung.",0]];
-G("ex.eig",6,"X","Eigenschaften von Exponentialfunktionen",function(){
+G("ex.eig",5,"X","Eigenschaften von Exponentialfunktionen",function(){
   return {fmt:"mc",pick:2,q:"Gegeben ist "+M("f(x) = c * a^x")+" mit "+M("c, a > 0")+", "+M("a ≠ 1")+". Kreuze die beiden Aussagen an, die auf jede solche Funktion zutreffen.",
     items:pickPool(EIGP.map(function(p){ return {s:p[0].replace(/\(0 \| c\)/,M("(0 | c)")).replace("x → ∞",M("x → ∞")).replace("x-Achse",M("x")+"-Achse").replace("y-Achse",M("y")+"-Achse"),r:p[1],w:p[1]?"Gilt für Wachstum und Abnahme.":"Gilt höchstens in einem der beiden Fälle oder nie."}; }),5,2),
     tips:["Beide Fälle skizzieren: "+M("a > 1")+" und "+M("a < 1")+"."],sol:{merk:EX_MERK,steps:["Beide Fälle skizzieren und vergleichen."]}};
 });
-G("ex.sicher",6,"X","Welcher Vorgang passt?",function(){
+G("ex.sicher",5,"X","Welcher Vorgang passt?",function(){
   var c=pick([1.2,2,3.5,5]), p=pick([2,3,4,5,8]), up=Math.random()<.5, a=up?1+p/100:1-p/100;
   var its=[{s:"Pro Zeiteinheit "+(up?"wächst":"sinkt")+" der Bestand um "+p+" % des jeweiligen Bestands.",r:1,w:"Faktor "+fk(a)+"."},{s:"Pro Zeiteinheit "+(up?"wächst":"sinkt")+" der Bestand um "+fk(p/100)+" %.",r:0,w:"Faktor "+fk(a)+" heißt "+p+" %."},
     {s:"Pro Zeiteinheit "+(up?"kommen":"gehen")+" "+fk(c)+" Einheiten "+(up?"dazu":"weg")+".",r:0,w:fk(c)+" ist der Startwert."},{s:"Pro Zeiteinheit "+(up?"sinkt":"wächst")+" der Bestand um "+p+" %.",r:0,w:"Falsche Richtung."},{s:"Pro Zeiteinheit "+(up?"kommen":"gehen")+" "+fk(p/100)+" Einheiten "+(up?"dazu":"weg")+".",r:0,w:"Konstanter Betrag: linear."}];
   return {fmt:"mc",pick:1,q:"Durch "+M("N(t) = "+fk(c)+" * "+fk(a)+"^t")+" wird ein Änderungsprozess beschrieben. Kreuze den Prozess an, der damit beschrieben werden kann.",items:shuffle(its),tips:[fk(c)+" ist der Startwert.",fk(a)+" = 1 "+(up?"+":"−")+" "+fk(p/100)+"."],sol:{merk:EX_MERK,steps:["Faktor in Prozent umrechnen."]}};
 });
-G("ex.zuord2",6,"X","Verdopplungen zählen",function(){
+G("ex.zuord2",5,"X","Verdopplungen zählen",function(){
   var opts=[[2,"einmal"],[4,"zweimal"],[8,"dreimal"],[16,"viermal"]], c=sample(opts,2), rest=opts.filter(function(o){ return c.indexOf(o)<0; });
   var dis=[{key:"x1",s:M("N(t) = N(0) * "+fk(c[0][0]/2+.5)+"^t")}].concat([{key:"r",s:M("N(t) = N(0) * "+rest[0][0]+"^t")}]);
   return zuOf(c.map(function(o){ return {s:"Die Anzahl verdoppelt sich "+o[1]+" pro Stunde.",key:"k"+o[0],w:"Faktor "+o[0]+"."}; }),c.map(function(o){ return {key:"k"+o[0],s:M("N(t) = N(0) * "+o[0]+"^t")}; }).concat(dis),
     {keep:true,serifOpts:true,q:"Ordne jeder Aussage die passende Funktionsgleichung zu ("+M("t")+" in Stunden).",tips:["Jede Verdopplung: mal 2."],sol:{merk:EX_MERK,steps:["Faktor pro Stunde = 2 hoch Anzahl der Verdopplungen."]}});
 });
-G("ex.konstr",6,"X","Exponentialkurve zeichnen",function(){
+G("ex.konstr",5,"X","Exponentialkurve zeichnen",function(){
   if(Math.random()<.5){ var T=pick([10,20,30]), xmax=T*2;
     return {fmt:"konstr",curve:"exp",q:"Ein Stoff hat eine Halbwertszeit von "+T+" Jahren. "+M("f(t)")+" ist der verbleibende Anteil in Prozent. Zeichne den Graphen von "+M("f")+" im Intervall "+M("[0; "+xmax+"]")+".",
       W:520,H:420,xr:[0,xmax+xmax/12],yr:[0,110],xl:"t",yl:"%",sx:T/2,sy:10,snapX:T/2,snapY:5,c:100,a:Math.pow(.5,1/T),tips:["Start bei 100 %.","Nach "+T+" Jahren 50 %."],
@@ -4735,7 +4504,7 @@ G("ex.konstr",6,"X","Exponentialkurve zeichnen",function(){
 var EOFP=[{q:"Vom Wirkstoff eines Medikaments werden pro Stunde 20 % der vorhandenen Menge abgebaut. Jemand behauptet: „Nach 5 Stunden ist alles abgebaut.“ Nimm Stellung.",m:"Stimmt nicht: Es bleiben jede Stunde 80 %, nach 5 Stunden "+M("0,8^5 ≈ 0,33")+", also rund ein Drittel. Exponentielle Abnahme erreicht nie genau 0.",p:["Faktor 0,8 erkannt","etwa 33 % berechnet","Prozentsätze nicht addiert"]},
   {q:"Ein Guthaben wächst mit 5 % Zinsen pro Jahr. Jemand sagt: „In 10 Jahren sind es 50 % mehr.“ Nimm Stellung.",m:"Stimmt nicht: "+M("1,05^10 ≈ 1,63")+". Es sind etwa 63 % mehr, weil auch die Zinsen verzinst werden.",p:["Faktor 1,05 pro Jahr","1,63 berechnet","Zinseszins als Grund genannt"]},
   {q:"Eine Stadt wächst seit Jahren um 2 % pro Jahr. Jemand behauptet: „Die Einwohnerzahl wächst jedes Jahr um gleich viele Personen.“ Nimm Stellung.",m:"Stimmt nicht: 2 % von einer größeren Zahl sind mehr Personen. Der Zuwachs in Personen wird jedes Jahr größer.",p:["Prozent vom wachsenden Bestand erkannt","absoluter Zuwachs steigt","Unterschied linear/exponentiell genannt"]}];
-G("ex.offen",6,"X","Stellung nehmen",function(){ var b=pick(EOFP); return {fmt:"offen",q:b.q,model:b.m,points:b.p,tips:["Worauf beziehen sich die Prozent?","Rechne mit dem Faktor."],sol:{merk:"Prozentuale Änderungen werden multipliziert.",steps:["Faktor bestimmen und potenzieren."]}}; });
+G("ex.offen",5,"X","Stellung nehmen",function(){ var b=pick(EOFP); return {fmt:"offen",q:b.q,model:b.m,points:b.p,tips:["Worauf beziehen sich die Prozent?","Rechne mit dem Faktor."],sol:{merk:"Prozentuale Änderungen werden multipliziert.",steps:["Faktor bestimmen und potenzieren."]}}; });
 
 /* ============ Welche Aufgabenart bekommt welches Werkzeug ============ */
 var HELP={
@@ -4745,7 +4514,7 @@ var HELP={
   "po.regel":helpPotenz,"po.vereinf":helpPotenz,"po.luecke":helpPotenz,"po.begr":helpPotenz,"po.neg":helpPotenz,"po.wert":helpWurzel,"po.aequiv":helpWurzel,"po.wurzel":helpWurzel,"po.groesse":helpWurzel,"po.zahl":helpWurzel,
   "pf.typ":helpPotLab,"pf.param":helpPotLab,"pf.eig":helpPotLab,"pf.indir":helpPotLab,"pf.art":helpPotLab,"py.grad":helpPolyBau,"py.null":helpPolyBau,"py.verlauf":helpPolyBau,"py.neg":helpPolyBau,"py.zuord":helpPolyBau,"py.skizze":helpPolyBau,"py.begr":helpPolyBau,"py.anz":helpPolyBau,
   "lg.wert":helpWieOft,"lg.def":helpWieOft,"lg.tab":helpWieOft,"lg.groesse":helpWieOft,"lg.begriffe":helpWieOft,"lg.gl":helpWieOft,"lg.zuord":helpWieOft,"lg.zahl":helpMalPlus,"lg.regel":helpMalPlus,"lg.umf":helpMalPlus,"lg.db":helpMalPlus,"lg.ph":helpMalPlus,"lg.luecke":helpWieOft,"lg.begr":helpMalPlus,
-  "ex.param":helpExpLab,"ex.proz":helpExpLab,"ex.wert":helpExpLab,"ex.e":helpExpLab,"ex.luecke":helpExpLab,"ex.eig":helpExpLab,"ex.sicher":helpExpLab,"ex.zuord2":helpExpLab,"ex.erkenn":helpPlusMal,"ex.lin":helpPlusMal,"ex.hwz":helpHalb,"ex.konstr":helpHalb,"ex.mod":helpHalb,"ex.offen":helpHalb
+  "ex.param":helpExpLab,"ex.proz":helpExpLab,"ex.wert":helpExpLab,"ex.anw":helpExpLab,"ex.luecke":helpExpLab,"ex.eig":helpExpLab,"ex.sicher":helpExpLab,"ex.zuord2":helpExpLab,"ex.erkenn":helpPlusMal,"ex.lin":helpPlusMal,"ex.hwz":helpHalb,"ex.konstr":helpHalb,"ex.mod":helpHalb,"ex.offen":helpHalb
 };
 NOHELP.push("f7","f19","a7","a19","y3","y23","y8","g14","g19","g4","e5","e12","e19","e23");
 
@@ -4810,7 +4579,7 @@ KNOTEN.push({id:"n1",title:"Fußball im Park",sub:"ein Schuss als Polynomfunktio
 /* ---------- Knoten 2 · Koffein im Blut ---------- */
 var KOF=expF(130,.85);
 function kofViz(){ return vPlane([0,24],[0,140],{W:600,H:340,xl:"t in h",yl:"mg",sx:2,sy:20,pre:function(P){ P.fn(KOF,"--ink-3",2.6,{from:0,to:24}); }}); }
-KNOTEN.push({id:"n2",title:"Koffein im Blut",sub:"exponentielle Abnahme, Halbwertszeit, Änderungsmaße",lines:[2,3,5,6],
+KNOTEN.push({id:"n2",title:"Koffein im Blut",sub:"exponentielle Abnahme, Prozent und Faktor, Änderungsmaße",lines:[2,3,5],
   angabe:"<p>Eine Tasse Kaffee enthält etwa 130 mg Koffein. "+amk("K","Die Koffeinmenge im Blut wird durch "+M("K(t) = 130 * 0,85^t")+" beschrieben")+", "+amk("t",M("t")+" ist die Zeit in Stunden nach dem Trinken")+", "+M("K(t)")+" in mg.</p><p>"+amk("f","Fachleute empfehlen, abends nicht mehr als 30 mg Koffein im Blut zu haben.")+"</p>",
   parts:[
   {title:"Was die Zahlen bedeuten",marks:["K"],mk:function(){ return {
@@ -4818,19 +4587,31 @@ KNOTEN.push({id:"n2",title:"Koffein im Blut",sub:"exponentielle Abnahme, Halbwer
     items:[{s:"Zu Beginn sind 130 mg im Blut, pro Stunde werden 15 % der vorhandenen Menge abgebaut.",r:1,w:"Startwert 130, Faktor 0,85."},{s:"Zu Beginn sind 130 mg im Blut, pro Stunde werden 85 % abgebaut.",r:0,w:"85 % bleiben."},
       {s:"Pro Stunde werden 0,85 mg abgebaut.",r:0,w:"0,85 ist ein Faktor."},{s:"Nach 130 Stunden ist der Wert auf 85 % gesunken.",r:0,w:"Verwechselt."},{s:"Pro Stunde werden 15 mg abgebaut.",r:0,w:"15 %, nicht 15 mg."}],
     tips:["Was ist "+M("K(0)")+"?","0,85 = 1 − 0,15."],sol:{merk:EX_MERK,steps:[{t:"",m:M("K(0) = 130")},"Faktor 0,85: Es bleiben 85 %, abgebaut werden 15 % pro Stunde."]} }; }},
-  {title:"Halbwertszeit",marks:["K"],note:"Halbwertszeit ≈ 4,27 h",mk:function(){ return {
-    fmt:"input",help:helpHalb(),q:"Berechne die Halbwertszeit des Koffeins. Runde auf zwei Nachkommastellen.",fields:[{l:M("T ≈"),r:4.27,tol:.011,u:"h"}],
-    tips:["Ansatz "+M("0,85^T = 0,5")+".","Logarithmieren."],sol:{viz:kofViz(),merk:"Halbwertszeit unabhängig von der Anfangsmenge.",steps:[{t:"",m:M("T = {lg(0,5)/lg(0,85)} ≈ 4,27"),a:function(V){ V.Pt(4.265,65,"(4,27 | 65)","--dy"); V.G(4.265,65); }}]} }; }},
-  {title:"Die 30-mg-Grenze",marks:["f","K"],note:"30 mg nach etwa 9,02 h",mk:function(){ return {
-    fmt:"input",q:"Berechne, wie viele Stunden nach dem Trinken die Koffeinmenge auf 30 mg gesunken ist. Runde auf zwei Nachkommastellen.",fields:[{l:M("t ≈"),r:9.02,tol:.011,u:"h"}],
-    tips:["Ansatz "+M("130 * 0,85^t = 30")+".","Zuerst durch 130 teilen."],sol:{viz:kofViz(),merk:"Exponentialgleichung: isolieren, logarithmieren.",steps:[{t:"",m:M("0,85^t = {30/130}")},{t:"",m:M("t = {lg(30/130)/lg(0,85)} ≈ 9,02"),a:function(V){ V.Sg(0,30,24,30,"--gold",0,{dash:"5 5",w:2}); V.Pt(9.02,30,"","--dy"); }},"Wer um 21 Uhr unter 30 mg sein will, sollte die letzte Tasse vor 12 Uhr trinken."]} }; }},
+  {title:"Wann ist die Hälfte weg?",marks:["K"],note:"Halbwertszeit zwischen 4 und 5 h: "+M("K(4) ≈ 67,86")+", "+M("K(5) ≈ 57,68"),mk:function(){ return {
+    fmt:"input",help:helpHalb(),q:"Berechne die Koffeinmenge 4 und 5 Stunden nach dem Trinken. Gib an, nach wie vielen vollen Stunden erstmals weniger als die Hälfte der Anfangsmenge im Blut ist. Runde auf zwei Nachkommastellen.",
+    fields:[{l:M("K(4) ≈"),r:67.86,tol:.011,u:"mg"},{l:M("K(5) ≈"),r:57.68,tol:.011,u:"mg"},{l:"erstmals unter der Hälfte nach",r:5,u:"h",w:"Die Hälfte von 130 mg sind 65 mg."}],
+    tips:["Setz "+M("t = 4")+" und "+M("t = 5")+" in "+M("K(t)")+" ein.","Die Hälfte von 130 mg sind 65 mg."],
+    sol:{viz:kofViz(),merk:"Die Halbwertszeit liegt dort, wo die Kurve die halbe Anfangsmenge erreicht.",steps:[
+      {t:"",m:M("K(4) = 130 * 0,85^4 ≈ 67,86"),a:function(V){ V.Sg(0,65,24,65,"--gold",0,{dash:"5 5",w:2}); V.Pt(4,67.86,"(4 | 67,86)","--dy",.2,{anchor:"start",dx:10}); }},
+      {t:"",m:M("K(5) = 130 * 0,85^5 ≈ 57,68"),a:function(V){ V.Pt(5,57.68,"(5 | 57,68)","--dy",0,{anchor:"start",dx:10}); }},
+      "Nach 4 Stunden sind noch mehr als 65 mg da, nach 5 Stunden weniger. Die Halbwertszeit liegt also zwischen 4 und 5 Stunden."]} }; }},
+  {title:"Die 30-mg-Grenze",marks:["f","K"],note:"Erstmals unter 30 mg nach 10 vollen Stunden",mk:function(){ return {
+    fmt:"input",q:"Ermittle mit einer Wertetabelle, nach wie vielen vollen Stunden die Koffeinmenge erstmals unter 30 mg liegt. Gib dazu auch "+M("K(9)")+" und "+M("K(10)")+" an, gerundet auf zwei Nachkommastellen.",
+    fields:[{l:M("K(9) ≈"),r:30.11,tol:.011,u:"mg"},{l:M("K(10) ≈"),r:25.59,tol:.011,u:"mg"},{l:"erstmals unter 30 mg nach",r:10,u:"h"}],
+    tips:["Jede Stunde mal 0,85. Du kannst auch "+M("130 * 0,85^t")+" für mehrere "+M("t")+" ausrechnen.",M("K(9)")+" liegt nur ganz knapp über 30."],
+    sol:{viz:kofViz(),merk:"Eine Wertetabelle mit ganzen Stunden zeigt, wann eine Grenze unterschritten wird.",steps:[
+      {t:"",m:M("K(9) = 130 * 0,85^9 ≈ 30,11"),a:function(V){ V.Sg(0,30,24,30,"--gold",0,{dash:"5 5",w:2}); V.Pt(9,30.11,"","--dy"); }},
+      {t:"",m:M("K(10) = 130 * 0,85^10 ≈ 25,59"),a:function(V){ V.Pt(10,25.59,"(10 | 25,59)","--dy",0,{anchor:"start",dx:10}); }},
+      "Nach 10 Stunden liegt die Menge erstmals unter 30 mg. Wer um 21 Uhr darunter sein will, trinkt die letzte Tasse spätestens um 11 Uhr."]} }; }},
   {title:"Die ersten zwei Stunden",marks:["K","t"],mk:function(){ return {
     fmt:"input",help:helpAend(),q:"Berechne für die ersten zwei Stunden nach dem Trinken die Änderungsmaße der Koffeinmenge.",
     fields:[{l:"absolute Änderung:",r:-36.08,tol:.011,u:"mg"},{l:"mittlere Änderungsrate:",r:-18.04,tol:.011,u:"mg pro Stunde"},{l:"relative Änderung:",r:-27.75,tol:.011,u:"%"}],
     tips:[M("K(2) = 130 * 0,85^2 ≈ 93,93")+".","Relativ: durch 130 teilen."],sol:{merk:AM_MERK,steps:[{t:"",m:M("K(2) - K(0) ≈ 93,93 - 130 = -36,08")},{t:"",m:M("{-36,08/2} ≈ -18,04")},{t:"",m:M("{-36,08/130} ≈ -0,2775")},"Die relative Änderung ist "+M("0,85^2 - 1")+", unabhängig vom Startwert."]} }; }},
-  {title:"Mit der Zahl e",marks:["K"],mk:function(){ return {
-    fmt:"input",q:"Schreib "+M("K")+" in der Form "+M("K(t) = 130 * e^(λ t)")+". Gib "+M("λ")+" auf vier Nachkommastellen an.",fields:[{l:M("λ ≈"),r:-.1625,tol:.0002}],
-    tips:[M("0,85 = e^λ")+"."],sol:{merk:M("λ = ln(a)")+".",steps:[{t:"",m:M("λ = ln(0,85) ≈ -0,1625")}]} }; }},
+  {title:"Drei Stunden auf einmal",marks:["K"],mk:function(){ return {
+    fmt:"input",q:"Gib an, mit welchem Faktor sich die Koffeinmenge in drei Stunden ändert und wie viel Prozent der Anfangsmenge in diesen drei Stunden abgebaut werden. Runde auf zwei Nachkommastellen.",
+    fields:[{l:"Faktor für 3 h ≈",r:.614,tol:.0011,w:M("0,85^3")+"."},{l:"abgebaut ≈",r:38.59,tol:.011,u:"%"}],
+    tips:["Drei Stunden: dreimal mal 0,85.","Abgebaut wird, was nicht übrig bleibt: "+M("1 - 0,85^3")+"."],
+    sol:{merk:"Mehrere Schritte zusammen: Die Faktoren werden multipliziert, nicht die Prozentsätze addiert.",steps:[{t:"",m:M("0,85^3 = 0,614125")},{t:"",m:M("1 - 0,614125 ≈ 0,3859")+", also etwa 38,59 %, weniger als "+M("3 * 15 % = 45 %")}]} }; }},
   {title:"Eine zweite Tasse",marks:["K","t"],note:"Nach 6 h mit zweiter Tasse: ≈ 142,95 mg",mk:function(){ return {
     fmt:"input",q:"Vier Stunden nach der ersten Tasse wird eine zweite getrunken, wieder mit 130 mg. Beide Mengen werden unabhängig voneinander wie beschrieben abgebaut. Berechne die Koffeinmenge sechs Stunden nach der ersten Tasse.",
     fields:[{l:"Menge nach 6 h:",r:142.95,tol:.011,u:"mg"}],tips:["Erste Tasse: 6 Stunden Abbau. Zweite Tasse: 2 Stunden.","Beide Mengen addieren."],
@@ -4841,53 +4622,15 @@ KNOTEN.push({id:"n2",title:"Koffein im Blut",sub:"exponentielle Abnahme, Halbwer
     sol:{merk:"Mittlerer Faktor pro Schritt: Wurzel aus dem Gesamtfaktor.",steps:[{t:"",m:M("root(3,{70/120}) ≈ 0,8355")},{t:"",m:M("1 - 0,8355 = 0,1645")+" also etwa 16,45 %"}]} }; }},
   {title:"Aussagen prüfen",marks:["K"],mk:function(){ return {
     fmt:"mc",pick:2,q:"Kreuze die beiden Aussagen an, die auf "+M("K")+" zutreffen.",
-    items:[{s:"Alle 4,27 Stunden halbiert sich die Koffeinmenge.",r:1,w:"Halbwertszeit."},{s:"Nach 2 · 4,27 Stunden ist das Koffein vollständig abgebaut.",r:0,w:"Dann ist noch ein Viertel da."},{s:M("K(t + 1) = 0,85 * K(t)")+" für alle "+M("t >= 0")+".",r:1,w:"Ein Schritt: mal 0,85."},
+    items:[{s:"Nach 4 Stunden ist noch mehr als die Hälfte der Anfangsmenge im Blut.",r:1,w:M("K(4) ≈ 67,86 > 65")+"."},{s:"Nach 10 Stunden ist das Koffein vollständig abgebaut.",r:0,w:"Es sind noch etwa 25,6 mg da. Eine Exponentialfunktion wird nie 0."},{s:M("K(t + 1) = 0,85 * K(t)")+" für alle "+M("t >= 0")+".",r:1,w:"Ein Schritt: mal 0,85."},
       {s:"In jeder Stunde werden gleich viele Milligramm abgebaut.",r:0,w:"15 % von immer weniger."},{s:M("K")+" hat eine Nullstelle.",r:0,w:"Exponentialfunktionen werden nie 0."}],
-    tips:["Halbwertszeit heißt: nach jeder solchen Spanne halbiert."],sol:{merk:EX_MERK,steps:["Halbwertszeit und Faktor pro Stunde sind die beiden Kennzahlen.","Eine Exponentialfunktion wird nie 0."]} }; }}
-  ]});
-
-/* ---------- Knoten 3 · Konzert im Freien ---------- */
-var INT=function(r){ return 4/(r*r); };
-KNOTEN.push({id:"n3",title:"Konzert im Freien",sub:"Potenzfunktion, Logarithmus und Dezibel",lines:[3,4,5,6],
-  angabe:"<p>Bei einem Konzert im Freien nimmt die Schallintensität mit der Entfernung von den Lautsprechern ab. "+amk("I","Modellhaft gilt "+M("I(r) = 4 * r^(-2)")+", dabei ist "+M("r")+" die Entfernung in Metern und "+M("I(r)")+" die Intensität in Watt pro Quadratmeter")+".</p><p>"+amk("L","Der Schallpegel in Dezibel ist "+M("L = 10 * lg({I/I_0})")+" mit der Hörschwelle "+M("I_0 = 10^(-12)")+" W/m².")+" "+amk("g","Ab 85 dB wird Gehörschutz empfohlen.")+"</p>",
-  parts:[
-  {title:"Intensitäten",marks:["I"],mk:function(){ return {
-    fmt:"input",help:helpPotLab(),q:"Berechne die Intensität in den angegebenen Entfernungen.",fields:[{l:M("I(1) ="),r:4,u:"W/m²"},{l:M("I(2) ="),r:1,u:"W/m²"},{l:M("I(10) ="),r:.04,u:"W/m²"}],
-    tips:[M("r^(-2) = {1/r^2}")+"."],sol:{merk:"Indirekt proportional zum Quadrat der Entfernung.",steps:[{t:"",m:M("I(2) = {4/4} = 1")},{t:"",m:M("I(10) = {4/100} = 0,04")}]} }; }},
-  {title:"Welcher Graph?",marks:["I"],mk:function(){ return {
-    fmt:"mc",pick:1,q:"Kreuze den Graphen an, der zu "+M("I")+" passt (für "+M("r > 0")+").",grid:true,
-    items:[{s:function(){ return mini(function(P){ P.fn(INT,"--dx",2.6,{from:.2}); },{xr:[0,6],yr:[0,6]}); },r:1,w:"Durch (1 | 4) und (2 | 1), fällt immer flacher."},{s:function(){ return mini(function(P){ P.fn(function(r){ return 4/r; },"--dx",2.6,{from:.2}); },{xr:[0,6],yr:[0,6]}); },r:0,w:"Bei 2 wäre der Wert 2."},
-      {s:function(){ return mini(function(P){ P.fn(function(r){ return 4*Math.pow(.5,r); },"--dx",2.6,{from:0}); },{xr:[0,6],yr:[0,6]}); },r:0,w:"Exponentialfunktion: bei 0 definiert."},{s:function(){ return mini(function(P){ P.fn(function(r){ return 4-r; },"--dx",2.6,{from:0,to:4}); },{xr:[0,6],yr:[0,6]}); },r:0,w:"Linear."}],
-    tips:["Prüf "+M("I(1) = 4")+" und "+M("I(2) = 1")+".","Bei 0 ist "+M("I")+" nicht definiert."],sol:{merk:PF_MERK,steps:["Punkte (1 | 4) und (2 | 1).","Für "+M("r → 0")+" wird "+M("I")+" beliebig groß."]} }; }},
-  {title:"Pegel in 10 m",marks:["L","I"],note:"In 10 m: ≈ 106,02 dB",mk:function(){ return {
-    fmt:"input",help:helpMalPlus(),q:"Berechne den Schallpegel in 10 m Entfernung. Runde auf zwei Nachkommastellen.",fields:[{l:M("L ≈"),r:106.02,tol:.011,u:"dB"}],
-    tips:[M("{0,04/10^(-12)} = 4 * 10^10")+".",M("lg(4 * 10^10) = lg(4) + 10")+"."],sol:{merk:LG_MERK,steps:[{t:"",m:M("L = 10 * lg(4 * 10^10) = 10 * (lg(4) + 10) ≈ 106,02")}]} }; }},
-  {title:"Doppelter Abstand",marks:["I","L"],note:"Doppelter Abstand: −6,02 dB",mk:function(){ return {
-    fmt:"input",q:"Um wie viel Dezibel sinkt der Pegel, wenn man den Abstand zu den Lautsprechern verdoppelt? Runde auf zwei Nachkommastellen.",fields:[{l:"Abnahme ≈",r:6.02,tol:.011,u:"dB"}],
-    tips:[M("I(2r) = {1/4} * I(r)")+".","Ein Viertel der Intensität: "+M("10 * lg({1/4})")+"."],sol:{merk:"Doppelter Abstand: ein Viertel der Intensität, etwa 6 dB weniger.",steps:[{t:"",m:M("I(2r) = {4/4r^2} = {1/4} * I(r)")},{t:"",m:M("10 * lg({1/4}) ≈ -6,02")}]} }; }},
-  {title:"Wo genügt der Abstand?",marks:["g","L","I"],note:"85 dB ab etwa 112,47 m",mk:function(){ return {
-    fmt:"input",q:"Berechne, ab welcher Entfernung der Pegel höchstens 85 dB beträgt. Runde auf zwei Nachkommastellen.",fields:[{l:M("r ≈"),r:112.47,tol:.011,u:"m"}],
-    tips:["Aus "+M("L = 85")+" folgt "+M("I = 10^(8,5) * I_0 = 10^(-3,5)")+".","Dann "+M("{4/r^2} = 10^(-3,5)")+" nach "+M("r")+" lösen."],sol:{merk:"Zuerst die Pegelgleichung nach "+M("I")+" lösen, dann die Potenzfunktion nach "+M("r")+".",steps:[{t:"",m:M("lg({I/I_0}) = 8,5")+" ⇒ "+M("I = 10^(-3,5)")},{t:"",m:M("r^2 = {4/10^(-3,5)} ≈ 12649")+" ⇒ "+M("r ≈ 112,47")}]} }; }},
-  {title:"Gehörschutz",marks:["L"],mk:function(){ return {
-    fmt:"luecke",q:"Ein Gehörschutz senkt den Pegel um 20 dB. Ergänze den Satz so, dass eine richtige Aussage entsteht.",
-    satz:"Die Intensität am Ohr sinkt dadurch auf ___, weil ___.",
-    gaps:[{o:["1 %","20 %","80 %"],r:0,w:M("10^(-2) = 0,01")+"."},{o:[M("10 * lg({1/100}) = -20")+" gilt",M("100 % - 20 % = 80 %")+" gilt","der Pegel proportional zur Intensität ist"],r:0,w:"20 dB weniger: Faktor "+M("10^(-2)")+"."}],
-    tips:["10 dB weniger: ein Zehntel.","20 dB: zweimal ein Zehntel."],sol:{merk:"Jede 10 dB: Faktor 10.",steps:[{t:"",m:M("10 * lg(x) = -20")+" ⇒ "+M("x = 10^(-2)")}]} }; }},
-  {title:"Doppelt so laut?",marks:["L"],mk:function(){ return {
-    fmt:"offen",q:"Statt eines Lautsprechers spielen zwei gleich laute Lautsprecher nebeneinander, die Intensität verdoppelt sich also. Jemand behauptet: „Dann ist auch der Pegel doppelt so hoch.“ Nimm Stellung.",
-    model:"Das stimmt nicht. Verdoppelt sich die Intensität, steigt der Pegel nur um "+M("10 * lg(2) ≈ 3")+" dB, weil der Logarithmus aus dem Faktor 2 einen Summanden macht: "+M("10 * lg({2I/I_0}) = 10 * lg(2) + L")+".",
-    points:["Logarithmusregel für Produkte verwendet","Zuwachs von etwa 3 dB berechnet","Behauptung widerlegt"],tips:["Setz "+M("2I")+" in die Pegelformel ein.","Mal wird Plus."],sol:{merk:"Logarithmische Skala: Vervielfachen wird Addieren.",steps:[{t:"",m:M("10 * lg({2I/I_0}) = 10 * lg(2) + 10 * lg({I/I_0})")}]} }; }},
-  {title:"Was gilt allgemein?",marks:["I","L"],mk:function(){ return {
-    fmt:"mc",pick:2,q:"Kreuze die beiden Aussagen an, die für das Modell zutreffen.",
-    items:[{s:"Zehnfacher Abstand bedeutet 20 dB weniger.",r:1,w:"Intensität auf "+M("{1/100}")+"."},{s:"Halber Abstand bedeutet doppelte Intensität.",r:0,w:"Vierfache."},{s:M("I")+" ist indirekt proportional zu "+M("r^2")+".",r:1,w:M("I * r^2 = 4")+" konstant."},
-      {s:"Der Pegel nimmt pro Meter Entfernung um gleich viele Dezibel ab.",r:0,w:"Pro Verdopplung des Abstands gleich viel."},{s:"In 20 m Entfernung ist der Pegel halb so hoch wie in 10 m.",r:0,w:"Er ist nur um etwa 6 dB niedriger."}],
-    tips:["Setz "+M("10r")+" in "+M("I")+" ein."],sol:{merk:"Potenzfunktion und Logarithmus zusammen: Vervielfachen des Abstands verschiebt den Pegel um einen festen Betrag.",steps:[{t:"",m:M("I(10r) = {1/100} * I(r)")+" ⇒ "+M("-20")+" dB"}]} }; }}
+    tips:["Rechne "+M("K(4)")+" aus und vergleiche mit 65 mg."],sol:{merk:EX_MERK,steps:["Faktor 0,85 pro Stunde: "+M("K(t + 1) = 0,85 * K(t)")+".","Eine Exponentialfunktion wird nie 0."]} }; }}
   ]});
 
 /* ---------- Knoten 4 · Sonnenstrom vom Dach (klassische Wachstumsaufgabe) ---------- */
 var PVA=Math.sqrt(1.5), PV=expF(40,PVA), PVL=function(t){ return 40+12.5*t; };
 function pvViz(o){ o=o||{}; return vPlane(o.xr||[0,10.5],o.yr||[0,320],{W:600,H:360,xl:"t in Jahren",yl:"P in MWp",sx:1,sy:o.sy||40,pre:function(P){ P.fn(PV,"--ink-3",2.6,{from:0,to:(o.xr||[0,10.5])[1]}); if(o.pre) o.pre(P); }}); }
-KNOTEN.push({id:"n4",title:"Sonnenstrom vom Dach",sub:"klassische Wachstumsaufgabe: aufstellen, berechnen, vergleichen",lines:[1,2,3,5,6],
+KNOTEN.push({id:"n4",title:"Sonnenstrom vom Dach",sub:"klassische Wachstumsaufgabe: aufstellen, berechnen, vergleichen",lines:[1,2,3,5],
   angabe:"<p>In einer Region der Obersteiermark lassen immer mehr Haushalte Photovoltaikanlagen auf ihre Dächer montieren. "+amk("w","Ende 2020 waren dort Anlagen mit insgesamt 40 MWp installiert, Ende 2024 waren es 90 MWp.")+" Die Einheit MWp (Megawatt-Peak) gibt die Spitzenleistung der Anlagen an. Die Zahlen sind für die Aufgabe vereinfacht.</p><p>"+
     amk("P","Die installierte Leistung wird modellhaft durch eine Exponentialfunktion "+M("P")+" mit "+M("P(t) = 40 * a^t")+" beschrieben")+". "+amk("t","Dabei ist "+M("t")+" die Zeit in Jahren ab Ende 2020 und "+M("P(t)")+" die Leistung in MWp")+".</p><p>"+amk("z","Die Region hat sich das Ziel gesetzt, 500 MWp zu erreichen.")+"</p>"+
     "<div class='fig narrow'>"+(function(){ var P=sys(600,300,[0,10.5],[0,120],"t in Jahren","P in MWp",1,20); P.pt(0,40,"--dy","Ende 2020: 40",{anchor:"start",dx:12}); P.pt(4,90,"--dy","Ende 2024: 90",{anchor:"start",dx:12}); return P.svg.outerHTML; })()+"</div>",
@@ -4922,22 +4665,22 @@ KNOTEN.push({id:"n4",title:"Sonnenstrom vom Dach",sub:"klassische Wachstumsaufga
     tips:["Ende 2030 liegt 10 Jahre nach Ende 2020.","Wegen "+M("a^2 = 1,5")+" ist "+M("a^10 = 1,5^5")+"."],
     sol:{viz:pvViz(),merk:"Ein Funktionswert beantwortet die Frage „Wie viel ist es zum Zeitpunkt t?“",steps:[
       {t:"",m:M("P(10) = 40 * a^10 = 40 * 1,5^5 = 40 * 7,59375 = 303,75"),a:function(V){ V.G(10,303.75); V.Pt(10,303.75,"(10 | 303,75)","--dy",0,{anchor:"end",dx:-12}); }}]} }; }},
-  {title:"Wann ist das Ziel erreicht?",marks:["z","P"],note:"500 MWp nach etwa 12,46 Jahren, also im Jahr 2033",mk:function(){ return {
-    fmt:"input",help:helpWieOft(),q:"Berechne, nach wie vielen Jahren das Ziel von 500 MWp laut Modell erreicht wird, und gib das Kalenderjahr an. Runde auf zwei Nachkommastellen.",
-    fields:[{l:M("t ≈"),r:12.46,tol:.011,u:"Jahre"},{l:"im Jahr",r:2033,tol:.1,w:"Ende 2032 ist "+M("t = 12")+"."}],
-    tips:["Ansatz "+M("40 * a^t = 500")+".","Zuerst durch 40 dividieren, dann logarithmieren.","Achte beim Kalenderjahr darauf, dass "+M("t = 0")+" das Ende von 2020 ist."],
-    sol:{viz:pvViz({xr:[0,14],yr:[0,560],sy:80}),merk:"Gesucht ist ein Zeitpunkt: Exponentialgleichung aufstellen, isolieren, logarithmieren.",steps:[
-      {t:"",m:M("40 * a^t = 500")+" &nbsp; ⇔ &nbsp; "+M("a^t = 12,5")},
-      {t:"",m:M("t = {lg(12,5)/lg(a)} ≈ {1,0969/0,0880} ≈ 12,46"),a:function(V){ V.Sg(0,500,14,500,"--gold",0,{dash:"5 5",w:2}); V.Pt(12.458,500,"","--dy",.2); V.G(12.458,500,.3); }},
-      "Nach 12 Jahren ist Ende 2032, die restlichen 0,46 Jahre fallen ins Jahr 2033."]} }; }},
-  {title:"Verdopplungszeit",marks:["P"],note:"Verdopplungszeit ≈ 3,42 Jahre",mk:function(){ return {
-    fmt:"input",help:helpWieOft(),q:"Berechne, in welcher Zeit sich die installierte Leistung laut Modell jeweils verdoppelt. Runde auf zwei Nachkommastellen.",
-    fields:[{l:M("T_2 ≈"),r:3.42,tol:.011,u:"Jahre"}],
-    tips:["Doppelt so viel heißt: "+M("a^T = 2")+". Der Startwert spielt keine Rolle.","Logarithmieren: "+M("T = {lg(2)/lg(a)}")+"."],
-    sol:{viz:pvViz(),merk:"Die Verdopplungszeit ist bei exponentiellem Wachstum immer gleich, egal wo man startet.",steps:[
-      {t:"",m:M("40 * a^T = 80")+" &nbsp; ⇔ &nbsp; "+M("a^T = 2")},
-      {t:"",m:M("T = {lg(2)/lg(a)} ≈ 3,42"),a:function(V){ V.Pt(0,40,"40","--dy"); V.Pt(3.419,80,"80","--dy",.25); V.Pt(6.838,160,"160","--dy",.5); V.Pt(10.257,320,"","--dy",.75); }},
-      "Von 40 auf 80, von 80 auf 160, von 160 auf 320: jedes Mal etwa 3,42 Jahre."]} }; }},
+  {title:"Wann ist das Ziel erreicht?",marks:["z","P"],note:"Über 500 MWp erstmals Ende 2033 ("+M("P(13) ≈ 558")+")",mk:function(){ return {
+    fmt:"input",help:helpExpLab(),q:"Berechne "+M("P(12)")+" und "+M("P(13)")+". Gib an, Ende welchen Jahres laut Modell erstmals mehr als 500 MWp installiert sind. Runde auf ganze MWp.",
+    fields:[{l:M("P(12) ≈"),r:456,tol:1.01,u:"MWp",w:M("a^12 = 1,5^6")+"."},{l:M("P(13) ≈"),r:558,tol:1.01,u:"MWp"},{l:"erstmals über 500 MWp Ende",r:2033,tol:.1,w:M("t = 13")+" ist Ende 2033."}],
+    tips:["Wegen "+M("a^2 = 1,5")+" ist "+M("P(12) = 40 * 1,5^6")+".",M("P(13) = P(12) * a")+". Achte darauf, dass "+M("t = 0")+" das Ende von 2020 ist."],
+    sol:{viz:pvViz({xr:[0,14],yr:[0,560],sy:80}),merk:"Ganze Zeitschritte durchrechnen zeigt, wann eine Grenze überschritten wird.",steps:[
+      {t:"",m:M("P(12) = 40 * 1,5^6 ≈ 455,6"),a:function(V){ V.Sg(0,500,14,500,"--gold",0,{dash:"5 5",w:2}); V.Pt(12,455.6,"(12 | 456)","--dy",.2,{anchor:"end",dx:-12}); }},
+      {t:"",m:M("P(13) = 455,6 * 1,2247 ≈ 558,0"),a:function(V){ V.Pt(13,558,"(13 | 558)","--dy",0,{anchor:"end",dx:-12}); }},
+      "Nach 12 Jahren (Ende 2032) sind es noch weniger als 500 MWp, nach 13 Jahren (Ende 2033) mehr."]} }; }},
+  {title:"Sechs Jahre auf einmal",marks:["P"],note:"In 6 Jahren Faktor 3,375, also plus 237,5 %",mk:function(){ return {
+    fmt:"input",help:helpExpLab(),q:"Gib an, mit welchem Faktor die installierte Leistung laut Modell in 6 Jahren wächst und um wie viel Prozent sie in dieser Zeit zunimmt.",
+    fields:[{l:"Faktor für 6 Jahre:",r:3.375,tol:.0011},{l:"Zunahme:",r:237.5,tol:.011,u:"%"}],
+    tips:["Sechs Jahre: "+M("a^6")+".","Wegen "+M("a^2 = 1,5")+" ist "+M("a^6 = 1,5^3")+"."],
+    sol:{viz:pvViz(),merk:"In jeder Zeitspanne gleicher Länge wächst die Leistung mit demselben Faktor, egal wann man startet.",steps:[
+      {t:"",m:M("a^6 = 1,5^3 = 3,375"),a:function(V){ V.Pt(0,40,"40","--dy"); V.Pt(6,135,"135","--dy",.25); }},
+      {t:"",m:M("3,375 - 1 = 2,375")+", also plus 237,5 %",a:function(V){ V.Pt(2,60,"60","--rise"); V.Pt(8,202.5,"202,5","--rise",.25); }},
+      "Von 40 auf 135 und von 60 auf 202,5: jedes Mal das 3,375-Fache."]} }; }},
   {title:"Zwischen 60 und 135 MWp",marks:["P","t"],note:"Zwischen 60 und 135 MWp: von "+M("t = 2")+" bis "+M("t = 6")+", also Ende 2022 bis Ende 2026",mk:function(){ return {
     fmt:"bereich",help:helpMono(),q:"Markiere auf der "+M("t")+"-Achse den Zeitraum, in dem die installierte Leistung laut Modell zwischen 60 MWp und 135 MWp liegt.",W:600,H:380,xr:[0,10.5],yr:[0,320],xl:"t in Jahren",yl:"P in MWp",sx:1,sy:20,snap:1,from:2,to:6,v:"t",
     pre:function(P){ P.fn(PV,"--ink",3,{from:0,to:10.5}); P.seg(0,60,10.5,60,"--gold",2,{dash:"5 5"}); P.seg(0,135,10.5,135,"--gold",2,{dash:"5 5"}); P.label(.3,68,"60","--gold",{fs:13}); P.label(.3,143,"135","--gold",{fs:13}); },
@@ -4976,7 +4719,7 @@ KNOTEN.push({id:"n4",title:"Sonnenstrom vom Dach",sub:"klassische Wachstumsaufga
     items:[{s:M("P(t + 2) = 1,5 * P(t)")+" für alle "+M("t >= 0")+".",r:1,w:"Zwei Schritte: mal "+M("a^2 = 1,5")+"."},
       {s:"Der jährliche Zuwachs in MWp wird von Jahr zu Jahr größer.",r:1,w:"22,47 % von einem immer größeren Wert."},
       {s:"Jedes Jahr kommen etwa 22,47 MWp dazu.",r:0,w:"22,47 %, nicht 22,47 MWp. Im ersten Jahr sind es knapp 9 MWp."},
-      {s:"Nach 8 Jahren hat sich die Leistung verdoppelt.",r:0,w:"Verdoppelt nach etwa 3,42 Jahren. Nach 8 Jahren ist es gut das Fünffache."},
+      {s:"Nach 8 Jahren hat sich die Leistung verdoppelt.",r:0,w:"Schon nach 4 Jahren ist es das 2,25-Fache. Nach 8 Jahren ist es "+M("1,5^4 ≈ 5,06")+"-mal so viel."},
       {s:"Der Graph von "+M("P")+" nähert sich der waagrechten Geraden "+M("y = 40")+".",r:0,w:"Asymptote ist die "+M("t")+"-Achse, und zwar für "+M("t → -∞")+"."}],
     tips:["Setz "+M("t + 2")+" ein und verwende die Potenzregel.","Rechne den Zuwachs im ersten und im zweiten Jahr aus."],
     sol:{merk:EX_MERK,steps:[{t:"",m:M("P(t + 2) = 40 * a^t * a^2 = 1,5 * P(t)")},{t:"",m:M("P(1) - P(0) ≈ 8,99")+", "+M("P(2) - P(1) ≈ 11,01")+": der Zuwachs wächst."}]} }; }},
@@ -5013,18 +4756,19 @@ function kmAll(){ var s=0,m=0; CH.forEach(function(c){ var x=kmOf(c.n); s+=x.s; 
   KNOTEN.forEach(function(T){ var c=knCnt(T); s+=c.d*PART_KM; m+=c.n*PART_KM; }); return {s:s,m:m,t:ST.xp||0}; }
 function resume(ch){ for(var i=0;i<3;i++){ var a=BY[ch][LVS[i]]; for(var j=0;j<a.length;j++) if(!isDone(a[j])) return {lv:LVS[i],idx:j}; } return {lv:"L",idx:0}; }
 function firstOpen(ch,lv){ var a=BY[ch][lv]; for(var j=0;j<a.length;j++) if(!isDone(a[j])) return j; return 0; }
-function lc(ch){ return "var(--l"+ch+")"; }
+var ZW=["Null","Eine","Zwei","Drei","Vier","Fünf","Sechs","Sieben","Acht"];
+function lc(ch){ var c=CH.filter(function(x){ return x.n===ch; })[0]; return "var(--l"+(c&&c.col||ch)+")"; }
 function badge(ch,cls){ return h("span",{class:"lbadge"+(cls?" "+cls:""),style:"--lc:"+lc(ch),"aria-hidden":"true"},String(ch)); }
 function kmStr(v){ return num(Math.round(v*10)/10); }
 
 /* ============ Netzplan ============
-   Sechs Linien waagrecht, jede Station ein Punkt (Quadrat in Zone 3). Rechts die Knoten als Umsteigebalken. */
+   Die Linien waagrecht, jede Station ein Punkt (Quadrat in Zone 3). Rechts die Knoten als Umsteigebalken. */
 function netz(o){
   o=o||{};
   var NS2=CH.length, rowH=66, top=64, left=60, kgap=54, right=44+(KNOTEN.length-1)*kgap+42, stW=o.w||1000, H=top+NS2*rowH+18;
   var nMax=0; CH.forEach(function(c){ nMax=Math.max(nMax,BY[c.n].L.length+BY[c.n].M.length+BY[c.n].X.length); });
   var span=stW-left-right, dx=span/(nMax-1);
-  var svg=svgEl(stW,H,"netz"); svg.setAttribute("aria-label","Netzplan mit sechs Linien und "+KNOTEN.length+" Knoten");
+  var svg=svgEl(stW,H,"netz"); svg.setAttribute("aria-label","Netzplan mit "+CH.length+" Linien und "+KNOTEN.length+" Knoten");
   /* Zonen als Bänder */
   var nL=BY[1].L.length, nM=BY[1].M.length;
   var zx=[left-dx/2, left+(nL-.5)*dx, left+(nL+nM-.5)*dx, left+(nMax-.5)*dx];
@@ -5216,7 +4960,7 @@ rail.addEventListener("click",function(e){ if(e.target.closest&&e.target.closest
 /* ============ Ansichten ============ */
 function home(){
   view.append(h("p",{class:"kicker"},"OpenMath · 6. Klasse AHS · Übungsmodul"),h("h1",{},"Liniennetz"),
-    h("p",{class:"lead"},"Sechs Linien durch den Stoff der 6. Klasse. Jede fährt durch drei Zonen: zuerst leichte Stationen, dann mittlere, am Ende Aufgaben in den sieben Antwortformaten der Matura. Vier Knoten verbinden mehrere Linien zu langen Aufgaben nach dem Muster von Teil 2. Wer festhängt, holt sich einen Tipp, probiert mit einem Werkzeug herum oder lässt sich den Lösungsweg Schritt für Schritt zeigen."));
+    h("p",{class:"lead"},ZW[CH.length]+" Linien durch den Stoff der 6. Klasse. Jede fährt durch drei Zonen: zuerst leichte Stationen, dann mittlere, am Ende Aufgaben in den sieben Antwortformaten der Matura. "+ZW[KNOTEN.length]+" Knoten verbinden mehrere Linien zu langen Aufgaben nach dem Muster von Teil 2. Wer festhängt, holt sich einen Tipp, probiert mit einem Werkzeug herum oder lässt sich den Lösungsweg Schritt für Schritt zeigen."));
   var plan=h("div",{class:"plan"});
   function drawPlan(){ var w=Math.round(Math.max(700,Math.min(1060,plan.clientWidth||view.clientWidth||900))); clr(plan).append(netz({w:w})); }
   view.append(plan); drawPlan(); onResize=drawPlan;
@@ -5416,8 +5160,8 @@ function route(){
   if(onLeave){ onLeave(); onLeave=null; }
   clr(view); view.style.removeProperty("--lc"); document.body.classList.remove("menu"); onResize=null;
   drawTotal();
-  var gm=/^n(\d)$/.exec(hsh);
-  if(gm&&KNOTEN[+gm[1]-1]){ drawNav({tour:+gm[1]-1}); knotView(+gm[1]-1); try{ window.scrollTo(0,0); }catch(e){} return; }
+  var ki=-1; KNOTEN.forEach(function(K,i){ if(K.id===hsh) ki=i; });
+  if(ki>=0){ drawNav({tour:ki}); knotView(ki); try{ window.scrollTo(0,0); }catch(e){} return; }
   if(m&&BY[+m[1]]){
     var ch=+m[1], lv=m[2], idx;
     if(!lv){ var r=resume(ch); lv=r.lv; idx=r.idx; }
