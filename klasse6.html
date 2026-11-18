@@ -651,6 +651,66 @@ body.slim:not(.nar) .rnav .rt-h{display:block;padding:4px}
 body.slim:not(.nar) .rnav .rt-h:hover .lbadge{transform:scale(1.08)}
 body.slim:not(.nar) .rnav .lbadge{min-width:34px;height:34px;border-radius:9px;transition:transform .12s}
 
+/* ---- Probeschularbeit ---- */
+.lbadge.pb{width:auto;min-width:26px;padding:0 6px;border-radius:6px;font-size:calc(12px*var(--z))}
+.pr-ban{display:flex;align-items:center;gap:14px;margin:6px 0 22px;padding:14px 18px;border:1.5px solid var(--ink);border-radius:12px;background:var(--panel);color:var(--ink);text-decoration:none;max-width:760px}
+.pr-ban .t{display:grid;gap:2px;flex:1}
+.pr-ban b{font:800 calc(18px*var(--z)) var(--ff-ui)}
+.pr-ban .t span{font-size:calc(15px*var(--z));color:var(--ink-2)}
+.pr-ban .go svg{width:22px;height:22px}
+.pr-set{display:grid;gap:0;margin-top:22px;max-width:820px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.pr-row{padding:16px 20px;border-top:1px solid var(--line-2);display:grid;gap:8px;justify-items:start}
+.pr-row:first-child{border-top:0}
+.pr-row h3{font:700 calc(12.5px*var(--z)) var(--ff-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.pr-lines{display:grid;gap:6px;width:100%}
+.pr-line{display:flex;align-items:center;gap:10px;min-height:38px;cursor:pointer;font-size:calc(16px*var(--z))}
+.pr-line input{width:20px;height:20px;accent-color:var(--lc,var(--ink))}
+.pr-warn{color:var(--fall)}
+.pr-cut{display:grid;gap:8px}
+.cutrow{display:flex;align-items:center;gap:8px;font-size:calc(16px*var(--z))}
+.cutrow .nm{min-width:9em}
+.cutrow input{width:5.2em;min-height:38px;border:1.5px solid var(--line);border-radius:8px;padding:0 8px;background:var(--bg);color:var(--ink);font:600 calc(16px*var(--z)) var(--ff-ui)}
+.cutrow .pp{color:var(--ink-3);font-variant-numeric:tabular-nums}
+.pr-info{margin-top:18px;max-width:820px;font-size:calc(16px*var(--z))}
+.pr-go{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:16px}
+.pr-hist{list-style:none;display:grid;gap:6px;max-width:620px;margin-top:8px}
+.pr-hist li{display:flex;gap:14px;justify-content:space-between;border-bottom:1px solid var(--line-2);padding:8px 0;font-size:calc(15.5px*var(--z))}
+.pr-bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 0;margin-bottom:8px;background:var(--bg);border-bottom:1px solid var(--line)}
+.pr-t{display:grid;gap:1px}
+.pr-t b{font:800 calc(17px*var(--z)) var(--ff-ui)}
+.pr-prog{font-size:calc(13.5px*var(--z));color:var(--ink-3)}
+.pr-time{font:800 calc(20px*var(--z)) var(--ff-ui);font-variant-numeric:tabular-nums}
+.pr-time.low{color:var(--fall)}
+.pr-pills{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}
+.pr-pill{min-width:38px;min-height:38px;border:1.5px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink-2);font:700 calc(14px*var(--z)) var(--ff-ui);cursor:pointer;padding:0 8px}
+.pr-pill.part{border-color:var(--gold)}
+.pr-pill.full{background:color-mix(in srgb,var(--rise) 16%,var(--panel));border-color:var(--rise);color:var(--ink)}
+.pr-pill.cur{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.pr-nav{display:flex;gap:10px;align-items:center;margin-top:18px}
+.pr-nav .sp{flex:1}
+.pr-conf{margin-bottom:8px}
+.angabe .ktitle{display:block;font:800 calc(20px*var(--z)) var(--ff-ui);margin-bottom:8px}
+.pr-res{border:1.5px solid var(--ink);border-radius:12px;padding:18px 22px;background:var(--panel);display:grid;gap:6px;max-width:820px;margin-top:10px}
+.pr-res .big b{font:800 calc(40px*var(--z))/1 var(--ff-ui);letter-spacing:-.02em}
+.pr-res .big span{font-size:calc(18px*var(--z));color:var(--ink-2)}
+.pr-res .nt b{font:800 calc(24px*var(--z)) var(--ff-ui)}
+.pr-res.n0,.pr-res.n1{border-color:var(--rise)} .pr-res.n4{border-color:var(--fall)}
+.pr-lg{display:grid;gap:8px;max-width:820px;margin-top:8px}
+.pr-l{display:grid;grid-template-columns:auto minmax(0,14em) minmax(60px,1fr);gap:4px 12px;align-items:center;text-decoration:none;color:var(--ink);padding:8px 0;border-bottom:1px solid var(--line-2)}
+.pr-l .small{grid-column:2/4}
+.pr-l .bar{height:10px;border-radius:5px;background:var(--line-2);overflow:hidden}
+.pr-l .bar i{display:block;height:100%;background:var(--lc)}
+.pr-sub{font:800 calc(17px*var(--z)) var(--ff-ui);margin:22px 0 6px}
+.pr-item{border-bottom:1px solid var(--line-2)}
+.pr-r{display:flex;align-items:center;gap:10px;padding:8px 0;flex-wrap:wrap}
+.pr-r .nr{min-width:2em;font-weight:800}
+.pr-r .ti{flex:1;min-width:10em;font-size:calc(15.5px*var(--z))}
+.pr-r .pt{font-variant-numeric:tabular-nums;font-weight:700}
+.pr-r .pt.ok{color:var(--rise)} .pr-r .pt.no{color:var(--fall)} .pr-r .pt.half{color:var(--gold)}
+.pr-card{padding:6px 0 18px}
+.btn.off{opacity:.42;pointer-events:none}
+@media (max-width:640px){ .pr-bar{flex-wrap:wrap} .cutrow .nm{min-width:7.5em} }
+
 </style>
 <script>
 (function(){
@@ -1741,13 +1801,13 @@ FMT.luecke=function(sp){
   return {el:h("div",{style:"display:grid;gap:14px"},line,cols,whys),
     ready:function(){ return Object.keys(picks).length<sp.gaps.length ? "In jeder Lücke muss genau ein Satzteil angekreuzt sein." : true; },
     check:function(){
-      done=true; render(); var ok=true;
+      done=true; render(); var ok=true, hitN=0;
       sp.gaps.forEach(function(g,i){
-        if(picks[i]!==g.r) ok=false;
+        if(picks[i]!==g.r) ok=false; else hitN++;
         bsAll[i].forEach(function(b,k){ b.disabled=true; if(k===g.r) b.classList.add(picks[i]===k?"ok":"miss"); else if(picks[i]===k) b.classList.add("no"); });
         whys.append(h("div",{html:"<b>Lücke ("+(i+1)+"):</b> "+g.w}));
       });
-      return {ok:ok,msg:ok?"":"Der Punkt zählt nur, wenn beide Lücken stimmen."}; },
+      return {ok:ok,frac:hitN/sp.gaps.length,msg:ok?"":"Der Punkt zählt nur, wenn beide Lücken stimmen."}; },
     solve:function(){ sp.gaps.forEach(function(g,i){ bsAll[i][g.r].click(); }); }
   };
 };
@@ -1773,14 +1833,14 @@ FMT.zuord=function(sp){
   return {el:box,
     ready:function(){ return Object.keys(picks).length<sp.items.length ? "Jede Zeile braucht einen Buchstaben." : true; },
     check:function(){
-      done=true; var ok=true;
+      done=true; var ok=true, hitN=0;
       sp.items.forEach(function(it,i){
-        var good=picks[i]===it.r; if(!good) ok=false;
+        var good=picks[i]===it.r; if(!good) ok=false; else hitN++;
         rows[i].el.classList.add(good?"ok":"no");
         rows[i].bs.forEach(function(b){ b.disabled=true; });
         rows[i].el.append(h("div",{class:"why",html:(good?"":"<b>Richtig ist "+LET[it.r]+".</b> ")+(it.w||"")}));
       });
-      return {ok:ok,msg:ok?"":"Bei der Matura zählt die Zuordnung nur, wenn alle Zeilen stimmen."}; },
+      return {ok:ok,frac:hitN/sp.items.length,msg:ok?"":"Bei der Matura zählt die Zuordnung nur, wenn alle Zeilen stimmen."}; },
     solve:function(){ sp.items.forEach(function(it,i){ rows[i].bs[it.r].click(); }); }
   };
 };
@@ -1806,7 +1866,7 @@ FMT.tf=function(sp){
         rows[i].el.classList.add(good?"ok":"no"); rows[i].by.disabled=rows[i].bn.disabled=true;
         rows[i].el.append(h("div",{class:"why",html:(good?"":"<b>Richtig ist „"+(it.r?Y:N)+"“.</b> ")+(it.w||"")}));
       });
-      return {ok:ok,msg:ok?"":(miss===1?"Eine Zeile stimmt noch nicht.":miss+" Zeilen stimmen noch nicht.")+" Die Begründung steht jeweils darunter."}; },
+      return {ok:ok,frac:(sp.items.length-miss)/sp.items.length,msg:ok?"":(miss===1?"Eine Zeile stimmt noch nicht.":miss+" Zeilen stimmen noch nicht.")+" Die Begründung steht jeweils darunter."}; },
     solve:function(){ sp.items.forEach(function(it,i){ (it.r?rows[i].by:rows[i].bn).click(); }); }
   };
 };
@@ -1905,7 +1965,7 @@ FMT.input=function(sp){
         var right=o.f.show!=null?o.f.show:(o.f.kind==="term"?M(o.f.r):M(num(o.f.r)));
         o.el.append(h("div",{class:"why",html:(j.ok?"":(j.note||"")+"<b>Richtig:</b> "+right+(o.f.u?" "+o.f.u:"")+". ")+(o.f.w||"")}));
       });
-      return {ok:ok,msg:ok?"":(rows.length>1?(n===1?"Eine Eingabe stimmt noch nicht.":n+" Eingaben stimmen noch nicht."):"")}; },
+      return {ok:ok,frac:(rows.length-n)/rows.length,msg:ok?"":(rows.length>1?(n===1?"Eine Eingabe stimmt noch nicht.":n+" Eingaben stimmen noch nicht."):"")}; },
     solve:function(){ rows.forEach(function(o){ o.inp.value = o.f.ex!=null?o.f.ex:(o.f.kind==="term"?o.f.r:String(o.f.r).replace(".",",")); }); }
   };
 };
@@ -2039,7 +2099,7 @@ FMT.sort=function(sp){
         var name=""; sp.bins.forEach(function(b){ if(b.k===el.dat.k) name=b.n||b.t; });
         whys.append(h("div",{html:"<b>"+el.dat.s+"</b> "+(good?"":"gehört zu „"+name+"“. ")+(el.dat.w||"")}));
       });
-      return {ok:ok,msg:ok?"":(n===1?"Eine Karte liegt falsch.":n+" Karten liegen falsch.")+" Unten steht zu jeder Karte die Begründung."}; },
+      return {ok:ok,frac:(cards.length-n)/cards.length,msg:ok?"":(n===1?"Eine Karte liegt falsch.":n+" Karten liegen falsch.")+" Unten steht zu jeder Karte die Begründung."}; },
     solve:function(){ cards.forEach(function(el){ bins.forEach(function(b){ if(b.key===el.dat.k) b.items.append(el); }); }); }
   };
 };
@@ -2399,7 +2459,7 @@ function taskCard(sp,cx){
   var R=FMT[sp.fmt](sp), tipN=0, tries=0, solved=false;
   var card=h("article",{class:"task lv"+cx.lv});
   var meta=h("div",{class:"meta"},
-    h("span",{class:"badge lv",html:slope(cx.lv)+(cx.lv==="T"?LVN.T:ZN[cx.lv]+" · "+LVN[cx.lv])}),
+    h("span",{class:"badge lv",html:cx.badge||(slope(cx.lv)+(cx.lv==="T"?LVN.T:ZN[cx.lv]+" · "+LVN[cx.lv]))}),
     h("span",{class:"badge"},fmtName(sp)),
     h("span",{class:"cnt",html:cx.count||""}));
   var stem=h("div",{class:"stem",html:sp.q});
@@ -2410,7 +2470,8 @@ function taskCard(sp,cx){
   card.append(meta,h("h2",{html:cx.title}),tbody);
   if(sp.fig){ var f=sp.fig(); left.append(f.classList&&f.classList.contains("fig")?f:h("div",{class:"fig"+(sp.figWide?"":" narrow")+((f.svg||f).getAttribute("viewBox")==="0 0 250 210"?" small":"")},f.svg||f)); }
   /* Werkzeug zum Ausprobieren: wird erst gebaut, wenn es jemand öffnet */
-  var hp=helpOf(sp,cx.kind);
+  var EX=cx.exam||null;
+  var hp=EX&&!EX.help?null:helpOf(sp,cx.kind);
   if(hp){
     var hbody=h("div",{class:"hbody"}), built=false;
     var hbox=h("section",{class:"helpbox",hidden:true,"aria-label":hp.name},
@@ -2433,14 +2494,14 @@ function taskCard(sp,cx){
   if(rule) right.append(h("div",{class:"rule",html:rule}));
   right.append(h("div",{class:"ans"},R.el));
   var hints=h("div",{class:"hints"}), fb=h("div",{class:"fb",hidden:true}), post=h("div",{class:"acts",hidden:true}), solHost=h("div",{});
-  var tips=sp.tips||[];
+  var tips=EX&&!EX.help?[]:(sp.tips||[]);
   var tipB=btn(IC.tip+"<span>Tipp</span>",function(){
     if(tipN>=tips.length) return;
     hints.append(h("div",{class:"hint",html:"<b>Tipp"+(tips.length>1?" "+(tipN+1):"")+":</b> "+tips[tipN]})); tipN++; tidy(hints);
     tipB.lastChild.textContent = tipN<tips.length?"Noch ein Tipp":"Alle Tipps offen"; if(tipN>=tips.length) tipB.disabled=true;
   },"tip");
   if(!tips.length) tipB.hidden=true;
-  var evB=btn(R.twoStep?"Musterlösung zeigen":"Auswerten",function(){ evaluate(); },"prim");
+  var evB=btn(EX&&EX.defer?"Weiter":R.twoStep?"Musterlösung zeigen":"Auswerten",function(){ if(EX&&EX.defer){ if(cx.onNext) cx.onNext(); } else evaluate(); },"prim");
   var acts=h("div",{class:"acts"},tipB,h("span",{class:"sp"}),evB);
   right.append(acts,hints,fb);
   card.append(post,solHost);
@@ -2449,10 +2510,22 @@ function taskCard(sp,cx){
     if(R.twoStep&&phase===0){ R.reveal(); phase=1; evB.textContent="Selbstkontrolle abschließen"; return; }
     var rd=R.ready();
     if(rd!==true){ fb.hidden=false; fb.className="fb"; fb.innerHTML=rd; return; }
-    var res=R.check(); tries++;
+    conclude(R.check());
+  }
+  /* Prüfungsmodus mit Auswertung am Ende: erst jetzt wird die Karte gewertet */
+  function grade(){
+    if(solved||card.api.res) return card.api.res;
+    var rd=R.ready(), res;
+    try{ res=R.check(); }catch(x){ res={ok:false,frac:0}; }
+    if(rd!==true){ res.ok=false; }
+    if(EX&&EX.defer) evB.hidden=true;
+    conclude(res,true); return res;
+  }
+  function conclude(res,quiet){
+    tries++; card.api.res=res;
     evB.disabled=true; tipB.disabled=true;
     solved=res.ok;
-    var gain=cx.onDone?cx.onDone(res.ok,{tips:tipN}):0;
+    var gain=cx.onDone?cx.onDone(res.ok,{tips:tipN,res:res}):0;
     fb.hidden=false; fb.className="fb "+(res.ok?"ok":"no");
     fb.innerHTML=(res.ok&&gain?"<span class='gain'>+"+num(gain)+" km</span>":"")+"<b class='v'>"+(res.ok?pick(PRAISE):"Noch nicht.")+"</b> "+(res.msg||"")+
       (res.ok&&sp.after?" "+sp.after:"");
@@ -2466,15 +2539,15 @@ function taskCard(sp,cx){
       },res.ok?"":"prim");
       post.append(sb);
     }
-    if(cx.onMore) post.append(btn(IC.more+"<span>"+(cx.moreLabel||"Noch so eine")+"</span>",cx.onMore,""));
-    if(!res.ok&&cx.onRetry) post.append(btn("Nochmal versuchen",cx.onRetry,""));
+    if(cx.onMore&&!(EX&&!EX.more)) post.append(btn(IC.more+"<span>"+(cx.moreLabel||"Noch so eine")+"</span>",cx.onMore,""));
+    if(!res.ok&&cx.onRetry&&!EX) post.append(btn("Nochmal versuchen",cx.onRetry,""));
     post.append(h("span",{class:"sp"}));
     if(cx.onNext) post.append(btn("<span>"+(cx.nextLabel||"Weiter")+"</span>"+IC.next,cx.onNext,res.ok?"prim":""));
     tidy(card);
   }
-  card.addEventListener("keydown",function(e){ if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.type==="text"&&!evB.disabled){ e.preventDefault(); evaluate(); } });
+  card.addEventListener("keydown",function(e){ if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.type==="text"&&!evB.disabled){ e.preventDefault(); evB.click(); } });
   tidy(card);
-  card.api={R:R,evaluate:evaluate,isSolved:function(){ return solved; },post:post};
+  card.api={R:R,evaluate:evaluate,grade:grade,res:null,lock:function(){ evB.hidden=true; tipB.disabled=true; },isSolved:function(){ return solved; },post:post};
   return card;
 }
 
@@ -2484,7 +2557,7 @@ var CH=[
   {n:1,t:"Funktionen untersuchen",s:"Nullstellen, Monotonie, Extremstellen, Krümmung, Symmetrie, Umkehrung"},
   {n:2,t:"Änderungsmaße",s:"absolut, relativ, mittlere Änderungsrate, Änderungsfaktor"},
   {n:3,t:"Potenzen und Wurzeln",s:"Rechenregeln, negative und rationale Hochzahlen"},
-  {n:4,t:"Potenz- und Polynomfunktionen",s:"a · xᶻ + b, indirekte Proportionalität, Grad und Verlauf"},
+  {n:4,t:"Potenz- und Polynomfunktionen",s:"Grad und Anzahlen, Hoch- und Tiefpunkte, Monotonie, Krümmung, Potenzfunktionen"},
   {n:5,col:6,t:"Exponentialfunktionen",s:"c · aˣ, Prozent und Faktor, Halbieren und Verdoppeln"}
 ];
 var TASKS=[], GEN={};
@@ -3897,25 +3970,207 @@ G("po.neg",3,"X","Negative Basis",function(){
     tips:["Teste mit "+M("a = -2")+".","Bei "+M("(-a)^k")+" ist die Basis positiv."],sol:{merk:"Gerade Hochzahl: positiv. Ungerade: Vorzeichen bleibt. Ein Minus vor der Potenz wirkt nach dem Potenzieren.",steps:["Mit "+M("a = -2")+" jeden Ausdruck ausrechnen."]}};
 });
 
+/* ══════════ Bergprofile: Hilfen für Linie 4 und den Knoten „Höhenweg“ ══════════
+   Ein Höhenprofil ist eine knotCurve, die um 6 km nach rechts und 14 Einheiten nach oben verschoben wird.
+   x in km (0 bis 12), Höhe in 100 m. Hoch- und Tiefpunkte liegen bei ganzzahligen Kilometern. */
+function shiftC(C,dx,dy){
+  var S={a:C.a+dx,b:C.b+dx,ya:C.ya+dy,yb:C.yb+dy,ymin:C.ymin+dy,ymax:C.ymax+dy};
+  S.f=function(x){ return C.f(x-dx)+dy; };
+  S.ext=C.ext.map(function(e){ return {x:e.x+dx,y:e.y+dy,max:e.max,min:e.min}; });
+  S.pieces=C.pieces.map(function(p){ return {x1:p.x1+dx,x2:p.x2+dx,up:p.up}; });
+  S.wende=C.wende.map(function(w){ return w+dx; });
+  S.krb=C.krb.map(function(k){ return {x1:k.x1+dx,x2:k.x2+dx,links:k.links}; });
+  S.zeros=[]; S.gmax={x:C.gmax.x+dx,y:C.gmax.y+dy}; S.gmin={x:C.gmin.x+dx,y:C.gmin.y+dy};
+  return S;
+}
+function bergOK(B){ /* höchster und tiefster Punkt eindeutig */
+  var pts=[{x:B.a,y:B.ya}].concat(B.ext.map(function(e){ return {x:e.x,y:e.y}; }),[{x:B.b,y:B.yb}]);
+  var mx=Math.max.apply(null,pts.map(function(p){ return p.y; })), mn=Math.min.apply(null,pts.map(function(p){ return p.y; }));
+  return pts.filter(function(p){ return p.y===mx; }).length===1&&pts.filter(function(p){ return p.y===mn; }).length===1;
+}
+function bergC(o){ var g=0,B; do{ B=shiftC(rCurve(o),6,14); g++; }while((!bergOK(B)||(o&&o.min&&B.ext.length<o.min))&&g<300); return B; }
+var BCUR={
+  A:shiftC(knotCurve(-6,-1,[[-3,3],[1,-2],[4,2]],6,0),6,14),
+  B:shiftC(knotCurve(-6,1,[[-4,4],[0,-1],[3,3]],6,-2),6,14),
+  K:shiftC(knotCurve(-6,0,[[-2,4],[2,-2],[5,3]],6,1),6,14),
+  D:shiftC(knotCurve(-6,-1,[[-4,2],[0,-3]],6,4),6,14)
+};
+function hm(y){ return num(Math.round(y*100))+" m"; }
+function bYR(B){ return [Math.floor(B.ymin/2)*2-2,Math.ceil(B.ymax/2)*2+2]; }
+function bfig(B,o){ o=o||{}; return gfig(580,o.H||380,[-.5,12.5],o.yr||bYR(B),"x in km","Höhe in 100 m",1,2,function(P){ P.fn(B.f,"--dx",3,{from:B.a,to:B.b}); P.pt(B.a,B.ya,"--dx","",{r:4.5}); P.pt(B.b,B.yb,"--dx","",{r:4.5}); }); }
+function bviz(B,o){ o=o||{}; return vPlane([-.5,12.5],o.yr||bYR(B),{W:580,H:o.H||380,xl:"x in km",yl:"Höhe in 100 m",sx:1,sy:2,pre:function(P){ P.fn(B.f,"--ink-3",2.6,{from:B.a,to:B.b}); P.pt(B.a,B.ya,"--ink-3","",{r:4}); P.pt(B.b,B.yb,"--ink-3","",{r:4}); if(o.pre) o.pre(P); }}); }
+var BERG_MERK="Ein Gipfel ist ein lokales Maximum, ein Tal ein lokales Minimum. Start- und Zielpunkt zählen nicht dazu. Der höchste Punkt der ganzen Wanderung ist das globale Maximum und kann auch am Start oder Ziel liegen.";
+var BERG_LEAD="Das Höhenprofil einer Wanderung ist der Graph einer Funktion "+M("f")+": "+M("x")+" ist die Strecke in Kilometern, "+M("f(x)")+" die Höhe in Einheiten zu 100 m (14 bedeutet also 1400 m). ";
+function bergSol(B,merk){ return {viz:bviz(B),merk:merk||BERG_MERK,steps:[
+  {t:"Zuerst Gipfel und Täler markieren. Sie teilen den Weg in Abschnitte.",a:function(V){ B.ext.forEach(function(e,i){ V.Pt(e.x,e.y,e.max?"Gipfel":"Tal","--dy",i*.25,{dy:e.max?-10:22}); }); }},
+  {t:"Bergauf grün, bergab rot.",a:function(V){ B.pieces.forEach(function(p,i){ V.F(B.f,p.up?"--rise":"--fall",i*.2,{from:p.x1,to:p.x2}); }); }},
+  {t:"Zwischen einem Gipfel und dem nächsten Tal wechselt die Krümmung.",a:function(V){ B.wende.forEach(function(w,i){ V.Pt(w,B.f(w),"WP","--gold",i*.2,{r:5}); }); }},
+  "Mit diesen Markierungen lässt sich jede Aussage einzeln prüfen."]}; }
+function bergFacts(B,o){
+  o=o||{}; var P=[], ex=B.ext, nx=ex.length, kmS=function(x){ return "Kilometer "+num(x); };
+  function mo(a,b,up,r,w){ P.push({s:"Zwischen "+kmS(a)+" und "+kmS(b)+" führt der Weg ohne Unterbrechung "+(up?"bergauf":"bergab")+".",r:r,w:w,t:"m"}); }
+  B.pieces.forEach(function(p,i){
+    mo(p.x1,p.x2,p.up,1,"Von km "+num(p.x1)+" bis km "+num(p.x2)+" geht es ständig "+(p.up?"hinauf":"hinunter")+".");
+    mo(p.x1,p.x2,!p.up,0,"Dort geht es "+(p.up?"hinauf":"hinunter")+", nicht "+(p.up?"hinunter":"hinauf")+".");
+    var q=B.pieces[i+1];
+    if(q){ var a=p.x2-p.x1>=2?p.x1+1:p.x1, b=q.x2-q.x1>=2?q.x2-1:q.x2; mo(a,b,p.up,0,"Bei km "+num(p.x2)+" ändert der Weg seine Richtung.");
+      if(p.x2-p.x1>=4) mo(p.x1+1,p.x2-1,p.up,1,"Das Stück liegt ganz im "+(p.up?"ansteigenden":"abfallenden")+" Abschnitt von km "+num(p.x1)+" bis km "+num(p.x2)+"."); }
+  });
+  if(o.mono) return P;
+  ex.forEach(function(e){
+    P.push({s:"Bei "+kmS(e.x)+" liegt ein "+(e.max?"Gipfel (lokales Maximum)":"Tal (lokales Minimum)")+".",r:1,w:"Rund um km "+num(e.x)+" liegt der Weg "+(e.max?"tiefer":"höher")+".",t:"e"});
+    P.push({s:"Bei "+kmS(e.x)+" liegt ein "+(e.max?"Tal (lokales Minimum)":"Gipfel (lokales Maximum)")+".",r:0,w:"Bei km "+num(e.x)+" liegt ein "+(e.max?"Gipfel":"Tal")+".",t:"e"});
+  });
+  var nmx=ex.filter(function(e){ return e.max; }).length, nmn=nx-nmx;
+  P.push({s:"Das Profil hat genau "+nx+" lokale Extremstellen.",r:1,w:nmx+" Gipfel und "+nmn+" Tal"+(nmn===1?"":"täler")+".",t:"n"});
+  P.push({s:"Das Profil hat genau "+(nx+1)+" lokale Extremstellen.",r:0,w:"Im Inneren gibt es "+nx+". Start und Ziel zählen nicht.",t:"n"});
+  var gM=B.gmax, gm=B.gmin, gMrand=(gM.x===B.a||gM.x===B.b), gmrand=(gm.x===B.a||gm.x===B.b);
+  P.push({s:"Der höchste Punkt der Wanderung liegt bei "+kmS(gM.x)+".",r:1,w:"Dort ist der Weg mit "+hm(gM.y)+" am höchsten.",t:"g"});
+  var oth=ex.filter(function(e){ return e.max&&e.x!==gM.x; })[0];
+  if(oth) P.push({s:"Der höchste Punkt der Wanderung liegt bei "+kmS(oth.x)+".",r:0,w:"Bei km "+num(gM.x)+" liegt der Weg höher.",t:"g"});
+  P.push({s:"Der tiefste Punkt der Wanderung liegt bei "+kmS(gm.x)+".",r:1,w:"Dort ist der Weg mit "+hm(gm.y)+" am tiefsten.",t:"g"});
+  var oth2=ex.filter(function(e){ return e.min&&e.x!==gm.x; })[0];
+  if(oth2) P.push({s:"Der tiefste Punkt der Wanderung liegt bei "+kmS(oth2.x)+".",r:0,w:"Bei km "+num(gm.x)+" liegt der Weg tiefer.",t:"g"});
+  P.push({s:"Der höchste Punkt der Wanderung "+(gMrand?"ist kein Gipfel, sondern liegt am Rand (Start oder Ziel).":"ist ein Gipfel und damit lokales und globales Maximum."),r:1,w:gMrand?"Randpunkte sind keine lokalen Extremstellen.":"Im Inneren liegt er höher als seine Umgebung.",t:"g"});
+  P.push({s:"Der höchste Punkt der Wanderung "+(gMrand?"ist ein Gipfel und damit lokales und globales Maximum.":"ist kein Gipfel, sondern liegt am Rand (Start oder Ziel)."),r:0,w:gMrand?"Er liegt am Rand und zählt dort nicht als lokales Maximum.":"Er liegt im Inneren und ist ein Gipfel.",t:"g"});
+  P.push({s:"Der tiefste Punkt der Wanderung "+(gmrand?"liegt am Rand (Start oder Ziel).":"ist ein Tal und damit lokales und globales Minimum."),r:1,w:gmrand?"Randpunkte sind keine lokalen Extremstellen.":"Im Inneren liegt er tiefer als seine Umgebung.",t:"g"});
+  P.push({s:"Der tiefste Punkt der Wanderung "+(gmrand?"ist ein Tal und damit lokales und globales Minimum.":"liegt am Rand (Start oder Ziel)."),r:0,w:gmrand?"Er liegt am Rand und ist kein lokales Minimum.":"Er liegt im Inneren und ist ein Tal.",t:"g"});
+  P.push({s:"Wird das Profil durch eine Polynomfunktion beschrieben, hat diese mindestens den Grad "+(nx+1)+".",r:1,w:"Mit "+nx+" Extremstellen braucht man mindestens Grad "+(nx+1)+": Grad "+M("n")+" erlaubt höchstens "+M("n - 1")+" Extremstellen.",t:"d"});
+  P.push({s:"Wird das Profil durch eine Polynomfunktion beschrieben, hat diese höchstens den Grad "+nx+".",r:0,w:"Grad "+nx+" erlaubt höchstens "+(nx-1)+" Extremstellen.",t:"d"});
+  B.krb.forEach(function(k){ if(k.x2-k.x1<1) return;
+    P.push({s:"Zwischen "+kmS(k.x1)+" und "+kmS(k.x2)+" ist das Profil "+(k.links?"linksgekrümmt":"rechtsgekrümmt")+".",r:1,w:"Dort wölbt sich der Weg wie "+(k.links?"eine Mulde":"eine Kuppe")+".",t:"k"});
+    P.push({s:"Zwischen "+kmS(k.x1)+" und "+kmS(k.x2)+" ist das Profil "+(k.links?"rechtsgekrümmt":"linksgekrümmt")+".",r:0,w:"Dort wölbt sich der Weg wie "+(k.links?"eine Mulde":"eine Kuppe")+".",t:"k"}); });
+  B.wende.forEach(function(w){ P.push({s:"Bei "+kmS(w)+" wechselt die Krümmung des Profils.",r:1,w:"Zwischen Gipfel und Tal liegt eine Wendestelle.",t:"w"}); });
+  if(ex[0]) P.push({s:"Bei "+kmS(ex[0].x)+" wechselt die Krümmung des Profils.",r:0,w:"Bei km "+num(ex[0].x)+" liegt ein "+(ex[0].max?"Gipfel":"Tal")+". Die Krümmung ändert sich dort nicht.",t:"w"});
+  return P;
+}
+
+/* ---------- py.berg: Profil lesen (halboffen) ---------- */
+function bergInput(B){
+  var nmx=B.ext.filter(function(e){ return e.max; }).length, nmn=B.ext.length-nmx;
+  return {fmt:"input",q:BERG_LEAD+"Die Abbildung zeigt das Höhenprofil einer Wanderung von Kilometer 0 bis Kilometer 12. Start- und Zielpunkt zählen nicht als Gipfel oder Tal.",
+    fig:bfig(B),fields:[{l:"Gipfel (lokale Maxima):",r:nmx},{l:"Täler (lokale Minima):",r:nmn},{l:"höchster Punkt der Wanderung:",r:B.gmax.y*100,tol:50,u:"m"}],
+    tips:["Ein Gipfel ist höher als seine Umgebung links und rechts, ein Tal tiefer.","Ein Teilstück ist ein Gipfel nur, wenn es davor hinauf und danach hinunter geht. Der Rand zählt nicht.","Der höchste Punkt kann auch am Start oder Ziel liegen. Lies die Höhe an der senkrechten Achse ab (eine Einheit sind 100 m)."],
+    sol:bergSol(B)};
+}
+G("py.berg",4,"L","Höhenprofil lesen",function(){ return bergInput(bergC()); });
+
+/* ---------- py.mono: wo steigt, wo fällt der Weg? ---------- */
+function bergMono(B,p,s){
+  return {fmt:"bereich",q:BERG_LEAD+"Markiere auf der "+M("x")+"-Achse den größten Abschnitt, in dem der Weg ohne Unterbrechung "+(p.up?"bergauf":"bergab")+" führt und der Kilometer "+num(s)+" liegt.",
+    W:580,H:380,xr:[-.5,12.5],yr:bYR(B),xl:"x in km",yl:"Höhe in 100 m",sx:1,sy:2,snap:1,from:p.x1,to:p.x2,
+    pre:function(P){ P.fn(B.f,"--ink",3,{from:B.a,to:B.b}); P.pt(B.a,B.ya,"--ink","",{r:4}); P.pt(B.b,B.yb,"--ink","",{r:4}); },
+    tips:["Geh von Kilometer "+num(s)+" nach links und nach rechts, solange der Weg "+(p.up?"ansteigt":"abfällt")+".","Ein solcher Abschnitt endet am nächsten Gipfel, Tal oder am Rand."],
+    sol:{viz:bviz(B),merk:"Monotonie ändert sich nur an Gipfeln und Tälern. Ein Abschnitt reicht vom Rand oder einem Extrempunkt bis zum nächsten.",steps:[
+      {t:"Kilometer "+num(s)+" markieren.",a:function(V){ V.V(s,"--gold"); }},
+      {t:"Der "+(p.up?"ansteigende":"abfallende")+" Abschnitt um diese Stelle.",m:M(iv(p.x1,p.x2)),a:function(V){ V.F(B.f,p.up?"--rise":"--fall",0,{from:p.x1,to:p.x2}); }}]}};
+}
+function bergMonoRnd(){
+  var B=bergC(), cand=B.pieces.filter(function(p){ return p.x2-p.x1>=2; }), p=pick(cand), s=p.x1+1+ri(0,Math.max(0,p.x2-p.x1-2));
+  return bergMono(B,p,s);
+}
+G("py.mono",4,"M","Wo steigt der Weg?",bergMonoRnd);
+GV("py.mono","xaus5",function(){
+  var B=bergC();
+  return {fmt:"mc",pick:"x",q:BERG_LEAD+"Die Abbildung zeigt ein Höhenprofil. Kreuze alle zutreffenden Aussagen an.",fig:bfig(B),fx:B.f,items:pickPool(bergFacts(B,{mono:true}),5,"x"),
+    tips:MONO_TIP,sol:bergSol(B,"Monotonie ändert sich nur an Gipfeln und Tälern.")};
+});
+
+/* ---------- py.kruem: Mulde oder Kuppe ---------- */
+function bergKruem(B,seg,w){
+  var want=seg.links, wrongK=B.krb.filter(function(k){ return k.links!==want; })[0];
+  var o1=[M(iv(seg.x1,seg.x2))]; if(wrongK) o1.push(M(iv(wrongK.x1,wrongK.x2)));
+  var kn=B.ext.length>1?M(iv(B.ext[0].x,B.ext[1].x)):M(iv(B.a,B.b)); if(o1.indexOf(kn)<0) o1.push(kn); else o1.push(M(iv(B.a,B.b)));
+  o1=o1.filter(function(x,i){ return o1.indexOf(x)===i; }); while(o1.length<3) o1.push(M(iv(B.a,B.a+1+o1.length)));
+  var o2=[M("x = "+fk(w))]; B.ext.forEach(function(e){ if(o2.length<3) o2.push(M("x = "+fk(e.x))); }); if(o2.length<3) o2.push(M("x = "+fk(B.a)));
+  var g1=shGap(o1.slice(0,3),0), g2=shGap(o2,0);
+  g1.w="Dort wölbt sich der Weg wie "+(want?"eine Mulde":"eine Kuppe")+"."; g2.w="Die Krümmung wechselt zwischen einem Gipfel und dem nächsten Tal.";
+  return {fmt:"luecke",q:BERG_LEAD+"Die Abbildung zeigt ein Höhenprofil. Ergänze den Satz so, dass eine richtige Aussage entsteht.",fig:bfig(B),fx:B.f,
+    satz:"Im Intervall ___ ist das Profil "+(want?"linksgekrümmt (eine Mulde)":"rechtsgekrümmt (eine Kuppe)")+", und an der Stelle ___ hat es eine Wendestelle.",gaps:[g1,g2],
+    tips:["Linksgekrümmt: wie eine Mulde oder Schüssel. Rechtsgekrümmt: wie eine Kuppe oder ein Hügel.","Wendestellen liegen zwischen einem Gipfel und dem nächsten Tal."],
+    sol:bergSol(B,"Linksgekrümmt (positiv gekrümmt): Mulde. Rechtsgekrümmt (negativ gekrümmt): Kuppe. An der Wendestelle wechselt die Krümmung.")};
+}
+G("py.kruem",4,"M","Mulde oder Kuppe?",function(){
+  var B=bergC({min:2}), seg=pick(B.krb.filter(function(k){ return k.x2-k.x1>=1; }));
+  return bergKruem(B,seg,pick(B.wende));
+});
+GV("py.kruem","1aus5",function(){
+  var B=bergC({min:3});
+  var pool=bergFacts(B).filter(function(x){ return x.t==="k"||x.t==="w"; });
+  return {fmt:"mc",pick:1,q:BERG_LEAD+"Die Abbildung zeigt ein Höhenprofil. Kreuze die zutreffende Aussage an.",fig:bfig(B),fx:B.f,items:pickPool(pool,5,1),
+    tips:["Linksgekrümmt: Mulde. Rechtsgekrümmt: Kuppe.","Wendestellen liegen zwischen einem Gipfel und dem nächsten Tal."],sol:bergSol(B)};
+});
+
+/* ---------- py.glob: lokal oder global ---------- */
+G("py.glob",4,"M","Lokal oder global?",function(){
+  var B=bergC({min:2}), pool=bergFacts(B).filter(function(x){ return x.t==="e"||x.t==="g"; });
+  return {fmt:"mc",pick:1,q:BERG_LEAD+"Die Abbildung zeigt ein Höhenprofil. Start- und Zielpunkt zählen nicht als lokale Extremstellen. Kreuze die zutreffende Aussage an.",fig:bfig(B),fx:B.f,items:pickPool(pool,5,1),
+    tips:["Lokal: höher oder tiefer als die unmittelbare Umgebung. Global: im ganzen Bereich am höchsten oder tiefsten.","Vergleiche alle Gipfel, Täler und die beiden Randpunkte."],sol:bergSol(B)};
+});
+GV("py.glob","graphpt",function(){
+  var B, mode, xs, g=0;
+  do{ B=bergC({min:2}); mode=pick(["gmin","gmax","lmin","lmax"]); g++;
+    var all=[{x:B.a,y:B.ya}].concat(B.ext.map(function(e){ return {x:e.x,y:e.y}; }),[{x:B.b,y:B.yb}]);
+    if(mode==="gmin") xs=[B.gmin.x]; else if(mode==="gmax") xs=[B.gmax.x];
+    else xs=B.ext.filter(function(e){ return mode==="lmax"?e.max:e.min; }).map(function(e){ return e.x; });
+  }while(!xs.length&&g<100);
+  var Q={gmin:"der tiefste Punkt der ganzen Wanderung liegt",gmax:"der höchste Punkt der ganzen Wanderung liegt",lmin:"ein Tal (lokales Minimum) liegt",lmax:"ein Gipfel (lokales Maximum) liegt"}[mode];
+  return {fmt:"graphpt",q:BERG_LEAD+"Setz "+(mode[0]==="g"?"einen Punkt auf das Profil, wo ":"je einen Punkt auf das Profil, wo ")+Q+".",
+    W:580,H:380,xr:[-.5,12.5],yr:bYR(B),xl:"x in km",yl:"Höhe in 100 m",sx:1,sy:2,snap:1,xs:xs,fx:B.f,
+    pre:function(P){ P.fn(B.f,"--ink",3,{from:B.a,to:B.b}); P.pt(B.a,B.ya,"--ink","",{r:4}); P.pt(B.b,B.yb,"--ink","",{r:4}); },
+    miss:"Richtig wäre: "+xs.map(function(x){ return M("x = "+fk(x)); }).join(" und ")+".",
+    tips:[mode[0]==="g"?"Vergleiche alle Gipfel oder Täler und die beiden Randpunkte.":"Lokale Extremstellen liegen im Inneren, nicht am Start oder Ziel.","Der Punkt springt von selbst auf den Weg. Es kommt nur auf die Stelle an."],sol:bergSol(B)};
+});
+GV("py.glob","2aus5",function(){
+  var B=bergC({min:2});
+  return {fmt:"mc",pick:2,q:BERG_LEAD+"Die Abbildung zeigt ein Höhenprofil. Kreuze die beiden zutreffenden Aussagen an.",fig:bfig(B),fx:B.f,items:pickPool(bergFacts(B),5,2),
+    tips:["Markiere am Profil Gipfel, Täler und Wendestellen.","Das globale Maximum kann auch am Rand liegen."],sol:bergSol(B)};
+});
+
+/* ---------- py.prof: Profil und Beschreibung (2 zu 4) ---------- */
+var PROF=[
+  {k:"p1",C:knotCurve(-3,-2,[[0,2]],3,-2),s:"Ein Gipfel, sonst nichts: ein lokales Maximum, kein lokales Minimum. Mindestens Grad 2."},
+  {k:"p2",C:knotCurve(-3,-1,[[-1,2],[1,-2]],3,2),s:"Ein Gipfel, danach ein Tal, dann geht es endlos weiter bergauf. Mindestens Grad 3."},
+  {k:"p3",C:knotCurve(-3,-2,[[-2,2],[0,-2],[2,2]],3,-2),s:"Zwei Gipfel mit einem Tal dazwischen, links und rechts fällt der Weg ab. Mindestens Grad 4."},
+  {k:"p4",C:knotCurve(-3,-1,[[-2,2],[-.7,-1],[.7,2],[2,-1]],3,2),s:"Zwei Gipfel und zwei Täler im Wechsel, rechts endet der Weg bergauf. Mindestens Grad 5."}];
+function profMini(p){ return function(){ return mini(function(P){ P.fn(p.C.f,"--dx",2.6,{from:p.C.a,to:p.C.b}); }); }; }
+function profZu(keys,o){
+  var opts=PROF.map(function(p){ return {key:p.k,s:p.s}; });
+  return zuOf(keys.map(function(k){ var p=PROF.filter(function(x){ return x.k===k; })[0]; return {s:profMini(p),key:k,w:p.s}; }),opts,{keep:!!(o&&o.keep),q:"Die Abbildungen zeigen den Verlauf zweier Polynomfunktionen, die jeweils ein Höhenprofil beschreiben. Ordne jedem Graphen die passende Beschreibung zu.",
+    tips:["Zähl die Gipfel und Täler. Mit "+M("n")+" Extremstellen ist der Grad mindestens "+M("n + 1")+".","Wohin zeigen die beiden Enden? Ungerader Grad: in verschiedene Richtungen."],
+    sol:{merk:PY_MERK,steps:["Gipfel und Täler zählen: "+M("n")+" Extremstellen verlangen mindestens Grad "+M("n + 1")+".","Verlauf an den Enden vergleichen: Zeigen beide Enden nach unten (oder nach oben), ist der Grad gerade."]}});
+}
+G("py.prof",4,"X","Profil und Beschreibung",function(){ return profZu(sample(["p1","p2","p3","p4"],2)); });
+
+/* ---------- py.tour: Wanderung skizzieren ---------- */
+function tourMake(t1,H1,drop,gain,S){
+  var kx=[0,2,4,6,8,10,12], t2=t1+2, H2=H1-drop, E=H1+gain, X1=kx[t1], X2=kx[t2];
+  var y=[]; for(var i=0;i<=t1;i++) y[i]=Math.round(S+(H1-S)*i/t1);
+  y[t1+1]=Math.round((H1+H2)/2); y[t2]=H2; for(var j=t2+1;j<7;j++) y[j]=Math.round(H2+(E-H2)*(j-t2)/(6-t2));
+  return {fmt:"kurve",q:"Eine Wanderung von Kilometer 0 bis Kilometer 12 wird durch den Graphen einer Polynomfunktion "+M("f")+" beschrieben ("+M("x")+" in km, "+M("f(x)")+" in 100 m). Es gilt:<ul class='plist'><li>Der Start liegt auf "+hm(S)+".</li><li>Der Weg führt bergauf bis zum Gipfel bei Kilometer "+num(X1)+" ("+hm(H1)+"),</li><li>dann bergab bis zum Tal bei Kilometer "+num(X2)+" ("+hm(H2)+")</li><li>und danach bergauf bis zum Ziel auf "+hm(E)+", dem höchsten Punkt der Wanderung.</li></ul>Skizziere ein mögliches Höhenprofil.",
+    W:580,H:420,xr:[-.5,12.5],yr:[8,22],xl:"x in km",yl:"Höhe in 100 m",sx:1,sy:2,kx:kx,snapY:1,y0:kx.map(function(){ return 15; }),model:y,
+    test:function(u){ var w=[], inc=function(a,b){ for(var i=a;i<b;i++) if(!(u[i]<u[i+1])) return false; return true; }, dec=function(a,b){ for(var i=a;i<b;i++) if(!(u[i]>u[i+1])) return false; return true; };
+      if(u[0]!==S) w.push("Der Start muss auf "+hm(S)+" liegen.");
+      if(!inc(0,t1)) w.push("Bis Kilometer "+num(X1)+" muss der Weg ständig bergauf führen.");
+      if(u[t1]!==H1) w.push("Der Gipfel bei Kilometer "+num(X1)+" muss auf "+hm(H1)+" liegen.");
+      if(!dec(t1,t2)) w.push("Von Kilometer "+num(X1)+" bis Kilometer "+num(X2)+" muss der Weg ständig bergab führen.");
+      if(u[t2]!==H2) w.push("Das Tal bei Kilometer "+num(X2)+" muss auf "+hm(H2)+" liegen.");
+      if(!inc(t2,6)) w.push("Ab Kilometer "+num(X2)+" muss der Weg bis zum Ziel ständig bergauf führen.");
+      if(u[6]!==E) w.push("Das Ziel muss auf "+hm(E)+" liegen.");
+      return {ok:!w.length,why:w}; },
+    tips:["Trag zuerst Gipfel, Tal, Start und Ziel ein.","Das Ziel liegt höher als der Gipfel. Der höchste Punkt ist also ein Randpunkt und kein lokales Maximum.","Ein Gipfel ist hier ein lokales Maximum, ein Tal ein lokales Minimum."],
+    sol:{viz:bviz({a:0,b:12,ya:S,yb:E,ymin:H2,ymax:E,f:mCubic(kx,y)},{yr:[8,22]}),merk:BERG_MERK,steps:[{t:"Feste Punkte.",a:function(V){ V.Pt(0,S,"Start","--dy"); V.Pt(X1,H1,"Gipfel","--dy",.2,{dy:-10}); V.Pt(X2,H2,"Tal","--dy",.4,{dy:22}); V.Pt(12,E,"Ziel","--dy",.6); }},{t:"Dazwischen ständig steigend, fallend, steigend.",a:function(V){ V.F(mCubic(kx,y),"--dx",0,{from:0,to:12}); }}]}};
+}
+G("py.tour",4,"X","Wanderung skizzieren",function(){
+  var t1=pick([2,3]), H1=pick([16,17,18,19]), S=H1-(t1===3?pick([7,8]):pick([5,6]));
+  return tourMake(t1,H1,pick([3,4,5]),pick([1,2]),S);
+});
+
 /* ══════════ Linie 4 · Potenz- und Polynomfunktionen ══════════ */
 var PY_MERK="Eine Polynomfunktion vom Grad "+M("n")+" hat höchstens "+M("n")+" Nullstellen, höchstens "+M("n - 1")+" Extremstellen und höchstens "+M("n - 2")+" Wendestellen. Ist "+M("n")+" ungerade, hat sie mindestens eine Nullstelle, ab Grad 3 auch mindestens eine Wendestelle.";
 var PF_MERK="Potenzfunktion "+M("f(x) = a * x^z")+": Gerade Hochzahl ergibt einen zur "+M("y")+"-Achse symmetrischen Graphen, ungerade einen punktsymmetrischen. Ein negatives "+M("a")+" spiegelt an der "+M("x")+"-Achse, ein negatives "+M("z")+" bringt Asymptoten.";
 function powMini(a,z){ return function(){ return mini(function(P){ var f=function(x){ return a*Math.pow(x,z); }; if(z<0){ P.fn(f,"--dx",2.6,{from:-3,to:-.05}); P.fn(f,"--dx",2.6,{from:.05,to:3}); } else P.fn(f,"--dx",2.6); }); }; }
 function polyMini(f,o){ return function(){ return mini(function(P){ P.fn(f,"--dx",2.6); },o); }; }
-/* Ist der eingegebene Term ein Polynom vom Grad n mit diesen Nullstellen? */
-function polyTest(rs,n){ return function(raw){
-  var p; try{ p=TE.parse(raw); }catch(e){ return "Diese Eingabe lässt sich nicht als Term lesen."; }
-  if(p.vars.some(function(v){ return v!=="x"; })) return "Verwende nur die Variable "+M("x")+".";
-  var f=function(x){ return p.f({x:x}); };
-  for(var i=0;i<rs.length;i++) if(!(Math.abs(f(rs[i]))<1e-6)) return "An der Stelle "+num(rs[i])+" ist der Funktionswert nicht 0.";
-  var v=[]; for(var k=0;k<=n+2;k++) v.push(f(k*.7+.3));
-  function diff(a){ var b=[]; for(var j=0;j<a.length-1;j++) b.push(a[j+1]-a[j]); return b; }
-  var d=v; for(var q=0;q<n;q++) d=diff(d);
-  var dn=d, dn1=diff(d), sc=Math.max(1,Math.max.apply(null,v.map(Math.abs)));
-  if(dn1.some(function(x){ return Math.abs(x)>1e-6*sc; })) return "Das ist keine Polynomfunktion vom Grad "+n+": Der Grad ist zu hoch, oder der Term ist kein Polynom.";
-  if(dn.every(function(x){ return Math.abs(x)<1e-9*sc; })) return "Der Grad ist zu klein.";
-  return true; }; }
-
 /* ---------- Zone 1 ---------- */
 T("y1",4,"L","pf.typ","Graph und Parameter",SRC_P("1_484"),function(){
   var opts=[{key:"p1",s:M("a > 0")+", "+M("z = 1")},{key:"p2",s:M("a > 0")+", "+M("z = 2")},{key:"p3",s:M("a > 0")+", "+M("z = 3")},{key:"n1",s:M("a < 0")+", "+M("z = 1")},{key:"n2",s:M("a < 0")+", "+M("z = 2")},{key:"n3",s:M("a < 0")+", "+M("z = 3")}];
@@ -3931,12 +4186,7 @@ T("y2",4,"L","py.grad","Was der Grad verrät",SRC_P("1_1277"),function(){ return
   tips:["Denk an einfache Beispiele: "+M("x^3")+", "+M("x^4 + 1")+".","Höchstens: "+M("n")+" Nullstellen, "+M("n - 1")+" Extremstellen, "+M("n - 2")+" Wendestellen."],
   sol:{viz:vPlane([-2.5,2.5],[-3,3],{W:420,H:380,yl:"y"}),merk:PY_MERK,steps:[{t:M("x^3")+": keine Extremstelle, aber eine Nullstelle.",a:function(V){ V.F(function(x){ return x*x*x/2; },"--dx"); }},{t:M("{1/4}x^4 + 1")+": keine Nullstelle.",a:function(V){ V.F(function(x){ return x*x*x*x/4+.5; },"--dy"); }}]}
 }; });
-T("y3",4,"L","py.null","Nullstellen aus Linearfaktoren",SRC_O,function(){ return {
-  fmt:"input",q:"Gib alle Nullstellen der Funktion "+M("f")+" mit "+M("f(x) = 2(x - 1)(x + 3)(x - 4)")+" an, der Größe nach.",
-  fields:[{l:"kleinste:",r:-3},{l:"mittlere:",r:1},{l:"größte:",r:4}],
-  tips:["Ein Produkt ist null, wenn ein Faktor null ist.","Aus "+M("x + 3 = 0")+" folgt "+M("x = -3")+"."],
-  sol:{viz:vPlane([-4,5],[-40,40],{W:460,H:380,yl:"f(x)",sy:10}),merk:"Aus der Produktform liest man die Nullstellen direkt ab. Der Faktor 2 ändert sie nicht.",steps:[{t:"Jeder Linearfaktor gleich null.",m:M("x = 1")+", "+M("x = -3")+", "+M("x = 4")},{t:"Der Graph.",a:function(V){ V.F(fromRoots(2,[1,-3,4]),"--dx"); [-3,1,4].forEach(function(r,i){ V.Pt(r,0,"","--rise",i*.2); }); }}]}
-}; });
+T("y3",4,"L","py.berg","Höhenprofil lesen",SRC_O,function(){ return bergInput(BCUR.A); });
 T("y4",4,"L","pf.typ","Welche Gleichung passt?",SRC_P("1_437"),function(){ return {
   fmt:"mc",pick:1,calc:true,q:"Die Abbildung zeigt den Graphen einer Potenzfunktion "+M("f")+" mit "+M("f(x) = a * x^z")+", "+M("a ≠ 0")+", "+M("z ∈ ℤ")+". Kreuze die passende Gleichung an.",
   fig:gfig(460,380,[-3.5,3.5],[-4,1.5],"x","f(x)",1,1,function(P){ var f=function(x){ return -1/(x*x); }; P.fn(f,"--dx",3,{from:-3.5,to:-.05}); P.fn(f,"--dx",3,{from:.05,to:3.5}); }),
@@ -3969,12 +4219,7 @@ T("y7",4,"L","pf.art","Polynom oder Potenz?",SRC_O,function(){ return {
 }; });
 
 /* ---------- Zone 2 ---------- */
-T("y8",4,"M","py.null","Polynom mit vorgegebenen Nullstellen",SRC_O,function(){ return {
-  fmt:"input",q:"Gib den Term einer Polynomfunktion dritten Grades an, die genau die Nullstellen −2, 1 und 3 hat.",
-  fields:[{l:M("f(x) ="),kind:"term",r:"(x + 2)(x - 1)(x - 3)",vars:["x"],ttest:polyTest([-2,1,3],3),show:M("(x + 2)(x - 1)(x - 3)")+" oder ein Vielfaches davon",w:"Zu jeder Nullstelle ein Linearfaktor."}],
-  tips:["Zur Nullstelle 1 gehört der Faktor "+M("(x - 1)")+".","Ausmultiplizieren ist nicht nötig."],
-  sol:{viz:vPlane([-3,4],[-6,10],{W:440,H:380,yl:"f(x)",sy:2}),merk:"Linearfaktoren: Zur Nullstelle "+M("x_1")+" gehört der Faktor "+M("(x - x_1)")+". Ein konstanter Faktor ändert die Nullstellen nicht.",steps:[{t:"Drei Linearfaktoren.",m:M("f(x) = (x + 2)(x - 1)(x - 3)"),a:function(V){ V.F(fromRoots(1,[-2,1,3]),"--dx"); }},{t:"Auch "+M("2(x + 2)(x - 1)(x - 3)")+" hat genau diese Nullstellen.",a:function(V){ V.F(fromRoots(-.5,[-2,1,3]),"--dy"); }}]}
-}; });
+T("y8",4,"M","py.mono","Wo steigt der Weg?",SRC_O,function(){ return bergMono(BCUR.B,{x1:2,x2:6,up:false},4); });
 var Y9=function(x){ return x*x*x*(x+3)/4; };
 T("y9",4,"M","py.verlauf","Grad aus dem Graphen",SRC_P("1_508"),function(){ return {
   fmt:"luecke",q:"Die Abbildung zeigt den Graphen einer Polynomfunktion "+M("f")+". Alle charakteristischen Punkte (Schnittpunkte mit den Achsen, Extrempunkte, Wendepunkte) sind zu sehen. Ergänze den Satz so, dass eine richtige Aussage entsteht.",
@@ -3991,13 +4236,7 @@ T("y10",4,"M","pf.param","Wurzelfunktion",SRC_P("1_532"),function(){ return {
   fields:[{l:M("a ="),r:1},{l:M("b ="),r:2}],tips:[M("f(0) = b")+".","Setz "+M("(1 | 3)")+" ein: "+M("sqrt(1) = 1")+"."],
   sol:{merk:"Den Startwert bei 0 ablesen, dann einen Punkt mit einer Quadratzahl als "+M("x")+" einsetzen.",steps:[{t:"",m:M("f(0) = b = 2")},{t:"",m:M("f(1) = a + 2 = 3")+" &nbsp; also &nbsp; "+M("a = 1")},{t:"Probe",m:M("f(4) = 2 + 2 = 4")}]}
 }; });
-var NEGF=function(x){ return x*x-x-6; };
-T("y11",4,"M","py.neg","Negative Funktionswerte",SRC_P("1_555"),function(){ return {
-  fmt:"bereich",q:"Gegeben ist "+M("f(x) = x^2 - x - 6")+". Markiere auf der "+M("x")+"-Achse alle "+M("x")+", deren Funktionswert negativ ist.",
-  W:520,H:420,xr:[-4,5],yr:[-7,7],yl:"f(x)",snap:.5,from:-2,to:3,pre:function(P){ P.fn(NEGF,"--ink",3); },
-  tips:["Zuerst die Nullstellen: "+M("x^2 - x - 6 = (x + 2)(x - 3)")+".","Wo liegt der Graph unter der Achse?"],
-  sol:{viz:vPlane([-4,5],[-7,7],{W:520,H:420,yl:"f(x)",pre:function(P){ P.fn(NEGF,"--ink-3",2.6); }}),merk:"Vorzeichen einer quadratischen Funktion: Nullstellen suchen, dann am Graphen ablesen, wo er unter der Achse liegt.",steps:[{t:"Nullstellen.",m:M("(x + 2)(x - 3) = 0")+" &nbsp; also &nbsp; "+M("x = -2")+" oder "+M("x = 3"),a:function(V){ V.Pt(-2,0,"","--rise"); V.Pt(3,0,"","--rise",.2); }},{t:"Dazwischen liegt der Graph unter der Achse.",m:M("-2 < x < 3"),a:function(V){ V.F(NEGF,"--fall",0,{from:-2,to:3}); }},"Die Nullstellen selbst gehören nicht dazu, dort ist "+M("f(x) = 0")+"."]}
-}; });
+T("y11",4,"M","py.kruem","Mulde oder Kuppe?",SRC_O,function(){ var B=BCUR.K; return bergKruem(B,B.krb[1],B.wende[0]); });
 T("y12",4,"M","pf.indir","Abfüllmaschinen",SRC_P("1_1229"),function(){ return {
   fmt:"input",q:"Vier gleich schnelle Abfüllmaschinen brauchen gemeinsam 24 Minuten, um 6 000 Flaschen zu füllen. "+M("f(n)")+" ist die Zeit in Minuten, die "+M("n")+" solche Maschinen für 6 000 Flaschen brauchen. Gib "+M("f(n)")+" an und berechne "+M("f(6)")+".",
   fields:[{l:M("f(n) ="),kind:"term",r:"96/n",vars:["n"],pos:true,show:M("{96/n}")},{l:M("f(6) ="),r:16,u:"min"}],
@@ -4011,12 +4250,13 @@ T("y13",4,"M","pf.eig","Potenzfunktionen allgemein",SRC_K,function(){ return {
     {s:"Ist "+M("z = 3")+", ist "+M("f")+" streng monoton steigend.",r:0,w:"Nur für "+M("a > 0")+"."},{s:"Ist "+M("z = -1")+" und "+M("a > 0")+", ist "+M("f")+" für "+M("x > 0")+" streng monoton fallend.",r:1,w:"Je größer "+M("x")+", desto kleiner "+M("{a/x}")+"."}],
   tips:["Probier Beispiele mit dem Potenz-Labor.","Achte auf das Vorzeichen von "+M("a")+"."],sol:{merk:PF_MERK,steps:["Jede Aussage mit einem Beispiel prüfen, bei Allaussagen auch ein Gegenbeispiel suchen.",M("-x^3")+" fällt, obwohl "+M("z = 3")+"."]}
 }; });
-function pyOpts(){ return [{key:"a",s:M("(x + 1)(x - 2)")},{key:"b",s:M("-(x + 1)(x - 2)")},{key:"c",s:M("x(x + 1)(x - 2)")},{key:"d",s:M("-x(x + 1)(x - 2)")},{key:"e",s:M("(x - 1)(x + 2)")},{key:"g",s:M("x^2(x - 2)")}]; }
-var PYM={a:fromRoots(1,[-1,2]),b:fromRoots(-1,[-1,2]),c:fromRoots(1,[0,-1,2]),d:fromRoots(-1,[0,-1,2]),e:fromRoots(1,[1,-2]),g:fromRoots(1,[0,0,2])};
-T("y14",4,"M","py.zuord","Graph und Linearfaktoren",SRC_O,function(){
-  return zuOf(["a","b","c","d"].map(function(k){ return {s:polyMini(PYM[k]),key:k,w:"Nullstellen und Verlauf ganz rechts passen."}; }),pyOpts(),{serifOpts:true,q:"Ordne jedem Graphen den passenden Funktionsterm "+M("f(x)")+" zu.",
-    tips:["Lies zuerst die Nullstellen ab.","Dann: Geht der Graph ganz rechts nach oben oder nach unten?"],sol:{merk:"Nullstellen geben die Linearfaktoren, das Vorzeichen des führenden Koeffizienten den Verlauf ganz rechts.",steps:["Nullstellen −1 und 2: quadratisch. Zusätzlich 0: Grad 3.","Ganz rechts nach oben: positiver Faktor, nach unten: negativer.",M("(x - 1)(x + 2)")+" hat die Nullstellen 1 und −2, "+M("x^2(x - 2)")+" berührt die Achse bei 0."]}});
-});
+T("y14",4,"M","py.glob","Lokal oder global?",SRC_O,function(){ var B=BCUR.D; return {
+  fmt:"mc",pick:1,q:BERG_LEAD+"Die Abbildung zeigt das Höhenprofil einer Wanderung. Start- und Zielpunkt zählen nicht als lokale Extremstellen. Kreuze die zutreffende Aussage an.",fig:bfig(B),fx:B.f,
+  items:[{s:"Der höchste Punkt der Wanderung ist ein Gipfel und damit lokales und globales Maximum.",r:0,w:"Er liegt am Ziel, also am Rand, und ist dort kein lokales Maximum."},{s:"Der Gipfel bei Kilometer 2 ist das globale Maximum.",r:0,w:"Am Ziel (1 800 m) liegt der Weg höher als bei km 2 (1 600 m)."},
+    {s:"Der tiefste Punkt der Wanderung, bei Kilometer 6, ist lokales und globales Minimum.",r:1,w:"Er liegt im Inneren und ist mit 1 100 m der tiefste Punkt des ganzen Weges."},{s:"Das Profil hat zwei lokale Maxima.",r:0,w:"Nur das bei km 2. Das Ziel ist ein Randpunkt."},
+    {s:"Der Start ist ein lokales Minimum, weil der Weg dort beginnt.",r:0,w:"Randpunkte zählen nicht als lokale Extremstellen."}],
+  tips:["Lokal: höher oder tiefer als die unmittelbare Umgebung. Global: im ganzen Bereich am höchsten oder tiefsten.","Vergleiche Gipfel, Tal und die beiden Randpunkte."],sol:bergSol(B)
+}; });
 
 /* ---------- Zone 3 ---------- */
 T("y15",4,"X","pf.eig","Eigenschaften von a durch x²",SRC_P("1_790"),function(){ return {
@@ -4038,11 +4278,7 @@ T("y17",4,"X","py.verlauf","Grad und Wendestellen",SRC_P("1_815"),function(){ re
   tips:["Prüf jede Kombination mit einfachen Beispielen: "+M("x^4")+", "+M("x^5")+", "+M("x^6")+".","Ein Beispiel genügt, um „jede“ zu widerlegen."],
   sol:{merk:PY_MERK,steps:[M("x^4")+" und "+M("x^6")+": eine Extremstelle, keine Wendestelle, eine Nullstelle.",M("x^5")+": eine Nullstelle, keine Extremstelle, aber eine Wendestelle.","Bei ungeradem Grad ab 3 wechselt die Krümmung mindestens einmal."]}
 }; });
-T("y18",4,"X","py.zuord","Zwei Graphen, zwei Terme",SRC_O,function(){
-  return zuOf([{s:polyMini(PYM.d),key:"d",w:"Nullstellen −1, 0, 2, ganz rechts nach unten."},{s:polyMini(PYM.g),key:"g",w:"Berührt die Achse bei 0, Nullstelle bei 2."}],
-    [{key:"d",s:M("-x(x + 1)(x - 2)")},{key:"g",s:M("x^2(x - 2)")},{key:"c",s:M("x(x + 1)(x - 2)")},{key:"x",s:M("x(x - 2)^2")}],{keep:true,serifOpts:true,q:"Ordne jedem Graphen den passenden Funktionsterm zu.",
-    tips:["Doppelte Nullstelle: Der Graph berührt die Achse.","Vorzeichen: Verlauf ganz rechts."],sol:{merk:"Ein quadrierter Faktor gibt eine Berührstelle.",steps:["Erster Graph: drei Nullstellen und ganz rechts fallend.","Zweiter Graph: Berührstelle bei 0, also "+M("x^2")+"."]}});
-});
+T("y18",4,"X","py.prof","Profil und Beschreibung",SRC_O,function(){ return profZu(["p2","p3"],{keep:true}); });
 T("y19",4,"X","py.skizze","Symmetrische Polynomfunktion",SRC_P("1_1274"),function(){ return {
   fmt:"kurve",q:"Eine Polynomfunktion "+M("f")+" vierten Grades hat folgende Eigenschaften:<ul class='plist'><li>"+M("f")+" hat an der Stelle −3 ein lokales Maximum,</li><li>der Graph ist symmetrisch zur "+M("y")+"-Achse.</li></ul>Skizziere den Graphen einer solchen Funktion im Intervall "+M("[-4; 4]")+".",
   W:520,H:420,xr:[-4.5,4.5],yr:[-4,4],yl:"f(x)",kx:[-4,-3,-2,0,2,3,4],snapY:.5,model:[-1,2,1,-1,1,2,-1],
@@ -4076,12 +4312,7 @@ T("y22",4,"X","py.anz","Mögliche Anzahlen",SRC_P("1_1325"),function(){ return {
   tips:["Skizziere die möglichen Grundformen vierten Grades: U-Form und W-Form.","Verschieb die Skizze nach oben und unten und zähl die Nullstellen."],
   sol:{viz:vPlane([-3,3],[-3,3],{W:420,H:380,yl:"y"}),merk:PY_MERK,steps:[{t:"U-Form: 1 Extremstelle, keine Wendestelle.",a:function(V){ V.F(function(x){ return x*x*x*x/8+.6; },"--dx"); }},{t:"W-Form: 3 Extremstellen, 2 Wendestellen. Je nach Höhe und Lage 0 bis 4 Nullstellen.",a:function(V){ V.F(function(x){ return (x*x-2)*(x*x-2)/2-0; },"--dy"); }}]}
 }; });
-T("y23",4,"X","py.null","Nullstellen berechnen",SRC_O,function(){ return {
-  fmt:"input",q:"Bestimme alle Nullstellen der Funktion "+M("f")+" mit "+M("f(x) = x^3 - 4x")+", der Größe nach.",
-  fields:[{l:"kleinste:",r:-2},{l:"mittlere:",r:0},{l:"größte:",r:2}],
-  tips:["Heb "+M("x")+" heraus.","Der Rest ist eine binomische Formel."],
-  sol:{merk:"Herausheben und binomische Formeln führen zu Linearfaktoren.",steps:[{t:"",m:M("x^3 - 4x = x(x^2 - 4) = x(x - 2)(x + 2)")},{t:"",m:M("x = -2")+", "+M("x = 0")+", "+M("x = 2")}]}
-}; });
+T("y23",4,"X","py.tour","Wanderung skizzieren",SRC_O,function(){ return tourMake(2,18,4,2,13); });
 
 /* ---------- Generatoren ---------- */
 var PFO=[{key:"p1",a:1,z:1},{key:"p2",a:1,z:2},{key:"p3",a:1,z:3},{key:"n1",a:-1,z:1},{key:"n2",a:-1,z:2},{key:"n3",a:-1,z:3}];
@@ -4107,16 +4338,6 @@ var GRADP=[["Eine Polynomfunktion vom Grad 3 hat höchstens 3 Nullstellen.",1],[
 G("py.grad",4,"L","Was der Grad verrät",function(){
   return {fmt:"tf",q:"Entscheide für Polynomfunktionen in jeder Zeile.",yes:"stimmt",no:"stimmt nicht",items:pickPool(GRADP.map(function(g){ return {s:g[0],r:g[1],w:PY_MERK.split(". ")[g[0].indexOf("Wendestelle")>=0?0:0]}; }),6,"x").map(function(i){ i.w="Höchstens "+M("n")+" Nullstellen, "+M("n - 1")+" Extremstellen, "+M("n - 2")+" Wendestellen. Ungerader Grad: mindestens eine Nullstelle."; return i; }),
     tips:["Einfache Beispiele: "+M("x^3")+", "+M("x^4 + 1")+".","Höchstens und mindestens genau lesen."],sol:{merk:PY_MERK,steps:["Für „höchstens“ die Gradregeln anwenden.","Für „mindestens“ und „immer“ ein Gegenbeispiel suchen."]}};
-});
-G("py.null",4,"L","Nullstellen aus Linearfaktoren",function(){
-  if(Math.random()<.35){ var rs=sample([-4,-3,-2,-1,1,2,3,4],ri(2,3)).sort(function(a,b){ return a-b; });
-    return {fmt:"input",q:"Gib den Term einer Polynomfunktion vom Grad "+rs.length+" an, die genau die Nullstellen "+rs.map(num).join(", ")+" hat.",
-      fields:[{l:M("f(x) ="),kind:"term",r:rs.map(function(r){ return "(x"+(r<0?"+"+(-r):"-"+r)+")"; }).join(""),vars:["x"],ttest:polyTest(rs,rs.length),show:M(rs.map(function(r){ return "(x "+(r<0?"+ "+(-r):"- "+r)+")"; }).join(""))}],
-      tips:["Zu jeder Nullstelle "+M("x_1")+" ein Faktor "+M("(x - x_1)")+".","Ausmultiplizieren ist nicht nötig."],sol:{merk:"Linearfaktoren.",steps:[{t:"",m:M("f(x) = "+rs.map(function(r){ return "(x "+(r<0?"+ "+(-r):"- "+r)+")"; }).join(""))}]}}; }
-  var a=pick([1,2,-1,3,-2]), rs2=sample([-5,-4,-3,-2,-1,0,1,2,3,4,5],3).sort(function(x,y){ return x-y; });
-  var term=(a===1?"":a===-1?"-":a)+rs2.map(function(r){ return r===0?"x":"(x "+(r<0?"+ "+(-r):"- "+r)+")"; }).join("");
-  return {fmt:"input",q:"Gib alle Nullstellen der Funktion "+M("f")+" mit "+M("f(x) = "+term)+" an, der Größe nach.",fields:[{l:"kleinste:",r:rs2[0]},{l:"mittlere:",r:rs2[1]},{l:"größte:",r:rs2[2]}],
-    tips:["Ein Produkt ist null, wenn ein Faktor null ist.","Der Faktor vor den Klammern spielt keine Rolle."],sol:{merk:"Nullstellen aus der Produktform ablesen.",steps:[{t:"",m:rs2.map(function(r){ return M("x = "+fk(r)); }).join(", ")}]}};
 });
 G("pf.param",4,"L","Parameter ablesen",function(){
   var typ=pick(["q","q","w"]);
@@ -4158,14 +4379,6 @@ G("py.verlauf",4,"M","Grad und Verlauf",function(){
   return {fmt:"luecke",q:"Ergänze den Satz so, dass eine richtige Aussage entsteht.",satz:c.satz,gaps:c.g.map(function(g,i){ var x=shGap(g[0],g[1]); x.w=c.w[i]; return x; }),
     tips:["Prüf mit einfachen Beispielen wie "+M("x^3")+", "+M("x^4")+", "+M("x^5")+".","„Jede“ braucht nur ein Gegenbeispiel zum Widerlegen."],sol:{merk:PY_MERK,steps:["Jede Kombination mit einfachen Beispielen prüfen."]}};
 });
-G("py.neg",4,"M","Wo ist f negativ?",function(){
-  var r1=ri(-4,0), r2=r1+ri(2,5), up=Math.random()<.65, f=fromRoots(up?1:-1,[r1,r2]), want=pick(["neg","pos"]);
-  var inside=(up&&want==="neg")||(!up&&want==="pos"), ymax=Math.abs(f((r1+r2)/2))+1;
-  var term=(up?"":"-")+"(x "+(r1<0?"+ "+(-r1):r1===0?"":"- "+r1)+")(x - "+r2+")"; term=term.replace("(x )","x");
-  return {fmt:"bereich",q:"Gegeben ist "+M("f(x) = "+term)+". Markiere auf der "+M("x")+"-Achse "+(inside?"alle "+M("x")+", deren Funktionswert "+(want==="neg"?"negativ":"positiv")+" ist.":"den Bereich zwischen den Nullstellen. In welchem Bereich ist "+M("f(x)")+(want==="neg"?" positiv":" negativ")+"? Markiere ihn."),
-    W:520,H:420,xr:[r1-2,r2+2],yr:[-Math.ceil(ymax),Math.ceil(ymax)],yl:"f(x)",snap:.5,from:r1,to:r2,pre:function(P){ P.fn(f,"--ink",3); },
-    tips:["Nullstellen aus der Produktform ablesen.","Zwischen den Nullstellen hat "+M("f")+" überall dasselbe Vorzeichen."],sol:{merk:"Vorzeichenwechsel nur an Nullstellen.",steps:[{t:"Nullstellen",m:M("x = "+fk(r1))+" und "+M("x = "+fk(r2))},"Dazwischen liegt der Graph "+(up?"unter":"über")+" der Achse."]}};
-});
 G("pf.eig",4,"M","Potenzfunktionen allgemein",function(){
   var pool=[["Ist "+M("z")+" gerade, ist der Graph symmetrisch zur "+M("y")+"-Achse.",1],["Der Graph geht immer durch "+M("(1 | a)")+".",1],["Ist "+M("z")+" negativ, ist "+M("f")+" an der Stelle 0 nicht definiert.",1],["Ist "+M("a < 0")+" und "+M("z = 2")+", hat der Graph einen Tiefpunkt.",0],
     ["Ist "+M("z = 3")+", ist "+M("f")+" streng monoton steigend.",0],["Ist "+M("z = -1")+" und "+M("a > 0")+", fällt "+M("f")+" für "+M("x > 0")+".",1],["Ist "+M("z")+" ungerade, geht der Graph durch den Ursprung.",0],["Der Graph geht immer durch "+M("(-1 | a)")+".",0],["Ist "+M("z = 2")+", hat "+M("f")+" genau eine Extremstelle.",1],["Ist "+M("z = -2")+" und "+M("a > 0")+", sind alle Funktionswerte positiv.",1]];
@@ -4183,15 +4396,6 @@ GV("pf.eig","2aus5",function(){
   pool.push({s:M("f(x + 1) = f(x) + a"),r:0,w:"Verschieben ist nicht Addieren."});
   return {fmt:"mc",pick:2,calc:true,q:"Gegeben ist "+M("f(x) = a * x^"+Z)+", "+M("a ≠ 0")+". Kreuze die beiden Aussagen an, die auf jeden Fall zutreffen.",items:pickPool(pool,5,2),
     tips:["Setz den Ausdruck in der Klammer für "+M("x")+" ein.","Kontrolle mit "+M("a = 2")+", "+M("x = 1")+"."],sol:{merk:PF_MERK,steps:["Einsetzen und mit den Potenzregeln vereinfachen."]}};
-});
-G("py.zuord",4,"M","Graph und Linearfaktoren",function(){
-  var keys=sample(["a","b","c","d","e","g"],4), all=pyOpts();
-  return zuOf(keys.map(function(k){ return {s:polyMini(PYM[k]),key:k,w:"Nullstellen und Verlauf ganz rechts passen."}; }),all,{serifOpts:true,q:"Ordne jedem Graphen den passenden Funktionsterm zu.",tips:["Nullstellen ablesen.","Verlauf ganz rechts: Vorzeichen."],sol:{merk:"Nullstellen ergeben Linearfaktoren.",steps:["Nullstellen ablesen und Faktoren bilden.","Vorzeichen am rechten Ende prüfen."]}});
-});
-GV("py.zuord","2zu4",function(){
-  var keys=sample(["a","b","c","d","e","g"],2), rest=sample(["a","b","c","d","e","g"].filter(function(k){ return keys.indexOf(k)<0; }),2), o=pyOpts();
-  return zuOf(keys.map(function(k){ return {s:polyMini(PYM[k]),key:k,w:"Nullstellen und Verlauf passen."}; }),o.filter(function(x){ return keys.indexOf(x.key)>=0||rest.indexOf(x.key)>=0; }),{keep:true,serifOpts:true,q:"Ordne jedem Graphen den passenden Funktionsterm zu.",
-    tips:["Doppelte Nullstelle: Berührstelle.","Vorzeichen am rechten Ende."],sol:{merk:"Nullstellen ergeben Linearfaktoren.",steps:["Nullstellen ablesen.","Verlauf ganz rechts vergleichen."]}});
 });
 G("py.skizze",4,"X","Polynom skizzieren",function(){
   var mode=pick(["sym","drei"]);
@@ -4512,11 +4716,11 @@ var HELP={
   "fu.umk":helpUmkehr,"fu.verk":helpVerk,"fu.null":helpFix,"fu.fix":helpFix,"fu.sicher":helpMono,"fu.skizze":helpGipfel,
   "am.abs":helpFaktor,"am.rel":helpFaktor,"am.fakt":helpFaktor,"am.proz":helpFaktor,"am.vgl":helpFaktor,"am.mar":helpAend,"am.dq":helpAend,"am.sek":helpAend,"am.konstr":helpAend,"am.deut":helpAend,"am.kontext":helpAend,"am.terms":helpAend,
   "po.regel":helpPotenz,"po.vereinf":helpPotenz,"po.luecke":helpPotenz,"po.begr":helpPotenz,"po.neg":helpPotenz,"po.wert":helpWurzel,"po.aequiv":helpWurzel,"po.wurzel":helpWurzel,"po.groesse":helpWurzel,"po.zahl":helpWurzel,
-  "pf.typ":helpPotLab,"pf.param":helpPotLab,"pf.eig":helpPotLab,"pf.indir":helpPotLab,"pf.art":helpPotLab,"py.grad":helpPolyBau,"py.null":helpPolyBau,"py.verlauf":helpPolyBau,"py.neg":helpPolyBau,"py.zuord":helpPolyBau,"py.skizze":helpPolyBau,"py.begr":helpPolyBau,"py.anz":helpPolyBau,
+  "pf.typ":helpPotLab,"pf.param":helpPotLab,"pf.eig":helpPotLab,"pf.indir":helpPotLab,"pf.art":helpPotLab,"py.grad":helpPolyBau,"py.verlauf":helpPolyBau,"py.berg":helpGipfel,"py.mono":helpMono,"py.kruem":helpKruemm,"py.glob":helpGipfel,"py.prof":helpGipfel,"py.tour":helpMono,"py.skizze":helpPolyBau,"py.begr":helpPolyBau,"py.anz":helpPolyBau,
   "lg.wert":helpWieOft,"lg.def":helpWieOft,"lg.tab":helpWieOft,"lg.groesse":helpWieOft,"lg.begriffe":helpWieOft,"lg.gl":helpWieOft,"lg.zuord":helpWieOft,"lg.zahl":helpMalPlus,"lg.regel":helpMalPlus,"lg.umf":helpMalPlus,"lg.db":helpMalPlus,"lg.ph":helpMalPlus,"lg.luecke":helpWieOft,"lg.begr":helpMalPlus,
   "ex.param":helpExpLab,"ex.proz":helpExpLab,"ex.wert":helpExpLab,"ex.anw":helpExpLab,"ex.luecke":helpExpLab,"ex.eig":helpExpLab,"ex.sicher":helpExpLab,"ex.zuord2":helpExpLab,"ex.erkenn":helpPlusMal,"ex.lin":helpPlusMal,"ex.hwz":helpHalb,"ex.konstr":helpHalb,"ex.mod":helpHalb,"ex.offen":helpHalb
 };
-NOHELP.push("f7","f19","a7","a19","y3","y23","y8","g14","g19","g4","e5","e12","e19","e23");
+NOHELP.push("f7","f19","a7","a19","g14","g19","g4","e5","e12","e19","e23");
 
 /* ============ Teil 2 · Knoten ============
    Drei lange, zusammenhängende Aufgaben über mehrere Linien. Jede Teilaufgabe ist eine gewöhnliche Aufgabenkarte;
@@ -4733,6 +4937,343 @@ KNOTEN.push({id:"n4",title:"Sonnenstrom vom Dach",sub:"klassische Wachstumsaufga
       "Die Kurve schießt weit über das Ziel hinaus. Irgendwann sind alle geeigneten Dächer belegt, dann flacht das Wachstum ab."]} }; }}
   ]});
 
+/* ---------- Knoten 5 · Höhenweg über die Alm ---------- */
+var HW=function(x){ return -2.5*x*x*x*x+50*x*x*x-330*x*x+800*x+1200; };
+function hwViz(o){ o=o||{}; return vPlane([-.5,10.5],[1000,2000],{W:600,H:340,xl:"x in km",yl:"h in m",sx:1,sy:200,pre:function(P){ P.fn(HW,"--ink-3",2.6,{from:0,to:10}); if(o.pre) o.pre(P); }}); }
+function hwFig(){ return gfig(600,330,[-.5,10.5],[1000,2000],"x in km","h in m",1,200,function(P){ P.fn(HW,"--dx",3,{from:0,to:10}); }); }
+KNOTEN.push({id:"n5",title:"Höhenweg über die Alm",sub:"Polynomfunktion vierten Grades: Extremstellen, Monotonie, Krümmung",lines:[1,2,4],
+  angabe:"<p>Ein Höhenweg führt über einen Almrücken. "+amk("h","Sein Profil wird modellhaft durch die Funktion "+M("h")+" mit "+M("h(x) = -2,5x^4 + 50x^3 - 330x^2 + 800x + 1200")+" beschrieben")+". "+amk("x","Dabei ist "+M("x")+" die Strecke ab dem Start in Kilometern und "+M("h(x)")+" die Seehöhe in Metern")+".</p><p>"+amk("g","Der Weg hat eine Länge von 10 km, das Modell gilt also für "+M("0 <= x <= 10"))+". Die Abbildung zeigt das Profil.</p>"+
+    "<div class='fig narrow'>"+(function(){ var P=sys(600,330,[-.5,10.5],[1000,2000],"x in km","h in m",1,200); P.fn(HW,"--dx",3,{from:0,to:10}); return P.svg.outerHTML; })()+"</div>",
+  parts:[
+  {title:"Was der Grad verrät",marks:["h"],note:"Grad 4: höchstens 4 Nullstellen, 3 Extremstellen und 2 Wendestellen",mk:function(){ return {
+    fmt:"input",help:helpPolyBau(),q:"Gib den Grad von "+M("h")+" an. Wie viele Nullstellen, lokale Extremstellen und Wendestellen kann eine Polynomfunktion dieses Grades höchstens haben?",
+    fields:[{l:"Grad:",r:4},{l:"Nullstellen höchstens:",r:4},{l:"Extremstellen höchstens:",r:3},{l:"Wendestellen höchstens:",r:2}],
+    tips:["Der Grad ist die höchste Hochzahl von "+M("x")+".","Grad "+M("n")+": höchstens "+M("n")+" Nullstellen, "+M("n - 1")+" Extremstellen, "+M("n - 2")+" Wendestellen."],
+    sol:{viz:hwViz(),merk:PY_MERK,steps:[{t:"Höchste Hochzahl: 4.",m:M("n = 4")},{t:"",m:M("n = 4")+", "+M("n - 1 = 3")+", "+M("n - 2 = 2")}]} }; }},
+  {title:"Gipfel und Senke",marks:["h","x"],note:M("h(2) = 1840")+" m, "+M("h(5) = 1637,5")+" m",mk:function(){ return {
+    fmt:"input",q:"Der erste Gipfel liegt bei "+M("x = 2")+", die Senke dahinter bei "+M("x = 5")+". Berechne die beiden Höhen und den Höhenunterschied zwischen Gipfel und Senke.",
+    fields:[{l:M("h(2) ="),r:1840,tol:.51,u:"m"},{l:M("h(5) ="),r:1637.5,tol:.51,u:"m"},{l:"Höhenunterschied:",r:202.5,tol:.51,u:"m"}],
+    tips:["Setz 2 und 5 in die Funktion ein.","Der Höhenunterschied ist die Differenz der beiden Höhen."],
+    sol:{viz:hwViz({pre:function(P){ P.pt(2,1840,"--dy","",{r:5}); P.pt(5,1637.5,"--dy","",{r:5}); }}),merk:"Ein Funktionswert beantwortet die Frage nach der Höhe an einer Stelle.",steps:[{t:"",m:M("h(2) = -40 + 400 - 1320 + 1600 + 1200 = 1840"),a:function(V){ V.Pt(2,1840,"1840","--dy",0,{dy:-12}); }},{t:"",m:M("h(5) = -1562,5 + 6250 - 8250 + 4000 + 1200 = 1637,5"),a:function(V){ V.Pt(5,1637.5,"1637,5","--dy",.3,{dy:22}); }},{t:"",m:M("1840 - 1637,5 = 202,5")}]} }; }},
+  {title:"Wo geht es bergab?",marks:["h","x"],note:"Vom ersten Gipfel bis zur Senke: "+M("[2; 5]"),mk:function(){ return {
+    fmt:"bereich",help:helpMono(),q:"Markiere auf der "+M("x")+"-Achse den Abschnitt zwischen dem ersten Gipfel und der Senke, in dem der Weg ununterbrochen bergab führt.",W:600,H:340,xr:[-.5,10.5],yr:[1000,2000],xl:"x in km",yl:"h in m",sx:1,sy:200,snap:1,from:2,to:5,
+    pre:function(P){ P.fn(HW,"--ink",3,{from:0,to:10}); },
+    tips:["Bergab beginnt am Gipfel und endet im tiefsten Punkt der Senke.","Lies die beiden Stellen am Graphen ab."],
+    sol:{viz:hwViz(),merk:"Monotonie wechselt nur an Extremstellen.",steps:[{t:"Gipfel bei 2, Senke bei 5.",a:function(V){ V.Pt(2,1840,"Gipfel","--dy",0,{dy:-10}); V.Pt(5,1637.5,"Senke","--dy",.2,{dy:22}); V.F(HW,"--fall",.4,{from:2,to:5}); }}]} }; }},
+  {title:"Lokal oder global",marks:["h","g"],mk:function(){ return {
+    fmt:"mc",pick:2,help:helpGipfel(),q:"Kreuze die beiden Aussagen an, die auf das Profil im Bereich "+M("0 <= x <= 10")+" zutreffen. Start- und Zielpunkt zählen nicht als lokale Extremstellen.",fig:hwFig(),
+    items:[{s:"Bei Kilometer 5 liegt ein lokales Minimum.",r:1,w:"Die Senke ist tiefer als ihre Umgebung."},{s:"Der höchste Punkt des Weges wird an zwei Stellen erreicht.",r:1,w:"Beide Gipfel haben die Höhe 1840 m."},
+      {s:"Die Senke bei Kilometer 5 ist der tiefste Punkt des Weges.",r:0,w:"Start und Ziel liegen mit 1200 m tiefer."},{s:"Nur einer der beiden Gipfel ist ein lokales Maximum.",r:0,w:"Beide sind höher als ihre Umgebung."},{s:"Der Startpunkt ist ein lokales Minimum.",r:0,w:"Randpunkte zählen nicht als lokale Extremstellen."}],
+    tips:["Lokal: höher oder tiefer als die Umgebung. Global: im ganzen Bereich.","Vergleiche beide Gipfel miteinander."],sol:{viz:hwViz(),merk:BERG_MERK,steps:[{t:"Gipfel, Senke, Start und Ziel.",a:function(V){ V.Pt(2,1840,"1840","--dy",0,{dy:-10}); V.Pt(8,1840,"1840","--dy",.2,{dy:-10}); V.Pt(5,1637.5,"Senke","--dy",.4,{dy:22}); V.Pt(0,1200,"Start","--gold",.6); V.Pt(10,1200,"Ziel","--gold",.8); }}]} }; }},
+  {title:"Kuppe oder Mulde?",marks:["h"],mk:function(){ return {
+    fmt:"luecke",help:helpKruemm(),q:"Ergänze den Satz so, dass eine richtige Aussage entsteht.",fig:hwFig(),
+    satz:"In der Nähe der Gipfel ist das Profil ___, in der Nähe der Senke ___.",
+    gaps:[{o:["rechtsgekrümmt (Kuppe)","linksgekrümmt (Mulde)","gar nicht gekrümmt"],r:0,w:"Ein Gipfel wölbt sich wie ein Hügel."},{o:["linksgekrümmt (Mulde)","rechtsgekrümmt (Kuppe)","gar nicht gekrümmt"],r:0,w:"Eine Senke wölbt sich wie eine Schüssel."}],
+    tips:["Rechtsgekrümmt: wie ein Hügel. Linksgekrümmt: wie eine Schüssel.","Schau, wie sich der Weg um den Gipfel und um die Senke biegt."],sol:{viz:hwViz(),merk:"Linksgekrümmt (positiv gekrümmt): Mulde. Rechtsgekrümmt (negativ gekrümmt): Kuppe.",steps:[{t:"Kuppen an den Gipfeln, Mulde in der Senke.",a:function(V){ V.F(HW,"--fall",0,{from:0,to:3.27}); V.F(HW,"--rise",.3,{from:3.27,to:6.73}); V.F(HW,"--fall",.6,{from:6.73,to:10}); }}]} }; }},
+  {title:"Wendestellen",marks:["h"],note:M("x = 5 ± sqrt(3)")+": etwa 3,27 km und 6,73 km, jeweils in 1750 m Höhe",mk:function(){ return {
+    fmt:"input",help:helpKruemm(),q:"Das Profil hat zwei Wendestellen. Lies sie am Graphen ab: an welchen Stellen wechselt die Krümmung? Das Ablesen auf etwa 0,3 km genau genügt.",fig:hwFig(),
+    fields:[{l:"erste Wendestelle:",r:3.27,tol:.35,u:"km"},{l:"zweite Wendestelle:",r:6.73,tol:.35,u:"km"}],
+    tips:["Zwischen einem Gipfel und der nächsten Senke geht eine Kuppe in eine Mulde über.","Die beiden Wendestellen liegen symmetrisch um die Senke."],
+    sol:{viz:hwViz(),merk:"An der Wendestelle wechselt die Krümmung, hier von Kuppe zu Mulde und wieder zurück.",steps:[{t:"Wendestellen etwa bei 3,3 und 6,7.",a:function(V){ V.Pt(3.27,1750,"WP","--gold",0,{r:5}); V.Pt(6.73,1750,"WP","--gold",.3,{r:5}); }},"Genau: "+M("x = 5 - sqrt(3) ≈ 3,27")+" und "+M("x = 5 + sqrt(3) ≈ 6,73")+"."]} }; }},
+  {title:"Mittlere Steigung",marks:["h","x"],note:"320 m pro km, das sind 32 %",mk:function(){ return {
+    fmt:"input",help:helpAend(),q:"Berechne die mittlere Änderungsrate von "+M("h")+" im Intervall "+M("[0; 2]")+" und gib an, wie viel Prozent mittlere Steigung das sind.",
+    fields:[{l:"mittlere Änderungsrate:",r:320,tol:.51,u:"m/km"},{l:"mittlere Steigung:",r:32,tol:.51,u:"%"}],
+    tips:[M("h(0) = 1200")+" und "+M("h(2) = 1840")+".","Ein Kilometer sind 1 000 m: 320 m auf 1 000 m."],
+    sol:{viz:hwViz(),merk:"Mittlere Änderungsrate = Höhenunterschied durch Streckenunterschied.",steps:[{t:"",m:M("{h(2) - h(0)/2 - 0} = {1840 - 1200/2} = 320"),a:function(V){ V.Pt(0,1200,"","--dy"); V.Pt(2,1840,"","--dy",.2); V.Sg(0,1200,2,1840,"--right",.4,{w:3}); }},{t:"320 m auf 1000 m",m:M("{320/1000} = 0,32 = 32 %")}]} }; }},
+  {title:"Warum nicht Grad 3?",marks:["h"],mk:function(){ return {
+    fmt:"offen",help:helpPolyBau(),q:"Maxi meint: „Das Profil könnte auch zu einer Polynomfunktion dritten Grades gehören.“ Begründe mit Hilfe des Graphen, warum das nicht stimmt.",fig:hwFig(),
+    model:"Das Profil hat drei lokale Extremstellen: zwei Gipfel und eine Senke. Eine Polynomfunktion dritten Grades hat höchstens zwei Extremstellen. Also muss der Grad mindestens 4 sein.",
+    points:["drei Extremstellen am Graphen erkannt","Höchstzahl für Grad 3 genannt (zwei Extremstellen)","daraus geschlossen, dass der Grad größer sein muss"],
+    tips:["Zähl Gipfel und Senken.","Wie viele Extremstellen erlaubt Grad 3 höchstens?"],sol:{viz:hwViz(),merk:PY_MERK,steps:["Drei Extremstellen: Gipfel bei 2, Senke bei 5, Gipfel bei 8.","Grad 3 erlaubt höchstens "+M("3 - 1 = 2")+" Extremstellen.","Also ist der Grad mindestens 4."]} }; }}
+  ]});
+
+/* ============ Probeschularbeit ============
+   Teil 1: 16 Aufgaben zu 2 Punkten aus den Aufgabenarten der gewählten Linien.
+   Teil 2: bis zu zwei Knoten, jeder zu 8 Punkten. Der Fortschritt im Netz bleibt unberührt. */
+var PK=KEY+"-probe";
+var PDEF={lines:[1,2,3,4,5],help:false,mode:"end",time:100,notes:false,cut:[87.5,75,62.5,50]};
+var P_N1=16, P_W1=2, P_W2=8;
+var NOTEN=["Sehr gut","Gut","Befriedigend","Genügend","Nicht genügend"];
+var PX=null;
+function pLoad(){ var o={}; try{ o=JSON.parse(localStorage.getItem(PK)||"{}")||{}; }catch(e){}
+  var s={}; for(var k in PDEF) s[k]=o[k]!=null?o[k]:PDEF[k];
+  if(!Array.isArray(s.lines)||!s.lines.length) s.lines=PDEF.lines.slice();
+  if(!Array.isArray(s.cut)||s.cut.length!==4) s.cut=PDEF.cut.slice();
+  return s; }
+function pSave(s){ try{ localStorage.setItem(PK,JSON.stringify(s)); }catch(e){} }
+function pHist(){ try{ return JSON.parse(localStorage.getItem(PK+"-h")||"[]")||[]; }catch(e){ return []; } }
+function pHistAdd(r){ var a=pHist(); a.unshift(r); a=a.slice(0,8); try{ localStorage.setItem(PK+"-h",JSON.stringify(a)); }catch(e){} }
+function pP(x){ return num(Math.round(x*100)/100); }
+function pMin(sec){ sec=Math.max(0,Math.round(sec)); var m=Math.floor(sec/60), s=sec%60; return m+":"+(s<10?"0":"")+s; }
+function pKnoten(S){ return KNOTEN.filter(function(K){ return K.lines.some(function(n){ return S.lines.indexOf(n)>=0; }); }); }
+function pMax(S){ return P_N1*P_W1+Math.min(2,pKnoten(S).length)*P_W2; }
+function pNote(S,pts){ var m=pMax(S);
+  for(var i=0;i<4;i++) if(pts>=m*S.cut[i]/100-1e-9) return i;
+  return 4; }
+
+/* ---- Aufgaben auswählen ---- */
+function pSpec(cands){
+  var ks=shuffle(cands), last=null;
+  for(var i=0;i<ks.length;i++) for(var g=0;g<8;g++){ var sp=trainMake(ks[i]); last={k:ks[i],sp:sp}; if(sp.fmt!=="offen") return last; }
+  return last;
+}
+function pBuild(S){
+  var order=shuffle(S.lines), slots=[], i, used={}, W={L:.25,M:.4,X:.35};
+  for(i=0;i<P_N1;i++) slots.push(order[i%order.length]);
+  slots=shuffle(slots);
+  var t1=slots.map(function(ch){
+    var kinds=Object.keys(GEN).filter(function(k){ return GEN[k].ch===ch; });
+    var free=kinds.filter(function(k){ return !used[k]; });
+    if(!free.length){ kinds.forEach(function(k){ delete used[k]; }); free=kinds; }
+    var r=Math.random(), lv=r<W.L?"L":r<W.L+W.M?"M":"X";
+    var cand=free.filter(function(k){ return GEN[k].lv===lv; }); if(!cand.length) cand=free;
+    var o=pSpec(cand); used[o.k]=1;
+    return {teil:1,ch:ch,kind:o.k,lv:GEN[o.k].lv,sp:o.sp,title:GEN[o.k].name,w:P_W1};
+  });
+  var kn=sample(pKnoten(S),2).sort(function(a,b){ return KNOTEN.indexOf(a)-KNOTEN.indexOf(b); });
+  var t2=kn.map(function(K){ return K.parts.map(function(p,i){
+    return {teil:2,K:K,part:i,kind:null,lv:"X",sp:p.mk(),title:PL[i]+") "+p.title,w:P_W2/K.parts.length,note:p.note}; }); });
+  return {t1:t1,t2:t2};
+}
+
+/* ---- Prüfung zusammenbauen ---- */
+function pStart(S,pre){
+  var B=pre||pBuild(S);
+  PX={S:JSON.parse(JSON.stringify(S)),pre:B,items:[],pages:[],cur:0,start:Date.now(),done:false};
+  PX.deadline=S.time?PX.start+S.time*60000:null;
+  var defer=S.mode==="end", n=0, total=B.t1.length;
+  function go(i){ if(PX.done) return; PX.cur=Math.max(0,Math.min(PX.pages.length-1,i)); PX.redraw&&PX.redraw(); }
+  B.t1.forEach(function(it,i){
+    it.pos=i; PX.items.push(it);
+    it.card=taskCard(it.sp,{lv:it.lv,kind:it.kind,title:it.title,count:"Aufgabe "+(i+1)+" von "+total+" · "+pP(it.w)+" P",
+      badge:"Teil 1 · "+pP(it.w)+" P",exam:{defer:defer,help:S.help},onDone:function(){ if(PX.redraw) PX.redraw(true); return 0; },
+      onNext:function(){ go(it.pos+1); },nextLabel:i+1<total?"Weiter":"Weiter zu Teil 2"});
+    PX.pages.push({type:"t1",item:it});
+  });
+  B.t2.forEach(function(list,ki){
+    var K=list[0].K, np=list.length, pos=PX.pages.length;
+    list.forEach(function(it,i){
+      PX.items.push(it); it.kn=ki;
+      it.card=taskCard(it.sp,{lv:"X",title:it.title,count:"Teilaufgabe "+(i+1)+" von "+np+" · "+pP(it.w)+" P",
+        badge:"Teil 2 · Knoten "+(ki+1)+" · "+pP(it.w)+" P",exam:{defer:defer,help:S.help},onDone:function(){ if(PX.redraw) PX.redraw(true); return 0; },
+        onNext:function(){ if(i+1<np){ try{ list[i+1].card.scrollIntoView({behavior:"smooth",block:"start"}); }catch(x){} } else go(pos+1); },
+        nextLabel:i+1<np?"Weiter zu "+PL[i+1]+")":(ki+1<B.t2.length?"Weiter zum nächsten Knoten":"Zur Abgabe")});
+    });
+    PX.pages.push({type:"kn",K:K,items:list,ki:ki});
+  });
+  PX.go=go;
+}
+
+/* ---- Punkte ---- */
+function pAnswered(it){
+  var a=it.card.api; if(a.res) return true;
+  if(a.R.twoStep){ var ta=it.card.querySelector("textarea"); return !!(ta&&ta.value.trim()); }
+  try{ return a.R.ready()===true; }catch(e){ return false; }
+}
+function pPts(it){
+  var a=it.card.api, r=a.res; if(!r) return 0;
+  var bx=it.card.querySelectorAll(".chk input[type=checkbox]");
+  if(bx.length){ var c=0; [].forEach.call(bx,function(b){ if(b.checked) c++; }); return Math.round(it.w*c/bx.length*100)/100; }
+  if(r.ok) return it.w;
+  return r.frac!=null&&r.frac>=0.5?it.w/2:0;
+}
+function pGrade(it){
+  var a=it.card.api; if(a.res) return;
+  if(a.R.twoStep){ var ta=it.card.querySelector("textarea"), has=!!(ta&&ta.value.trim());
+    a.R.reveal(); a.lock(); a.res={ok:false,self:true,empty:!has}; return; }
+  a.grade();
+}
+function pSum(){ var X=PX, t1=0,t2=0,m1=0,m2=0;
+  X.items.forEach(function(it){ var p=pPts(it); if(it.teil===1){ t1+=p; m1+=it.w; } else { t2+=p; m2+=it.w; } });
+  var R=function(v){ return Math.round(v*100)/100; };
+  return {t1:R(t1),t2:R(t2),m1:R(m1),m2:R(m2),p:R(t1+t2),m:R(m1+m2)}; }
+
+/* ---- Ansicht ---- */
+function seg2(opts,cur,on){
+  var box=h("div",{class:"seg",role:"group"});
+  opts.forEach(function(o){ var b=h("button",{type:"button","aria-pressed":String(cur===o.v)},o.t);
+    b.addEventListener("click",function(){ [].forEach.call(box.children,function(x){ x.setAttribute("aria-pressed","false"); }); b.setAttribute("aria-pressed","true"); on(o.v); });
+    box.append(b); });
+  return box;
+}
+function probeView(){
+  view.style.setProperty("--lc","var(--ink)");
+  if(PX&&!PX.done) return probeRun();
+  if(PX&&PX.done&&PX.show) return probeResult();
+  return probeSetup();
+}
+function probeSetup(){
+  var S=pLoad(), info=h("p",{class:"small pr-info"}), cutBox=h("div",{class:"pr-cut"}), warn=h("p",{class:"small pr-warn",hidden:true});
+  function upd(){
+    var kn=pKnoten(S).length, m=pMax(S);
+    info.innerHTML="<b>"+P_N1+" Aufgaben</b> in Teil 1 ("+P_N1*P_W1+" Punkte) und <b>"+Math.min(2,kn)+(Math.min(2,kn)===1?" Knoten":" Knoten")+"</b> in Teil 2 ("+Math.min(2,kn)*P_W2+" Punkte), zusammen <b>"+m+" Punkte</b>."+(S.time?" Zeit: "+S.time+" Minuten.":" Ohne Zeitlimit.");
+    clr(cutBox);
+    NOTEN.slice(0,4).forEach(function(nm,i){
+      var inp=h("input",{type:"number",min:"1",max:"100",step:"0.5",value:String(S.cut[i]),"aria-label":"Mindestprozent für "+nm});
+      var pts=h("span",{class:"pp"});
+      function lab(){ pts.textContent="= "+pP(Math.ceil(m*S.cut[i]/100*2-1e-9)/2)+" P"; }
+      inp.addEventListener("change",function(){ var v=parseFloat(String(inp.value).replace(",","."));
+        if(!isFinite(v)) v=PDEF.cut[i]; v=Math.max(1,Math.min(100,v));
+        var hi=i>0?S.cut[i-1]:100, lo=i<3?S.cut[i+1]:0; if(v>hi) v=hi; if(v<lo) v=lo;
+        S.cut[i]=v; inp.value=String(v); pSave(S); upd(); });
+      lab();
+      cutBox.append(h("label",{class:"cutrow"},h("span",{class:"nm"},nm+" ab"),inp,h("span",{},"%"),pts));
+    });
+    cutBox.append(h("span",{class:"small"},"Darunter: Nicht genügend."));
+  }
+  var lineBox=h("div",{class:"pr-lines"});
+  CH.forEach(function(c){
+    var cb=h("input",{type:"checkbox"}); cb.checked=S.lines.indexOf(c.n)>=0;
+    cb.addEventListener("change",function(){
+      var a=S.lines.filter(function(x){ return x!==c.n; }); if(cb.checked) a.push(c.n);
+      if(!a.length){ cb.checked=true; warn.hidden=false; warn.textContent="Mindestens eine Linie muss gewählt bleiben."; return; }
+      warn.hidden=true; S.lines=a.sort(); pSave(S); upd(); });
+    lineBox.append(h("label",{class:"pr-line",style:"--lc:"+lc(c.n)},cb,badge(c.n,"sm"),h("span",{},c.t)));
+  });
+  var hist=pHist();
+  view.append(h("p",{class:"kicker"},"OpenMath · 6. Klasse AHS · Übungsmodul"),h("h1",{},"Probeschularbeit"),
+    h("p",{class:"lead"},"Eine Schularbeit zum Üben unter Prüfungsbedingungen. Teil 1 mischt Aufgaben aus den Antwortformaten der Matura, Teil 2 besteht aus Knoten mit mehreren Teilaufgaben. Die Aufgaben werden bei jedem Start neu gezogen."),
+    h("section",{class:"pr-set"},
+      h("div",{class:"pr-row"},h("h3",{},"Stoff"),lineBox,warn),
+      h("div",{class:"pr-row"},h("h3",{},"Zeit"),seg2([{v:100,t:"100 Minuten"},{v:0,t:"Ohne Zeitlimit"}],S.time,function(v){ S.time=v; pSave(S); upd(); })),
+      h("div",{class:"pr-row"},h("h3",{},"Auswertung"),seg2([{v:"end",t:"Am Ende"},{v:"each",t:"Nach jeder Aufgabe"}],S.mode,function(v){ S.mode=v; pSave(S); }),
+        h("p",{class:"small"},"Am Ende heißt: Du kannst frei blättern und Antworten ändern. Erst beim Abgeben wird alles gewertet.")),
+      h("div",{class:"pr-row"},h("h3",{},"Hilfen"),seg2([{v:false,t:"Aus"},{v:true,t:"Tipps und Werkzeuge"}],S.help,function(v){ S.help=v; pSave(S); }),
+        h("p",{class:"small"},"Bei einer echten Schularbeit gibt es keine Tipps. Mit „Aus“ bleiben auch die Werkzeuge zum Ausprobieren zu.")),
+      h("div",{class:"pr-row"},h("h3",{},"Zwischenergebnisse"),seg2([{v:false,t:"Aus"},{v:true,t:"Einblenden"}],S.notes,function(v){ S.notes=v; pSave(S); }),
+        h("p",{class:"small"},"In Teil 2 hängen die Teilaufgaben aneinander. Eingeblendet stehen die Ergebnisse aller Teilaufgaben schon vor dem Lösen da, so lässt sich ein früher Fehler abfangen. Dafür verraten sie auch die Antworten, bei einer Schularbeit gäbe es das nicht.")),
+      h("div",{class:"pr-row"},h("h3",{},"Notenschlüssel"),cutBox)),
+    info,
+    h("div",{class:"pr-go"},btn("Probeschularbeit starten",function(){ pStart(S); route(); },"prim"),
+      h("span",{class:"small"},"Dein Fortschritt im Liniennetz ändert sich dadurch nicht.")));
+  upd();
+  if(hist.length){
+    view.append(h("h2",{class:"t2h"},"Bisherige Versuche"),
+      h("ul",{class:"pr-hist"},hist.map(function(r){ return h("li",{},h("span",{},new Date(r.t).toLocaleDateString("de-AT",{day:"numeric",month:"long",year:"numeric"})),
+        h("b",{},pP(r.p)+" von "+r.m+" P"),h("span",{},NOTEN[r.n])); })));
+  }
+}
+
+function probeRun(){
+  var X=PX, S=X.S, defer=S.mode==="end", iv=0;
+  var timer=h("span",{class:"pr-time"}), prog=h("span",{class:"pr-prog"});
+  var pills=h("div",{class:"pr-pills",role:"list"}), host=h("div",{class:"pr-host"}), nav=h("div",{class:"pr-nav"}), conf=h("div",{});
+  var pillEls=[], curNotes=null;
+  function left(){ return X.deadline?(X.deadline-Date.now())/1000:null; }
+  function tick(){
+    var l=left();
+    if(l==null){ timer.textContent="Zeit: "+pMin((Date.now()-X.start)/1000); return; }
+    timer.textContent="Noch "+pMin(l); timer.classList.toggle("low",l<300);
+    if(l<=0) finish(true);
+  }
+  function answeredN(pg){ var a=pg.type==="t1"?[pg.item]:pg.items; return a.filter(pAnswered).length; }
+  function drawPills(){
+    pillEls.forEach(function(p,i){ var pg=X.pages[i], n=answeredN(pg), tot=pg.type==="t1"?1:pg.items.length;
+      p.className="pr-pill"+(i===X.cur?" cur":"")+(n===tot?" full":n?" part":"");
+      p.setAttribute("aria-label",(pg.type==="t1"?"Aufgabe "+(i+1):"Knoten "+(pg.ki+1))+(n===tot?", beantwortet":n?", teilweise beantwortet":", offen"));
+      if(i===X.cur) p.setAttribute("aria-current","step"); else p.removeAttribute("aria-current"); });
+    var all=X.items.length, got=X.items.filter(pAnswered).length;
+    prog.textContent=got+" von "+all+" beantwortet";
+  }
+  function noteBox(pg){
+    var items=pg.items.filter(function(it){ return it.note&&(defer||it.card.api.res); });
+    var box=h("div",{class:"notesbox",hidden:true},h("b",{},"Zwischenergebnisse"));
+    if(S.notes&&items.length){ var ul=h("ul",{class:"notes"}); items.forEach(function(it){ ul.append(h("li",{html:"<b>"+PL[it.part]+")</b> "+it.note})); }); box.append(ul); tidy(ul); box.hidden=false; }
+    return box;
+  }
+  function page(keep){
+    var pg=X.pages[X.cur], y=window.scrollY; clr(host);
+    if(pg.type==="t1") host.append(pg.item.card);
+    else{
+      var box=h("section",{class:"angabe"},h("h3",{},"Teil 2 · Knoten "+(pg.ki+1)+" · "+pP(P_W2)+" Punkte"),h("b",{class:"ktitle"},pg.K.title),h("div",{class:"atext",html:pg.K.angabe}));
+      curNotes=noteBox(pg); box.append(curNotes); tidy(box);
+      var list=h("div",{class:"tparts"}); pg.items.forEach(function(it){ list.append(h("div",{class:"tpart"},it.card)); });
+      host.append(box,list);
+    }
+    clr(nav);
+    nav.append(btn("Zurück",function(){ X.go(X.cur-1); },"ghost"+(X.cur===0?" off":"")),h("span",{class:"sp"}),
+      X.cur+1<X.pages.length?btn("<span>Weiter</span>"+IC.next,function(){ X.go(X.cur+1); },"") :
+      btn("Abgeben",function(){ askFinish(); },"prim"));
+    if(X.cur===0) nav.firstChild.disabled=true;
+    drawPills();
+    if(keep) try{ window.scrollTo(0,y); }catch(e){}
+    else try{ window.scrollTo(0,0); }catch(e){}
+  }
+  X.redraw=function(soft){
+    if(soft){ drawPills(); var pg=X.pages[X.cur];
+      if(pg.type==="kn"&&curNotes&&!defer){ var nb=noteBox(pg); curNotes.replaceWith(nb); curNotes=nb; }
+      return; }
+    page(false); };
+  function askFinish(){
+    clr(conf); var open=X.items.length-X.items.filter(pAnswered).length;
+    conf.append(h("div",{class:"confirm pr-conf"},open?"Noch "+open+(open===1?" Aufgabe ist":" Aufgaben sind")+" unbeantwortet. Jetzt abgeben und auswerten?":"Alle Aufgaben sind beantwortet. Jetzt abgeben und auswerten?",
+      h("div",{style:"display:flex;gap:8px;flex-wrap:wrap"},btn("Ja, abgeben",function(){ finish(false); },"sm prim"),btn("Weiter arbeiten",function(){ clr(conf); },"sm ghost"))));
+    try{ conf.scrollIntoView({block:"nearest",behavior:"smooth"}); }catch(e){}
+  }
+  function finish(auto){
+    clearInterval(iv); onLeave=null;
+    X.items.forEach(pGrade); X.done=true; X.show=true; X.end=Date.now(); X.auto=!!auto; X.redraw=null;
+    var s=pSum(); pHistAdd({t:X.end,p:s.p,m:s.m,n:pNote(S,s.p)});
+    route();
+  }
+  X.pages.forEach(function(pg,i){
+    var b=h("button",{type:"button",class:"pr-pill",role:"listitem"},pg.type==="t1"?String(i+1):"K"+(pg.ki+1));
+    b.addEventListener("click",function(){ X.go(i); }); pillEls.push(b); pills.append(b); });
+  view.append(h("div",{class:"pr-bar"},h("div",{class:"pr-t"},h("b",{},"Probeschularbeit"),prog),h("span",{class:"sp"}),timer,
+      btn("Abgeben",function(){ askFinish(); },"sm")),
+    conf,pills,host,nav);
+  host.addEventListener("input",function(){ drawPills(); }); host.addEventListener("click",function(){ setTimeout(drawPills,0); });
+  tick(); iv=setInterval(tick,1000); onLeave=function(){ clearInterval(iv); };
+  page(false);
+}
+
+function probeResult(){
+  var X=PX, S=X.S, rows=[], sumHost=h("div",{});
+  function drawSum(){
+    var s=pSum(), n=pNote(S,s.p), pc=s.m?Math.round(s.p/s.m*1000)/10:0;
+    clr(sumHost).append(
+      h("section",{class:"pr-res n"+n},
+        h("div",{class:"big"},h("b",{},pP(s.p)),h("span",{}," von "+s.m+" Punkten")),
+        h("div",{class:"nt"},h("b",{},NOTEN[n]),h("span",{}," · "+num(pc)+" %")),
+        h("div",{class:"small"},"Teil 1: "+pP(s.t1)+" von "+s.m1+" P · Teil 2: "+pP(s.t2)+" von "+s.m2+" P · Arbeitszeit "+pMin((X.end-X.start)/1000)+" Minuten"+(X.auto?" (Zeit abgelaufen)":"")),
+        h("div",{class:"small"},"Notenschlüssel: "+NOTEN.slice(0,4).map(function(nm,i){ return nm+" ab "+pP(Math.ceil(s.m*S.cut[i]/100*2-1e-9)/2); }).join(" · "))));
+    rows.forEach(function(r){ r.pts.textContent=pP(pPts(r.it))+" / "+pP(r.it.w)+" P"; r.pts.className="pt"+(pPts(r.it)>=r.it.w?" ok":pPts(r.it)>0?" half":" no"); });
+    drawLines();
+  }
+  var lineHost=h("div",{class:"pr-bylines"});
+  function drawLines(){
+    clr(lineHost); var by={};
+    X.items.forEach(function(it){ if(it.teil!==1) return; var o=by[it.ch]||(by[it.ch]={p:0,m:0}); o.p+=pPts(it); o.m+=it.w; });
+    var ks=Object.keys(by).sort(); if(!ks.length) return;
+    lineHost.append(h("h2",{class:"t2h"},"Teil 1 nach Linien"));
+    var g=h("div",{class:"pr-lg"}); ks.forEach(function(k){ var o=by[k], c=CH[k-1], fr=o.m?o.p/o.m:0;
+      g.append(h("a",{class:"pr-l",href:"#k"+k,style:"--lc:"+lc(+k)},badge(+k,"sm"),h("b",{},c.t),h("span",{class:"bar"},h("i",{style:"width:"+Math.round(fr*100)+"%"})),
+        h("span",{class:"small"},pP(o.p)+" von "+o.m+" P"+(fr<0.6?" · hier lohnt sich Üben":"")))); });
+    lineHost.append(g);
+  }
+  function rowFor(it,label){
+    var pts=h("span",{class:"pt"}), host=h("div",{class:"pr-card",hidden:true});
+    var b=h("button",{type:"button",class:"btn sm ghost","aria-expanded":"false"},"Ansehen");
+    b.addEventListener("click",function(){ var open=host.hidden; host.hidden=!open; b.setAttribute("aria-expanded",String(open)); b.textContent=open?"Zuklappen":"Ansehen";
+      if(open&&!host.firstChild){ host.append(it.card); tidy(host); } });
+    it.card.addEventListener("change",function(){ drawSum(); });
+    rows.push({it:it,pts:pts});
+    return h("div",{class:"pr-item"},h("div",{class:"pr-r"},h("span",{class:"nr"},label),(it.ch?badge(it.ch,"sm"):null),h("span",{class:"ti"},it.teil===2?it.title.replace(/^[a-l]\)\s*/,""):it.title),pts,b),host);
+  }
+  var list=h("div",{class:"pr-list"}), li=0;
+  list.append(h("h2",{class:"t2h"},"Aufgaben ansehen"));
+  X.pages.forEach(function(pg){
+    if(pg.type==="t1"){ li++; if(li===1) list.append(h("h3",{class:"pr-sub"},"Teil 1")); list.append(rowFor(pg.item,String(li))); }
+    else{ list.append(h("h3",{class:"pr-sub"},"Teil 2 · Knoten "+(pg.ki+1)+": "+pg.K.title)); pg.items.forEach(function(it){ list.append(rowFor(it,PL[it.part]+")")); }); }
+  });
+  view.append(h("p",{class:"kicker"},"Probeschularbeit · Auswertung"),h("h1",{},"Ergebnis"),sumHost,
+    h("div",{class:"pr-go"},btn("Neue Probeschularbeit",function(){ PX=null; route(); },"prim"),
+      btn("Dieselben Aufgaben nochmal",function(){ var B=X.pre; B.t1.forEach(function(it){ delete it.card; }); B.t2.forEach(function(l){ l.forEach(function(it){ delete it.card; }); }); pStart(X.S,B); route(); },""),
+      h("a",{class:"btn ghost",href:"#start"},"Zum Netzplan")),
+    lineHost,list);
+  drawSum();
+}
+
 /* ============ Fortschritt ============ */
 /* Reihenfolge der Zone 3: zuerst je ein Vertreter der sieben Maturaformate, danach der Rest in der Reihenfolge der Datei */
 var XFIRST=["2aus5","1aus5","luecke","2zu4","grafisch","halboffen","offen"];
@@ -4912,6 +5453,10 @@ function drawNav(cur){
     });
     if(on) li.append(lv); navList.append(li);
   });
+  var pOn=!!(cur&&cur.probe);
+  var hp=h("a",{class:"rt-h",href:"#probe",title:"Probeschularbeit"},h("span",{class:"lbadge kb pb","aria-hidden":"true"},"SA"),h("span",{class:"tx"},"Probeschularbeit"),
+    h("span",{class:"c"},PX&&!PX.done?"läuft":""));
+  if(pOn) hp.setAttribute("aria-current","true");
   var td=0, tn=0; KNOTEN.forEach(function(T){ var c=knCnt(T); td+=c.d; tn+=c.n; });
   var on2=!!(cur&&cur.tour!=null);
   var hd2=h("a",{class:"rt-h",href:"#n1",title:"Teil 2 · Knoten ("+td+" von "+tn+")"},h("span",{class:"lbadge kb","aria-hidden":"true"},"K"),h("span",{class:"tx"},"Teil 2 · Knoten"),h("span",{class:"c"},td+"/"+tn));
@@ -4920,6 +5465,7 @@ function drawNav(cur){
   var lv2=h("div",{class:"lv"});
   KNOTEN.forEach(function(T,i){ var a=h("a",{href:"#"+T.id,class:"lvX"},"Knoten "+(i+1)); if(cur&&cur.tour===i) a.setAttribute("aria-current","page"); lv2.append(a); });
   if(on2) li2.append(lv2); navList.append(li2);
+  navList.append(h("li",{},hp));
 }
 var LOGO='<svg width="96" height="38" viewBox="0 0 96 38" aria-hidden="true"><path d="M4 9 H62 Q72 9 72 19 V29 H92" fill="none" stroke="var(--l1)" stroke-width="4" stroke-linecap="round"/><path d="M4 29 H52 Q62 29 62 19 V9 H92" fill="none" stroke="var(--l5)" stroke-width="4" stroke-linecap="round"/><circle cx="20" cy="9" r="3.4" fill="var(--panel)" stroke="var(--l1)" stroke-width="2"/><circle cx="36" cy="29" r="3.4" fill="var(--panel)" stroke="var(--l5)" stroke-width="2"/><rect x="61" y="13" width="12" height="12" rx="6" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/></svg>';
 var slim=false;
@@ -4961,6 +5507,7 @@ rail.addEventListener("click",function(e){ if(e.target.closest&&e.target.closest
 function home(){
   view.append(h("p",{class:"kicker"},"OpenMath · 6. Klasse AHS · Übungsmodul"),h("h1",{},"Liniennetz"),
     h("p",{class:"lead"},ZW[CH.length]+" Linien durch den Stoff der 6. Klasse. Jede fährt durch drei Zonen: zuerst leichte Stationen, dann mittlere, am Ende Aufgaben in den sieben Antwortformaten der Matura. "+ZW[KNOTEN.length]+" Knoten verbinden mehrere Linien zu langen Aufgaben nach dem Muster von Teil 2. Wer festhängt, holt sich einen Tipp, probiert mit einem Werkzeug herum oder lässt sich den Lösungsweg Schritt für Schritt zeigen."));
+  view.append(h("a",{class:"pr-ban",href:"#probe"},h("span",{class:"lbadge kb pb","aria-hidden":"true"},"SA"),h("span",{class:"t"},h("b",{},"Probeschularbeit"),h("span",{},PX&&!PX.done?"Deine Probeschularbeit läuft noch. Hier geht es weiter.":"16 Aufgaben plus Knoten, mit Zeit, Notenschlüssel und Auswertung.")),h("span",{class:"go",html:IC.next})));
   var plan=h("div",{class:"plan"});
   function drawPlan(){ var w=Math.round(Math.max(700,Math.min(1060,plan.clientWidth||view.clientWidth||900))); clr(plan).append(netz({w:w})); }
   view.append(plan); drawPlan(); onResize=drawPlan;
@@ -5160,6 +5707,7 @@ function route(){
   if(onLeave){ onLeave(); onLeave=null; }
   clr(view); view.style.removeProperty("--lc"); document.body.classList.remove("menu"); onResize=null;
   drawTotal();
+  if(hsh==="probe"){ drawNav({probe:1}); probeView(); try{ window.scrollTo(0,0); }catch(e){} return; }
   var ki=-1; KNOTEN.forEach(function(K,i){ if(K.id===hsh) ki=i; });
   if(ki>=0){ drawNav({tour:ki}); knotView(ki); try{ window.scrollTo(0,0); }catch(e){} return; }
   if(m&&BY[+m[1]]){
@@ -5172,7 +5720,7 @@ function route(){
   try{ window.scrollTo(0,0); }catch(e){}
 }
 window.addEventListener("hashchange",route);
-window.OM={KNOTEN:KNOTEN,TASKS:TASKS,GEN:GEN,VAR:VAR,sigOf:sigOf,moreMake:moreMake,trainMake:trainMake,BY:BY,HELP:HELP,MATURA:MATURA,fmtKey:fmtKey,taskCard:taskCard,TE:TE,route:route,M:M,setZ:setZ,setFs:setFs,keyOf:keyOf,FMT:FMT};
+window.OM={probe:function(){ return PX; },KNOTEN:KNOTEN,TASKS:TASKS,GEN:GEN,VAR:VAR,sigOf:sigOf,moreMake:moreMake,trainMake:trainMake,BY:BY,HELP:HELP,MATURA:MATURA,fmtKey:fmtKey,taskCard:taskCard,TE:TE,route:route,M:M,setZ:setZ,setFs:setFs,keyOf:keyOf,FMT:FMT};
 route();
 })();
 
