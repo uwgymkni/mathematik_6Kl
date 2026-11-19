@@ -2149,10 +2149,353 @@ function roadLab(root, pid, o) {
   return { leave() { playing = false; play.set(false); if (gain) gain.gain.value = 0; }, enter() { } };
 }
 
+/* ---------- Film: vom Fahrersitz in die Vogelperspektive <RoadFilm> ---------- */
+function roadFilm(root, pid) {
+  const W = 960, H = 540, MU = 1 / 14, HW = 2.8 * MU, FK = .64, NEAR = .02;   /* Welt: 1 Einheit = 14 m */
+  /* Die Straße: eine Polynomfunktion dritten Grades, erst Rechtskurve, dann Linkskurve */
+  const A3 = .045, B1 = .72, C0 = 3.3;
+  const f = x => C0 + A3 * Math.pow(x - 5, 3) - B1 * (x - 5), f1 = x => 3 * A3 * (x - 5) * (x - 5) - B1, f2 = x => 6 * A3 * (x - 5);
+  const kap = x => f2(x) / Math.pow(1 + f1(x) * f1(x), 1.5);
+  const add = (a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]], sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]], mul = (a, k) => [a[0] * k, a[1] * k, a[2] * k];
+  const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const nrm = a => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
+  const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  const css = (c, al = 1) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${al})`;
+  /* Bogenlänge, damit das Fahrzeug gleichmäßig schnell fährt */
+  const XA = -1.3, XB = 11.5, DX = .004, xs = [], ss = [];
+  { let s = 0; for (let x = XA; x <= XB + 1e-9; x += DX) { xs.push(x); ss.push(s); s += Math.hypot(DX, f(x + DX) - f(x)); } }
+  const sOfX = x => { const i = clamp((x - XA) / DX, 0, xs.length - 1), i0 = Math.floor(i), i1 = Math.min(xs.length - 1, i0 + 1); return lerp(ss[i0], ss[i1], i - i0); };
+  const xOfS = s => { let lo = 0, hi = ss.length - 1; if (s <= 0) return xs[0]; if (s >= ss[hi]) return xs[hi]; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (ss[m] <= s) lo = m; else hi = m; } return lerp(xs[lo], xs[hi], (s - ss[lo]) / ((ss[hi] - ss[lo]) || 1)); };
+  const RS = []; for (let s = 0; s <= ss[ss.length - 1]; s += .1) { const x = xOfS(s), m = f1(x), q = Math.hypot(1, m); RS.push({ s, x, y: f(x), nx: -m / q, ny: 1 / q, k: kap(x) }); }
+  const X0 = .45, X1 = 9.55, sA = sOfX(X0), sB = sOfX(X1), LEN = sB - sA;
+  let KMAX = 0; for (let x = X0; x <= X1; x += .01) KMAX = Math.max(KMAX, Math.abs(kap(x)));
+  /* Landschaft (fest, nicht zufällig bei jedem Laden) */
+  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const distRoad = (px, py) => { let d = 1e9; for (let i = 0; i < RS.length; i += 2) d = Math.min(d, Math.hypot(RS[i].x - px, RS[i].y - py)); return d; };
+  const TREES = [];
+  for (let i = 4; i < RS.length - 4; i += 7) for (const sd of [-1, 1]) { if (rnd() < .3) continue; const o = (.62 + 2.3 * rnd() * rnd()) * sd, a = RS[i], px = a.x + a.nx * o, py = a.y + a.ny * o; if (distRoad(px, py) < .55) continue; TREES.push({ x: px, y: py, h: (7 + 7 * rnd()) * MU, r: (1.5 + 1.1 * rnd()) * MU, c: rnd() }); }
+  for (let n = 0; n < 70; n++) { const px = -7 + 24 * rnd(), py = -6 + 18 * rnd(); if (distRoad(px, py) < .8) continue; TREES.push({ x: px, y: py, h: (7 + 8 * rnd()) * MU, r: (1.6 + 1.3 * rnd()) * MU, c: rnd() }); }
+  const POSTS = []; for (let i = 3; i < RS.length - 3; i += 6) for (const sd of [-1, 1]) { const a = RS[i], o = (HW + .07) * sd; POSTS.push({ x: a.x + a.nx * o, y: a.y + a.ny * o }); }
+  const FIELDS = []; for (let n = 0; n < 16; n++) { const cx = -6 + 22 * rnd(), cy = -5 + 16 * rnd(), w = 1.6 + 3 * rnd(), hh = 1.2 + 2.4 * rnd(), a = rnd() * Math.PI, c = Math.cos(a), s = Math.sin(a); FIELDS.push({ c: n % 4, p: [[-w, -hh], [w, -hh], [w, hh], [-w, hh]].map(([u, v]) => [cx + u * c - v * s, cy + u * s + v * c, 0]) }); }
+  const ridge1 = a => (2.6 + 1.9 * (.5 + .5 * Math.sin(3 * a + 1)) + 1.1 * Math.sin(7 * a + 2) + .5 * Math.sin(13 * a)) * Math.PI / 180;
+  const ridge2 = a => (1.15 + .8 * (.5 + .5 * Math.sin(5 * a + 4)) + .35 * Math.sin(11 * a + 1)) * Math.PI / 180;
+  /* Zeitachse: A mitfahren, B Kamera steigt, C Achsen erscheinen, D dieselbe Fahrt von oben */
+  const TA = 12, TB = 4.6, TC = 2.6, TD = 12, T1 = TA, T2 = T1 + TB, T3 = T2 + TC, TT = T3 + TD;
+  const trap = u => { const r = .07, v = 1 / (1 - r); u = clamp(u, 0, 1); return u < r ? v * u * u / (2 * r) : u <= 1 - r ? v * (u - r / 2) : 1 - v * (1 - u) * (1 - u) / (2 * r); };
+  const HT = FK * W / 82.7, TOP = { E: [5, 2.5, HT], r: [1, 0, 0], u: [0, 1, 0], fw: [0, 0, -1] };
+  function stateAt(T) {
+    const st = { T, phase: T < T1 ? 0 : T < T2 ? 1 : T < T3 ? 2 : 3 };
+    const uC = st.phase === 2 ? (T - T2) / TC : st.phase > 2 ? 1 : 0;
+    st.d = st.phase === 3 ? clamp((T - T3) / TD, 0, 1) : 0;
+    st.s = st.phase === 0 ? sA + LEN * trap(T / TA) : st.phase === 3 ? sA + LEN * trap(st.d) : sB;
+    st.x = xOfS(st.s); st.steer = clamp(kap(st.x) / KMAX, -1, 1);
+    st.speed = st.phase === 0 ? (trap(T / TA + .01) - trap(T / TA - .01)) * 50 * (1 - .07) : st.phase === 3 ? (trap(st.d + .01) - trap(st.d - .01)) * 50 * (1 - .07) : 0;
+    st.rise = st.phase === 0 ? 0 : st.phase === 1 ? ease((T - T1) / TB) : 1;
+    st.env = st.phase < 2 ? 0 : ease(uC);
+    if (st.phase === 1) { st.carS = sB; st.carA = clamp((st.rise - .05) / .1, 0, 1); }
+    else if (st.phase === 2) { if (uC < .62) { st.carS = sB; st.carA = 1 - clamp((uC - .25) / .3, 0, 1); } else { st.carS = sA; st.carA = clamp((uC - .68) / .3, 0, 1); } }
+    else { st.carS = st.s; st.carA = st.phase === 3 ? 1 : 0; }
+    st.pip = st.phase === 2 ? clamp((uC - .7) / .3, 0, 1) : st.phase === 3 ? 1 : 0;
+    st.pipS = st.phase === 3 ? st.s : sA;
+    return st;
+  }
+  function driverCam(s, veh, steer) {
+    const x = xOfS(s), y = f(x), th = Math.atan2(f1(x), 1), xa = xOfS(s + .85), tha = Math.atan2(f(xa) - y, xa - x);
+    const yaw = th + .5 * (tha - th), p = -.085, eh = (veh === 'moped' ? 1.32 : 1.18) * MU;
+    const fw = [Math.cos(yaw) * Math.cos(p), Math.sin(yaw) * Math.cos(p), Math.sin(p)], r = [Math.sin(yaw), -Math.cos(yaw), 0], u = cross(r, fw);
+    if (veh !== 'moped') return { E: [x, y, eh], r, u, fw, roll: 0 };
+    const ph = steer * .36;                                        /* Schräglage: in die Kurve hinein */
+    return { E: [x - r[0] * eh * Math.sin(ph), y - r[1] * eh * Math.sin(ph), eh * Math.cos(ph)], r: add(mul(r, Math.cos(ph)), mul(u, Math.sin(ph))), u: sub(mul(u, Math.cos(ph)), mul(r, Math.sin(ph))), fw, roll: ph };
+  }
+  function blendCam(c0, e) {
+    if (e <= 0) return c0; if (e >= 1) return TOP;
+    const ez = Math.pow(e, .8), exy = Math.pow(e, 1.25), T0 = add(c0.E, mul(c0.fw, 2.2));
+    const Tg = [lerp(T0[0], 5, exy), lerp(T0[1], 2.5, exy), lerp(T0[2], 0, exy)], E = [lerp(c0.E[0], 5, exy), lerp(c0.E[1], 2.5, exy), lerp(c0.E[2], HT, ez)];
+    const fw = nrm(sub(Tg, E)), up = nrm([0, e, 1 - e]); let r = nrm(cross(fw, up)), u = cross(r, fw);
+    const ro = c0.roll * (1 - clamp(e * 8, 0, 1)); if (ro) { const r2 = add(mul(r, Math.cos(ro)), mul(u, Math.sin(ro))); u = sub(mul(u, Math.cos(ro)), mul(r, Math.sin(ro))); r = r2; }
+    return { E, r, u, fw };
+  }
+  /* ---- Zeichenfläche ---- */
+  const cv = h('canvas', { role: 'img', 'aria-label': 'Animation: Eine Straße aus Sicht der Fahrerin oder des Fahrers. Danach steigt die Kamera auf, und die Straße erscheint von oben als Graph einer Funktion im Koordinatensystem.', style: 'display:block;width:100%;aspect-ratio:16/9;cursor:pointer;touch-action:manipulation' });
+  const ctx = cv.getContext('2d');
+  let PAL = null, palKey = '', fsK = 1, FUI = 'system-ui,sans-serif', FSER = 'Georgia,serif';
+  function readPal() {
+    const probe = h('span', { style: 'position:absolute;visibility:hidden' }); document.body.append(probe);
+    const cvr = n => { probe.style.color = ''; probe.style.color = `var(${n})`; const m = getComputedStyle(probe).color.match(/[\d.]+/g) || [0, 0, 0]; return [+m[0], +m[1], +m[2]]; };
+    const panel = cvr('--panel'), dark = panel[0] + panel[1] + panel[2] < 330;
+    PAL = {
+      dark, panel, ink: cvr('--ink'), ink2: cvr('--ink-2'), ink3: cvr('--ink-3'), line: cvr('--line'), left: cvr('--left'), right: cvr('--right'), road: cvr('--road'), roadLine: cvr('--road-line'),
+      skyTop: cvr('--sky-top'), haze: cvr('--sky-bot'), mFar: cvr('--m-far'), mMid: cvr('--m-mid'),
+      ground: dark ? [36, 60, 58] : [150, 176, 154], fields: dark ? [[42, 68, 62], [33, 55, 56], [50, 70, 58], [38, 62, 66]] : [[164, 186, 152], [138, 168, 148], [184, 190, 150], [150, 174, 162]],
+      trees: dark ? [[22, 42, 42], [17, 35, 38]] : [[62, 104, 88], [50, 90, 80]], asph: dark ? [62, 72, 82] : [82, 92, 102], mark: dark ? [214, 222, 228] : [244, 246, 247], post: dark ? [200, 208, 214] : [250, 250, 250]
+    };
+    probe.remove();
+    const cs = getComputedStyle(document.documentElement); FUI = cs.getPropertyValue('--ff-ui').trim() || FUI; FSER = cs.getPropertyValue('--ff-serif').trim() || FSER;
+  }
+  const zsNow = () => parseFloat(document.documentElement.style.getPropertyValue('--zs')) || 1;
+  const themeKey = () => (document.documentElement.dataset.theme || '') + (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'd' : 'l') + zsNow();
+  function mkView(cam, vx, vy, vw, vh) {
+    const F = FK * vw, cx = vx + vw / 2, cy = vy + vh / 2, E = cam.E, r = cam.r, u = cam.u, fw = cam.fw;
+    return {
+      F, cx, cy, vx, vy, vw, vh, cam,
+      toCam(p) { const dx = p[0] - E[0], dy = p[1] - E[1], dz = (p[2] || 0) - E[2]; return [dx * r[0] + dy * r[1] + dz * r[2], dx * u[0] + dy * u[1] + dz * u[2], dx * fw[0] + dy * fw[1] + dz * fw[2]]; },
+      dir(d) { return [d[0] * r[0] + d[1] * r[1] + d[2] * r[2], d[0] * u[0] + d[1] * u[1] + d[2] * u[2], d[0] * fw[0] + d[1] * fw[1] + d[2] * fw[2]]; },
+      pr(c) { return [cx + F * c[0] / c[2], cy - F * c[1] / c[2]]; },
+      w2s(p) { const c = this.toCam(p); return c[2] > NEAR ? [cx + F * c[0] / c[2], cy - F * c[1] / c[2], c[2]] : null; }
+    };
+  }
+  function clipNear(cs, zn) {
+    const out = [];
+    for (let i = 0; i < cs.length; i++) { const a = cs[i], b = cs[(i + 1) % cs.length], ia = a[2] >= zn, ib = b[2] >= zn; if (ia) out.push(a); if (ia !== ib) { const t = (zn - a[2]) / (b[2] - a[2]); out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, zn]); } }
+    return out;
+  }
+  function polyC(V, cs, fill, stroke) {
+    cs = clipNear(cs, NEAR); if (cs.length < 3) return;
+    ctx.beginPath(); for (let i = 0; i < cs.length; i++) { const p = V.pr(cs[i]); if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); } ctx.closePath();
+    ctx.fillStyle = fill; ctx.fill(); if (stroke) { ctx.strokeStyle = stroke === true ? fill : stroke; ctx.lineWidth = .8; ctx.stroke(); }
+  }
+  const polyW = (V, ps, fill, stroke) => polyC(V, ps.map(p => V.toCam(p)), fill, stroke);
+  function lineW(V, a, b, col, lw) { let cs = clipNear([V.toCam(a), V.toCam(b)], NEAR); if (cs.length < 2) return; const p = V.pr(cs[0]), q = V.pr(cs[1]); ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); ctx.stroke(); }
+  function text(V, str, wx, wy, dx, dy, font, col, align) { const p = V.w2s([wx, wy, 0]); if (!p) return; ctx.font = font; ctx.fillStyle = col; ctx.textAlign = align || 'center'; ctx.textBaseline = 'middle'; ctx.fillText(str, p[0] + dx, p[1] + dy); }
+  function rrect(x, y, w, hh, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + hh, r); ctx.arcTo(x + w, y + hh, x, y + hh, r); ctx.arcTo(x, y + hh, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+
+  function drawSky(V, al) {
+    const c = V.cam, n = [c.r[2], c.u[2], c.fw[2]], g = Math.hypot(n[0], n[1]);
+    if (g < .04 || al <= 0) return;
+    const e = [n[0] / g, -n[1] / g], d0 = n[2] * V.F / g, P0 = [V.cx - e[0] * d0, V.cy - e[1] * d0];
+    ctx.globalAlpha = al;
+    /* Dunst über dem Boden bis zum Horizont */
+    let gr = ctx.createLinearGradient(P0[0] - e[0] * V.vh * .2, P0[1] - e[1] * V.vh * .2, P0[0], P0[1]);
+    gr.addColorStop(0, css(PAL.haze, 0)); gr.addColorStop(1, css(PAL.haze, .8)); ctx.fillStyle = gr; ctx.fillRect(V.vx, V.vy, V.vw, V.vh);
+    /* Himmel: Bildrechteck an der Horizontgeraden abschneiden */
+    const R = [[V.vx, V.vy], [V.vx + V.vw, V.vy], [V.vx + V.vw, V.vy + V.vh], [V.vx, V.vy + V.vh]], gg = p => n[0] * (p[0] - V.cx) - n[1] * (p[1] - V.cy) + n[2] * V.F, out = [];
+    for (let i = 0; i < 4; i++) { const a = R[i], b = R[(i + 1) % 4], ga = gg(a), gb = gg(b); if (ga >= 0) out.push(a); if ((ga >= 0) !== (gb >= 0)) { const t = ga / (ga - gb); out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]); } }
+    if (out.length >= 3) {
+      gr = ctx.createLinearGradient(P0[0], P0[1], P0[0] + e[0] * V.vh * .8, P0[1] + e[1] * V.vh * .8); gr.addColorStop(0, css(PAL.haze)); gr.addColorStop(1, css(PAL.skyTop));
+      ctx.fillStyle = gr; ctx.beginPath(); out.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fill();
+      /* Bergketten am Horizont */
+      const yaw = Math.atan2(c.fw[1], c.fw[0]);
+      [[ridge1, PAL.mFar], [ridge2, PAL.mMid]].forEach(([rf, col]) => {
+        const top = [], bot = []; for (let a = yaw - 1.5; a <= yaw + 1.5; a += .03) { top.push(V.dir([Math.cos(a), Math.sin(a), Math.tan(rf(a))])); bot.push(V.dir([Math.cos(a), Math.sin(a), -.012])); }
+        polyC(V, top.concat(bot.reverse()), css(mix(col, PAL.haze, .25)));
+      });
+    }
+    ctx.globalAlpha = 1;
+  }
+  const BOX = (x0, x1, y0, y1, z0, z1, top, side) => ({ x0, x1, y0, y1, z0, z1, top, side });
+  function drawVehicle(V, s, veh, al) {
+    if (al <= 0) return; const x = xOfS(s), y = f(x), th = Math.atan2(f1(x), 1), c = Math.cos(th), sn = Math.sin(th), K = MU * (veh === 'moped' ? 2.1 : 1.5);
+    const L2W = (lx, ly, lz) => [x + (lx * c - ly * sn) * K, y + (lx * sn + ly * c) * K, lz * K];
+    const body = PAL.right, glass = PAL.dark ? [18, 26, 34] : [22, 40, 58], faces = [];
+    const boxes = veh === 'moped'
+      ? [BOX(-1.0, 1.0, -.27, .27, .25, .78, body, mix(body, [0, 0, 0], .28)), BOX(-.5, .1, -.3, .3, .78, 1.4, glass, mix(glass, [0, 0, 0], .2)), BOX(.55, .7, -.42, .42, .95, 1.05, glass, glass)]
+      : [BOX(-2.2, 2.2, -.95, .95, .3, .86, body, mix(body, [0, 0, 0], .28)), BOX(-1.45, .45, -.8, .8, .86, 1.42, body, glass), BOX(.45, 1.05, -.8, .8, .86, .96, glass, glass)];
+    const E = V.cam.E, Fv = [c, sn, 0], Lv = [-sn, c, 0];
+    boxes.forEach(b => {
+      const P = (i, j, k) => L2W(i ? b.x1 : b.x0, j ? b.y1 : b.y0, k ? b.z1 : b.z0), mx = (b.x0 + b.x1) / 2, my = (b.y0 + b.y1) / 2, mz = (b.z0 + b.z1) / 2;
+      [[[0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1], b.top, [0, 0, 1], L2W(mx, my, b.z1)],
+       [[0, 0, 0], [1, 0, 0], [1, 0, 1], [0, 0, 1], b.side, mul(Lv, -1), L2W(mx, b.y0, mz)],
+       [[0, 1, 0], [0, 1, 1], [1, 1, 1], [1, 1, 0], b.side, Lv, L2W(mx, b.y1, mz)],
+       [[1, 0, 0], [1, 1, 0], [1, 1, 1], [1, 0, 1], mix(b.side, [255, 255, 255], .08), Fv, L2W(b.x1, my, mz)],
+       [[0, 0, 0], [0, 0, 1], [0, 1, 1], [0, 1, 0], mix(b.side, [0, 0, 0], .12), mul(Fv, -1), L2W(b.x0, my, mz)]]
+        .forEach(q => { const n = q[5], m = q[6]; if (n[0] * (E[0] - m[0]) + n[1] * (E[1] - m[1]) + n[2] * (E[2] - m[2]) <= 0) return; faces.push({ z: V.toCam(m)[2], cs: q.slice(0, 4).map(v => V.toCam(P(v[0], v[1], v[2]))), col: q[4] }); });
+    });
+    faces.sort((a, b) => b.z - a.z); ctx.globalAlpha = al;
+    faces.forEach(q => polyC(V, q.cs, css(q.col), css(PAL.dark ? [10, 16, 22] : PAL.ink, .9)));
+    if (veh === 'moped') { const p = V.w2s(L2W(-.12, 0, 1.6)); if (p) { ctx.fillStyle = css(PAL.dark ? [228, 236, 240] : [248, 250, 251]); ctx.strokeStyle = css(PAL.dark ? [10, 16, 22] : PAL.ink); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(p[0], p[1], Math.max(2, V.F * .2 * K / p[2]), 0, 7); ctx.fill(); ctx.stroke(); } }
+    ctx.globalAlpha = 1;
+  }
+  function drawScene(V, o) {
+    const cam = V.cam, E = cam.E, env = o.env, nat = 1 - env, topish = cam.fw[2] < -.6, hazeAmt = clamp(1 + cam.fw[2] * 1.15, 0, 1) * nat;
+    ctx.save(); ctx.beginPath(); ctx.rect(V.vx, V.vy, V.vw, V.vh); ctx.clip();
+    ctx.fillStyle = css(mix(PAL.ground, PAL.panel, env)); ctx.fillRect(V.vx, V.vy, V.vw, V.vh);
+    if (nat > 0) { ctx.globalAlpha = nat; FIELDS.forEach(q => { if (!topish && Math.hypot(q.p[0][0] - E[0], q.p[0][1] - E[1]) > 13) return; polyW(V, q.p, css(PAL.fields[q.c])); }); ctx.globalAlpha = 1; }
+    drawSky(V, nat);
+    /* Koordinatengitter und Achsen liegen auf dem Boden */
+    if (o.axes > 0) {
+      ctx.globalAlpha = o.axes; ctx.lineCap = 'butt';
+      for (let i = 0; i <= 10; i++) lineW(V, [i, 0, 0], [i, 5.4, 0], css(PAL.line, .55), 1);
+      for (let j = 1; j <= 5; j++) lineW(V, [0, j, 0], [10.4, j, 0], css(PAL.line, .55), 1);
+      const ink = css(PAL.ink); lineW(V, [-.5, 0, 0], [10.62, 0, 0], ink, 2); lineW(V, [0, -.5, 0], [0, 5.58, 0], ink, 2);
+      polyW(V, [[10.78, 0, 0], [10.58, .075, 0], [10.58, -.075, 0]], ink); polyW(V, [[0, 5.74, 0], [-.075, 5.54, 0], [.075, 5.54, 0]], ink);
+      for (let i = 1; i <= 10; i++) lineW(V, [i, -.07, 0], [i, .07, 0], ink, 1.6); for (let j = 1; j <= 5; j++) lineW(V, [-.07, j, 0], [.07, j, 0], ink, 1.6);
+      ctx.globalAlpha = 1;
+    }
+    /* Straße */
+    const asph = mix(PAL.asph, PAL.road, env), mark = mix(PAL.mark, PAL.roadLine, env);
+    const quad = (a, b, o1, o2, col) => polyW(V, [[a.x + a.nx * o1, a.y + a.ny * o1, 0], [b.x + b.nx * o1, b.y + b.ny * o1, 0], [b.x + b.nx * o2, b.y + b.ny * o2, 0], [a.x + a.nx * o2, a.y + a.ny * o2, 0]], col, true);
+    for (let i = 0; i < RS.length - 1; i++) {
+      const a = RS[i], b = RS[i + 1], dist = Math.hypot(a.x - E[0], a.y - E[1]); if (!topish && dist > 15) continue;
+      const hz = hazeAmt * clamp((dist - 2.5) / 11, 0, .92), ca = css(mix(asph, PAL.haze, hz)), cm = css(mix(mark, PAL.haze, hz));
+      quad(a, b, -HW, HW, ca); quad(a, b, HW - .05, HW - .028, cm); quad(a, b, -HW + .028, -HW + .05, cm);
+      if (i % 6 < 2) quad(a, b, -.012, .012, cm);
+    }
+    if (o.trail != null) {
+      /* gefahrene Strecke einfärben: je Kurvenrichtung ein zusammenhängendes Band */
+      ctx.globalAlpha = .5; let run = null;
+      const flush = () => { if (run && run.L.length > 1) polyW(V, run.L.concat(run.R.reverse()), css(run.sg > 0 ? PAL.left : PAL.right)); run = null; };
+      for (let i = 0; i < RS.length; i++) {
+        const a = RS[i], ok = a.s >= sA - .05 && a.s <= o.trail && Math.abs(a.k) / KMAX >= .05, sg = Math.sign(a.k);
+        if (!ok || (run && run.sg !== sg)) flush();
+        if (ok) { if (!run) run = { sg, L: [], R: [] }; run.L.push([a.x + a.nx * HW, a.y + a.ny * HW, 0]); run.R.push([a.x - a.nx * HW, a.y - a.ny * HW, 0]); }
+      }
+      flush(); ctx.globalAlpha = 1;
+    }
+    /* Bäume, Leitpflöcke, Fahrzeug: von hinten nach vorn */
+    const obj = [];
+    if (nat > 0) {
+      TREES.forEach(t => { const c = V.toCam([t.x, t.y, 0]); if (c[2] < .12 || (!topish && c[2] > 14)) return; obj.push({ z: c[2], t }); });
+      if (!topish) POSTS.forEach(p => { const c = V.toCam([p.x, p.y, 0]); if (c[2] < .06 || c[2] > 8) return; obj.push({ z: c[2], p }); });
+    }
+    if (o.extA > 0) obj.push({ z: V.toCam([xOfS(o.carS), f(xOfS(o.carS)), 0])[2], car: 1 });
+    obj.sort((a, b) => b.z - a.z);
+    obj.forEach(q => {
+      if (q.car) { drawVehicle(V, o.carS, o.veh, o.extA); return; }
+      const hz = hazeAmt * clamp((q.z - 2.5) / 11, 0, .9); ctx.globalAlpha = nat;
+      if (q.t) {
+        const t = q.t, col = mix(PAL.trees[t.c < .5 ? 0 : 1], PAL.haze, hz), ring = []; for (let k = 0; k < 10; k++) { const a = k / 10 * 6.283; ring.push([t.x + t.r * Math.cos(a), t.y + t.r * Math.sin(a), 0]); }
+        polyW(V, ring, css(mix(col, [0, 0, 0], .12)));
+        const p0 = V.w2s([t.x, t.y, 0]), p1 = V.w2s([t.x, t.y, t.h * .14]), p2 = V.w2s([t.x, t.y, t.h * .5]), p3 = V.w2s([t.x, t.y, t.h]);
+        if (p0 && p1 && p2 && p3) {
+          const ax = [p3[0] - p1[0], p3[1] - p1[1]], al = Math.hypot(ax[0], ax[1]);
+          if (al > 3) {
+            const px = [-ax[1] / al, ax[0] / al], w1 = V.F * t.r / p1[2], w2 = V.F * t.r * .7 / p2[2], pm = [p1[0] + ax[0] * .62, p1[1] + ax[1] * .62];
+            ctx.strokeStyle = css(mix(PAL.dark ? [30, 34, 34] : [74, 66, 58], PAL.haze, hz)); ctx.lineWidth = Math.max(1, w1 * .22); ctx.lineCap = 'butt'; ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); ctx.lineTo(p1[0], p1[1]); ctx.stroke();
+            ctx.fillStyle = css(col); ctx.beginPath(); ctx.moveTo(p1[0] - px[0] * w1, p1[1] - px[1] * w1); ctx.lineTo(p1[0] + px[0] * w1, p1[1] + px[1] * w1); ctx.lineTo(pm[0], pm[1]); ctx.closePath(); ctx.fill();
+            ctx.fillStyle = css(mix(col, [255, 255, 255], .06)); ctx.beginPath(); ctx.moveTo(p2[0] - px[0] * w2, p2[1] - px[1] * w2); ctx.lineTo(p2[0] + px[0] * w2, p2[1] + px[1] * w2); ctx.lineTo(p3[0], p3[1]); ctx.closePath(); ctx.fill();
+          }
+        }
+      } else {
+        const p = q.p, a = V.w2s([p.x, p.y, 0]), b = V.w2s([p.x, p.y, 1.0 * MU]), m = V.w2s([p.x, p.y, .72 * MU]);
+        if (a && b && m) { const lw = Math.max(1.2, V.F * .11 * MU / a[2]); ctx.lineCap = 'butt'; ctx.lineWidth = lw; ctx.strokeStyle = css(mix(PAL.post, PAL.haze, hz)); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); ctx.strokeStyle = css(mix([24, 28, 32], PAL.haze, hz)); ctx.beginPath(); ctx.moveTo(m[0], m[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+      }
+    });
+    ctx.globalAlpha = 1;
+    /* Beschriftung in der Draufsicht */
+    if (o.axes > 0) {
+      const fs = n => Math.round(n * fsK), ink = css(PAL.ink, o.axes), ink2 = css(PAL.ink2, o.axes);
+      for (let i = 1; i <= 10; i++) text(V, String(i), i, 0, 0, 17 * fsK, `500 ${fs(14)}px ${FUI}`, ink2);
+      for (let j = 1; j <= 5; j++) text(V, String(j), 0, j, -13 * fsK, 0, `500 ${fs(14)}px ${FUI}`, ink2, 'right');
+      text(V, 'x', 10.66, 0, 0, 17 * fsK, `italic 400 ${fs(19)}px ${FSER}`, ink); text(V, 'y', 0, 5.58, 16 * fsK, 0, `italic 400 ${fs(19)}px ${FSER}`, ink);
+      text(V, 'f', 1.2, f(1.2), -30 * fsK, -6 * fsK, `italic 400 ${fs(24)}px ${FSER}`, ink);
+      const lab = (al, x, y, t1, t2, col) => { if (al <= 0) return; text(V, t1, x, y, 0, -11 * fsK, `700 ${fs(18)}px ${FUI}`, css(col, al)); text(V, t2, x, y, 0, 11 * fsK, `500 ${fs(15)}px ${FUI}`, css(PAL.ink2, al)); };
+      if (o.labX != null) { lab(clamp((o.labX - 1.7) / .7, 0, 1), 2.7, 3.42, 'Rechtskurve', 'rechtsgekrümmt', PAL.right); lab(clamp((o.labX - 6.3) / .7, 0, 1), 7.3, 3.2, 'Linkskurve', 'linksgekrümmt', PAL.left); }
+    }
+    ctx.restore();
+  }
+  /* ---- Cockpit: Auto ---- */
+  function cockpitCar(steer) {
+    const hood = mix(PAL.right, [0, 0, 0], PAL.dark ? .35 : .1), dk = '#191e24';
+    ctx.fillStyle = css(hood); ctx.beginPath(); ctx.moveTo(40, 512); ctx.quadraticCurveTo(480, 380, 920, 512); ctx.lineTo(920, 540); ctx.lineTo(40, 540); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(190, 474); ctx.quadraticCurveTo(480, 424, 770, 474); ctx.stroke();
+    ctx.fillStyle = dk; ctx.beginPath(); ctx.moveTo(0, 492); ctx.bezierCurveTo(250, 466, 710, 466, 960, 492); ctx.lineTo(960, 540); ctx.lineTo(0, 540); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#2d363f'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, 492); ctx.bezierCurveTo(250, 466, 710, 466, 960, 492); ctx.stroke();
+    ctx.fillStyle = '#14181d'; ctx.beginPath(); ctx.ellipse(480, 484, 168, 30, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#12161a'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(104, 0); ctx.lineTo(26, 498); ctx.lineTo(0, 510); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(960, 0); ctx.lineTo(856, 0); ctx.lineTo(934, 498); ctx.lineTo(960, 510); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(960, 0); ctx.lineTo(960, 20); ctx.quadraticCurveTo(480, 36, 0, 20); ctx.closePath(); ctx.fill();
+    rrect(586, 30, 132, 38, 9); ctx.fill(); ctx.fillStyle = css(mix(PAL.skyTop, PAL.haze, .4), .85); rrect(592, 35, 120, 28, 6); ctx.fill();
+    /* Lenkrad */
+    ctx.save(); ctx.translate(480, 488); ctx.scale(1, .9); ctx.rotate(-steer * 1.75);
+    ctx.lineCap = 'round'; ctx.strokeStyle = '#0d1115'; ctx.lineWidth = 26; ctx.beginPath(); ctx.arc(0, 0, 122, 0, 7); ctx.stroke();
+    ctx.strokeStyle = '#3a4550'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(0, 0, 133.5, 0, 7); ctx.stroke(); ctx.beginPath(); ctx.arc(0, 0, 110.5, 0, 7); ctx.stroke();
+    ctx.strokeStyle = '#11151a'; ctx.lineWidth = 21; ctx.beginPath(); ctx.moveTo(-110, 16); ctx.lineTo(-30, 9); ctx.moveTo(110, 16); ctx.lineTo(30, 9); ctx.moveTo(0, 30); ctx.lineTo(0, 110); ctx.stroke();
+    ctx.fillStyle = '#161b21'; ctx.beginPath(); ctx.arc(0, 4, 36, 0, 7); ctx.fill(); ctx.strokeStyle = '#3a4550'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(0, 4, 13, 0, 7); ctx.stroke();
+    ctx.fillStyle = css(PAL.dark ? PAL.right : mix(PAL.right, [255, 255, 255], .25)); rrect(-9, -136.5, 18, 29, 4); ctx.fill();
+    ctx.restore();
+  }
+  /* ---- Cockpit: Moped (Lenker räumlich gedreht) ---- */
+  function cockpitMoped(steer, speed) {
+    const F = FK * 960, cx = 480, cy = 270, d = steer * .26, cs = Math.cos(d), sn = Math.sin(d);
+    const P3 = (lx, ly, lz) => { const X = lx * cs - lz * sn, Z = 1 + lx * sn + lz * cs, Y = -.335 + ly; return [cx + F * X / Z, cy - F * Y / Z, Z]; };
+    const seg3 = (a, b, th, col, cap) => { const p = P3(a[0], a[1], a[2]), q = P3(b[0], b[1], b[2]); ctx.strokeStyle = col; ctx.lineCap = cap || 'round'; ctx.lineWidth = F * th / ((p[2] + q[2]) / 2); ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); ctx.stroke(); };
+    const body = css(mix(PAL.right, [0, 0, 0], PAL.dark ? .35 : .12));
+    /* Verkleidung */
+    const a = P3(-.24, .0, .12), b = P3(.24, .0, .12), a2 = P3(-.16, .13, .16), b2 = P3(.16, .13, .16);
+    ctx.fillStyle = body; ctx.beginPath(); ctx.moveTo(a2[0], a2[1]); ctx.lineTo(b2[0], b2[1]); ctx.lineTo(b[0], b[1]); ctx.lineTo(b[0] + 70, 560); ctx.lineTo(a[0] - 70, 560); ctx.lineTo(a[0], a[1]); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(a2[0], a2[1]); ctx.lineTo(b2[0], b2[1]); ctx.stroke();
+    /* Spiegel */
+    [-1, 1].forEach(sd => {
+      seg3([.36 * sd, 0, 0], [.55 * sd, .25, .05], .016, '#20262c');
+      const m = P3(.61 * sd, .285, .05), rx = F * .1 / m[2], ry = F * .062 / m[2];
+      ctx.fillStyle = '#161b20'; ctx.beginPath(); ctx.ellipse(m[0], m[1], rx, ry, -.12 * sd, 0, 7); ctx.fill();
+      ctx.fillStyle = css(mix(PAL.skyTop, PAL.haze, .45)); ctx.beginPath(); ctx.ellipse(m[0], m[1], rx * .82, ry * .78, -.12 * sd, 0, 7); ctx.fill();
+    });
+    /* Tacho */
+    const t = P3(0, .105, .1), rr = F * .1 / t[2];
+    ctx.fillStyle = '#12161a'; ctx.beginPath(); ctx.arc(t[0], t[1], rr, 0, 7); ctx.fill(); ctx.strokeStyle = '#8f99a3'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(t[0], t[1], rr, 0, 7); ctx.stroke();
+    ctx.strokeStyle = '#c9d1d8'; ctx.lineWidth = 1.6; for (let k = 0; k <= 8; k++) { const an = Math.PI * (.85 + 1.3 * k / 8); ctx.beginPath(); ctx.moveTo(t[0] + Math.cos(an) * rr * .78, t[1] + Math.sin(an) * rr * .78); ctx.lineTo(t[0] + Math.cos(an) * rr * .92, t[1] + Math.sin(an) * rr * .92); ctx.stroke(); }
+    const na = Math.PI * (.85 + 1.3 * clamp(speed * .62, 0, 1)); ctx.strokeStyle = css(PAL.dark ? PAL.right : mix(PAL.right, [255, 255, 255], .3)); ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(t[0], t[1]); ctx.lineTo(t[0] + Math.cos(na) * rr * .72, t[1] + Math.sin(na) * rr * .72); ctx.stroke();
+    /* Lenkerrohr, Hebel, Griffe */
+    const bar = [[-.62, 0, -.07], [-.3, 0, -.02], [-.12, -.03, 0], [.12, -.03, 0], [.3, 0, -.02], [.62, 0, -.07]];
+    for (let i = 0; i < 5; i++) seg3(bar[i], bar[i + 1], .046, '#14181c'); for (let i = 0; i < 5; i++) seg3(bar[i], bar[i + 1], .03, '#a3adb6');
+    [-1, 1].forEach(sd => { seg3([.6 * sd, .012, .075], [.33 * sd, .012, .04], .014, '#737d86'); seg3([.635 * sd, 0, -.072], [.42 * sd, 0, -.039], .058, '#101418'); });
+  }
+  function drawCockpit(vx, vy, vw, veh, st, al, zoom) {
+    if (al <= 0) return; ctx.save(); ctx.translate(vx, vy); ctx.scale(vw / 960, vw / 960); if (zoom) { ctx.translate(480, 300); ctx.scale(1 + zoom, 1 + zoom); ctx.translate(-480, -300 + zoom * 160); } ctx.globalAlpha = al;
+    if (veh === 'moped') cockpitMoped(st.steer, st.speed); else cockpitCar(st.steer);
+    ctx.restore();
+  }
+  /* ---- Bild aufbauen ---- */
+  let T = 0, playing = false, veh = 'auto', dirty = true, lastW = 0;
+  const PIP = { w: 240, h: 135, x: W - 240 - 12, y: 0 };
+  function render() {
+    const st = stateAt(T); fsK = Math.min(1.75, clamp(760 / (cv.clientWidth || 960), 1, 1.55) * zsNow());
+    ctx.setTransform(cv.width / W, 0, 0, cv.height / H, 0, 0); ctx.globalAlpha = 1;
+    const c0 = driverCam(st.s, veh, st.steer), V = mkView(blendCam(c0, st.rise), 0, 0, W, H);
+    drawScene(V, { env: st.env, veh, extA: st.carA, carS: st.carS, trail: st.phase === 3 ? st.s : null, axes: st.env, labX: st.phase === 3 ? st.x : null });
+    drawCockpit(0, 0, W, veh, st, 1 - clamp(st.rise / .13, 0, 1), st.rise * 5);
+    if (st.pip > 0) {
+      const pst = st.phase === 3 ? st : stateAtDrive(st.pipS), py = TOPY(.22) - PIP.h;
+      ctx.save(); ctx.globalAlpha = st.pip; rrect(PIP.x, py, PIP.w, PIP.h, 8); ctx.clip();
+      const pc = driverCam(pst.s, veh, pst.steer), PV = mkView(pc, PIP.x, py, PIP.w, PIP.h);
+      const keep = fsK; drawScene(PV, { env: 0, veh, extA: 0, carS: pst.s, trail: null, axes: 0 }); fsK = keep;
+      ctx.globalAlpha = st.pip; drawCockpit(PIP.x, py, PIP.w, veh, pst, 1, 0); ctx.restore();
+      ctx.globalAlpha = st.pip; ctx.strokeStyle = css(PAL.ink); ctx.lineWidth = 2; rrect(PIP.x, py, PIP.w, PIP.h, 8); ctx.stroke();
+      ctx.font = `600 ${Math.round(13 * fsK)}px ${FUI}`; ctx.fillStyle = css(PAL.ink2); ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic'; ctx.fillText(veh === 'moped' ? 'Blick vom Sattel' : 'Blick vom Fahrersitz', PIP.x + PIP.w - 2, py - 7); ctx.globalAlpha = 1;
+    }
+    if (!playing && T <= 0) { ctx.fillStyle = 'rgba(12,20,28,.55)'; ctx.beginPath(); ctx.arc(W / 2, H / 2 - 30, 46, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(W / 2 - 14, H / 2 - 52); ctx.lineTo(W / 2 + 24, H / 2 - 30); ctx.lineTo(W / 2 - 14, H / 2 - 8); ctx.closePath(); ctx.fill(); }
+  }
+  const TOPY = y => H / 2 - (y - 2.5) * 82.7;
+  const stateAtDrive = s => { const x = xOfS(s); return { s, x, steer: clamp(kap(x) / KMAX, -1, 1), speed: 0 }; };
+  /* ---- Text zum Bild ---- */
+  const say = h('div', { class: 'say' }); let lastSay = '';
+  function caption() {
+    const st = stateAt(T), mo = veh === 'moped', turn = Math.abs(st.steer) < .13 ? 0 : Math.sign(st.steer); let t;
+    if (st.phase === 0) t = (T <= 0 && !playing ? (mo ? 'Du sitzt am Moped. Vor dir liegt eine Straße mit zwei Kurven.' : 'Du sitzt am Steuer. Vor dir liegt eine Straße mit zwei Kurven.') + '<small>Starte die Fahrt und achte darauf, wohin du lenken musst.</small>'
+      : turn < 0 ? (mo ? 'Rechtskurve: Du lenkst nach rechts und legst dich in die Kurve.' : 'Rechtskurve: Du drehst das Lenkrad nach rechts.') + '<small>Die Straße biegt nach rechts ab.</small>'
+        : turn > 0 ? (mo ? 'Linkskurve: Du lenkst nach links und legst dich in die Kurve.' : 'Linkskurve: Du drehst das Lenkrad nach links.') + '<small>Die Straße biegt nach links ab.</small>'
+          : (mo ? 'Kurz geradeaus: Der Lenker steht gerade.' : 'Kurz geradeaus: Das Lenkrad steht gerade.') + '<small>Hier wechselt die Straße von der einen Kurve in die andere.</small>');
+    else if (st.phase === 1) t = 'Die Kamera steigt auf.<small>Es ist dieselbe Straße. Du siehst sie jetzt immer mehr von oben.</small>';
+    else if (st.phase === 2) t = 'Von oben gesehen ist die Straße eine Kurve im Koordinatensystem.<small>Die Mittellinie der Straße ist der Graph einer Funktion <i>f</i>.</small>';
+    else if (T >= TT) t = 'Lies einen Graphen wie eine Straße von oben und fahr ihn in Gedanken von links nach rechts ab.<small>Wo du nach rechts lenken müsstest, ist er rechtsgekrümmt. Wo du nach links lenken müsstest, ist er linksgekrümmt.</small>';
+    else t = (turn < 0 ? 'Dieselbe Fahrt von oben: Hier lenkst du nach rechts.' : turn > 0 ? 'Dieselbe Fahrt von oben: Hier lenkst du nach links.' : (mo ? 'Dieselbe Fahrt von oben: Der Lenker steht kurz gerade.' : 'Dieselbe Fahrt von oben: Das Lenkrad steht kurz gerade.')) + '<small>Das kleine Bild zeigt, was du dabei vom ' + (mo ? 'Sattel' : 'Fahrersitz') + ' aus siehst.</small>';
+    if (t !== lastSay) { lastSay = t; say.innerHTML = t; }
+    const ph = st.phase === 2 ? 1 : st.phase; if (pSeg.get() !== ph) pSeg.set(ph);
+  }
+  /* ---- Bedienung ---- */
+  const play = playBtn(on => { playing = on; if (on && T >= TT - .01) T = 0; dirty = true; });
+  const tl = slider('Film', 0, TT, .05, 0, v => { T = v; playing = false; play.set(false); dirty = true; }, v => fmt(v, 0) + ' s'); tl.style.flex = '1';
+  const vSeg = seg([['auto', 'Auto'], ['moped', 'Moped']], veh, v => { veh = v; dirty = true; }, 'Fahrzeug');
+  const pSeg = seg([[0, '1 · Mitfahren'], [1, '2 · Kamera steigt auf'], [3, '3 · Von oben']], 0, v => { T = v === 0 ? 0 : v === 1 ? T1 : T3; tl.set(T); playing = true; play.set(true); dirty = true; }, 'Abschnitt');
+  cv.addEventListener('click', () => play.click());
+  root.append(block('animation', 'Erst mitfahren, dann von oben schauen', stage(h('div', { class: 'toolbar top' }, vSeg, sp(), pSeg), cv, toolbar(play, tl)), h('div', { style: 'margin-top:16px' }, say)));
+  Ticker.add(pid, dt => {
+    const key = themeKey(); if (key !== palKey || !PAL) { palKey = key; readPal(); dirty = true; }
+    const cw = cv.clientWidth; if (cw && Math.abs(cw - lastW) > .5) { lastW = cw; const dpr = Math.min(2, window.devicePixelRatio || 1); cv.width = Math.round(cw * dpr); cv.height = Math.round(cw * dpr * H / W); dirty = true; }
+    if (playing) { T += dt; if (T >= TT) { T = TT; playing = false; play.set(false); } tl.set(T); dirty = true; }
+    if (dirty && cv.width && PAL) { dirty = false; render(); caption(); }
+  });
+  return { stop() { playing = false; play.set(false); dirty = true; }, _dbg: { set(t, v) { T = t; if (v) { veh = v; vSeg.set(v); } tl.set(T); dirty = true; }, TT, T1, T2, T3 } };
+}
+
 page({
   id: 'kruemmung', part: 3, short: 'Die Straße von oben', kicker: 'Teil 1, Station 7', title: 'Die Straße von oben',
   lead: 'Bisher ging es um die Richtung: steigt der Graph oder fällt er? Jetzt geht es darum, <em>wie</em> er steigt oder fällt. Stell dir den Graphen als Straße vor, die du von oben siehst, und fahr mit dem Auto darüber.',
   build(root, pid) {
+    const film = roadFilm(root, pid);
+    window.__film = film;
+    root.append(block('probiere', 'Jetzt von oben: fünf Straßen zum Abfahren', prose('Ab hier siehst du die Straße gleich von oben, so wie am Ende des Films. Das Lenkrad daneben zeigt, wohin beim Fahren gerade gelenkt wird.')));
     const api = roadLab(root, pid, {
       presets: [
         { n: 'Kuppe', f: x => 4.2 - .16 * (x - 5) * (x - 5), y: [0, 5] },
@@ -2172,7 +2515,7 @@ page({
     );
     root.append(fact('Warum Straßen keine Kreisbögen sind', 'Klothoide, Eisenbahnbau bis Achterbahn',
       '<p>Würde eine Kurve direkt als Kreisbogen an eine Gerade anschließen, müsste man das Lenkrad schlagartig einschlagen. Im Eisenbahn- und Straßenbau verwendet man deshalb Übergangsbögen, deren Krümmung gleichmäßig zunimmt. Die passende Kurve heißt Klothoide; sie ist bis heute Grundlage von Trassierungsvorschriften.</p><p>Achterbahnen erzählen dieselbe Geschichte. Die ersten Loopings im 19. Jahrhundert waren kreisrund und drückten die Fahrgäste mit einem Vielfachen der Erdbeschleunigung in die Sitze. Als 1976 mit der <i>Revolution</i> in Kalifornien der erste moderne Looping entstand, entwarf ihn der Ingenieur Werner Stengel nach dem Vorbild der Klothoide: unten weit, oben eng. Seither ist fast jeder Looping der Welt so geformt.</p>'));
-    return api;
+    return { leave() { film.stop(); api.leave(); }, enter() { if (api.enter) api.enter(); } };
   }
 });
 
