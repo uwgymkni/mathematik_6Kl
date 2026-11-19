@@ -1540,35 +1540,6 @@ function helpKruemm(){ return {name:"Lenkrad",hint:"Stell dir den Graphen als St
   host.append(hRange("Auto bei "+M("x"),-5,5,.25,x,null,function(v){ x=v; draw(); }),say); draw();
 }}; }
 /* ---- Spiegelprobe ---- */
-var SPF=[{t:"x^2 - 2",f:function(x){ return x*x-2; }},{t:"{1/4}x^3 - x",f:function(x){ return x*x*x/4-x; }},{t:"{1/2}x^2 + x",f:function(x){ return x*x/2+x; }},
-  {t:"x^4 - 3x^2 + 1",f:function(x){ return x*x*x*x-3*x*x+1; }},{t:"{1/2}x^3 + 1",f:function(x){ return x*x*x/2+1; }},{t:"{2/x}",f:function(x){ return 2/x; }}];
-function helpSpiegel(){ return {name:"Spiegelprobe",hint:"Wähl eine Beispielfunktion und spiegle ihren Graphen. Deckt sich das Spiegelbild mit dem Original?",build:function(host){
-  var fi=0, mode="y", say=hSay(), pl=hPlane(host,[-3.5,3.5],[-3.5,3.5]);
-  function draw(){ var F=SPF[fi]; pl.draw(function(P){
-    P.fn(F.f,"--dx",3.2);
-    var g=mode==="y"?function(x){ return F.f(-x); }:function(x){ return -F.f(-x); };
-    var e=P.fn(g,"--dy",2.6); if(e) e.setAttribute("stroke-dasharray","7 6");
-    if(mode==="o") P.pt(0,0,"--gold","",{r:5});
-    else S("line",{x1:P.X(0),y1:P.Y(-3.5),x2:P.X(0),y2:P.Y(3.5),stroke:"var(--gold)","stroke-width":"3",opacity:".6"},P.dyn);
-    var same=true; for(var x=-3;x<=3;x+=.37){ var a=F.f(x), b=g(x); if(isFinite(a)&&Math.abs(a-b)>1e-9) same=false; }
-    say.innerHTML="Blau: "+M("f(x) = "+F.t)+". Gestrichelt: das Spiegelbild "+(mode==="y"?"an der "+M("y")+"-Achse":"am Ursprung")+". "+(same?"<b class='cG'>Es deckt sich mit dem Original.</b>":"Es deckt sich nicht.");
-  }); }
-  host.append(hRow(hSeg(SPF.map(function(F,i){ return {v:i,label:M(F.t)}; }),function(v){ fi=v; draw(); },0)),
-    hRow(hSeg([{v:"y",label:"an der y-Achse"},{v:"o",label:"am Ursprung"}],function(v){ mode=v; draw(); },0)),say); draw();
-}}; }
-/* ---- Periodenschieber ---- */
-function helpPeriode(){ return {name:"Periodenschieber",hint:"Verschieb eine Kopie des Beispielgraphen nach rechts. Bei welcher Verschiebung deckt sie sich wieder mit dem Original?",build:function(host){
-  var p=1, say=hSay(), pl=hPlane(host,[-1,13],[-2.5,2.5],{H:300});
-  function F(x){ var u=((x%5)+5)%5; return u<1?2*u:u<2?2:u<3.5?2-(u-2)*(8/3):-2+(u-3.5)*(4/3); }
-  function draw(){ pl.draw(function(P){
-    P.fn(F,"--dx",3.2);
-    var e=P.fn(function(x){ return F(x-p); },"--dy",2.6); if(e) e.setAttribute("stroke-dasharray","7 6");
-    var same=Math.abs(p%5)<1e-9&&p>0;
-    S("path",{d:"M"+P.X(0)+","+P.Y(2.3)+" H"+P.X(p),stroke:"var(--gold)","stroke-width":"3","marker-end":""},P.dyn);
-    say.innerHTML="Verschiebung um "+num(p)+": "+(same?"<b class='cG'>Die Kopie deckt sich mit dem Original.</b> Die kleinste solche Verschiebung ist die Periode.":"Die Kopie deckt sich nicht.");
-  }); }
-  host.append(hRange("Verschiebung",.5,12,.5,p,null,function(v){ p=v; draw(); }),say); draw();
-}}; }
 /* ---- Umkehr-Spiegel ---- */
 function helpUmkehr(){ return {name:"Umkehr-Spiegel",hint:"Stell eine Gerade ein. Ihr Spiegelbild an der ersten Mediane "+M("y = x")+" ist der Graph der Umkehrfunktion.",build:function(host){
   var k=2, d=-1, say=hSay(), pl=hPlane(host,[-5,5],[-5,5],{W:440,H:420});
@@ -2548,7 +2519,7 @@ function taskCard(sp,cx){
 
 /* ============ Aufgabenregister ============ */
 var CH=[
-  {n:1,t:"Funktionen untersuchen",s:"Nullstellen, Monotonie, Extremstellen, Krümmung, Symmetrie, Umkehrung"},
+  {n:1,t:"Funktionen untersuchen",s:"Nullstellen, Monotonie, Extremstellen, Krümmung, Umkehrung, Funktionsbegriff"},
   {n:2,t:"Änderungsmaße",s:"absolut, relativ, mittlere Änderungsrate, Änderungsfaktor"},
   {n:3,t:"Potenzen und Wurzeln",s:"Rechenregeln, negative und rationale Hochzahlen"},
   {n:4,t:"Potenz- und Polynomfunktionen",s:"Grad und Anzahlen, Hoch- und Tiefpunkte, Monotonie, Krümmung, Potenzfunktionen"},
@@ -2655,33 +2626,7 @@ T("f2",1,"L","fu.mono","Monotonie am Graphen",SRC_K,function(){ return {
     "Jetzt prüfen, ob das Intervall der Aussage ganz in einem passenden Abschnitt liegt. "+M("[-2; 0]")+" passt in das fallende Stück, "+M("[-3; 2]")+" ragt darüber hinaus."]}
 }; });
 
-var SYMS=[{t:"x^4 - 2x^2",k:"g",w:"Nur gerade Hochzahlen: "+M("f(-x) = f(x)")+"."},{t:"3x^3 - x",k:"u",w:"Nur ungerade Hochzahlen: "+M("f(-x) = -f(x)")+"."},
-  {t:"x^2 + x",k:"k",w:M("f(-x) = x^2 - x")+". Das ist weder "+M("f(x)")+" noch "+M("-f(x)")+"."},{t:"5",k:"g",w:"Eine konstante Funktion hat überall denselben Wert, also auch bei "+M("x")+" und "+M("-x")+"."},
-  {t:"-x",k:"u",w:M("f(-x) = x = -f(x)")+"."},{t:"x^3 + 1",k:"k",w:"Der Summand 1 stört: "+M("f(-x) = -x^3 + 1")+"."},{t:"{1/x^2}",k:"g",w:M("(-x)^2 = x^2")+", also "+M("f(-x) = f(x)")+"."},{t:"x^5",k:"u",w:M("(-x)^5 = -x^5")+"."}];
-var SYMB=[{k:"g",t:"gerade",n:"gerade"},{k:"u",t:"ungerade",n:"ungerade"},{k:"k",t:"weder noch",n:"weder gerade noch ungerade"}];
-function symSol(){ return {viz:vPlane([-3,3],[-3,3],{W:440,H:400,yl:"y"}),merk:"Gerade: "+M("f(-x) = f(x)")+", der Graph ist symmetrisch zur "+M("y")+"-Achse. Ungerade: "+M("f(-x) = -f(x)")+", der Graph ist symmetrisch zum Ursprung.",steps:[
-  {t:"Ersetze in jedem Term "+M("x")+" durch "+M("-x")+".",m:M("(-x)^2 = x^2")+", &nbsp; "+M("(-x)^3 = -x^3")},
-  {t:"Kommt wieder der ursprüngliche Term heraus, ist die Funktion gerade. Beispiel "+M("x^4 - 2x^2")+": Der Graph ist spiegelbildlich zur "+M("y")+"-Achse.",a:function(V){ V.F(function(x){ return x*x*x*x/2-2*x*x+1; },"--dx"); }},
-  {t:"Kommt der Term mit umgekehrtem Vorzeichen heraus, ist sie ungerade. Beispiel "+M("x^3 - 3x")+" (verkleinert): Der Graph ist punktsymmetrisch zum Ursprung.",a:function(V){ V.F(function(x){ return (x*x*x-3*x)/2; },"--dy"); V.Pt(0,0,"","--gold",.6,{r:5}); }},
-  "Gemischte Hochzahlen oder ein zusätzlicher konstanter Summand bei ungeraden Hochzahlen: weder gerade noch ungerade."]}; }
-T("f3",1,"L","fu.sym","Gerade, ungerade oder keins?",SRC_S,function(){ return {
-  fmt:"sort",q:"Sortiere die Funktionen "+M("f")+" mit den angegebenen Termen "+M("f(x)")+".",
-  bins:SYMB,cards:SYMS.map(function(s){ return {s:M(s.t),k:s.k,w:s.w}; }),
-  tips:["Ersetze "+M("x")+" durch "+M("-x")+" und vereinfache.","Gerade Hochzahlen schlucken das Minus, ungerade lassen es stehen. Eine Zahl ohne "+M("x")+" zählt wie "+M("x^0")+", also gerade."],
-  sol:symSol()}; });
 
-function sawP(p,pat){ return function(x){ var u=((x%p)+p)%p; for(var i=1;i<pat.length;i++) if(u<=pat[i][0]+1e-9){ var t=(u-pat[i-1][0])/(pat[i][0]-pat[i-1][0]); return pat[i-1][1]+t*(pat[i][1]-pat[i-1][1]); } return pat[pat.length-1][1]; }; }
-var PER1=sawP(4,[[0,0],[1,2],[2,2],[3,-1],[4,0]]);
-T("f4",1,"L","fu.per","Periode ablesen",SRC_S,function(){ return {
-  fmt:"input",q:"Die Abbildung zeigt einen Ausschnitt des Graphen einer periodischen Funktion "+M("f")+". Gib die kleinste Periode "+M("p")+" an.",
-  fig:gfig(600,280,[-2,14],[-2,3],"x","f(x)",1,1,function(P){ P.fn(PER1,"--dx",3); }),figWide:true,
-  fields:[{l:M("p ="),r:4,w:"Nach 4 Einheiten wiederholt sich der Verlauf genau."}],
-  tips:["Such ein auffälliges Stück, etwa den Anfang des waagrechten Abschnitts, und schau, wann es wieder genau so beginnt.","Die kleinste Periode ist der kürzeste Abstand, nach dem sich alles wiederholt, nicht nur eine einzelne Höhe."],
-  sol:{viz:vPlane([-2,14],[-2,3],{W:600,H:280,yl:"f(x)",pre:function(P){ P.fn(PER1,"--ink-3",2.6); }}),merk:"Periode "+M("p")+": "+M("f(x + p) = f(x)")+" für alle "+M("x")+". Die kleinste solche Zahl nennt man die kleinste Periode.",steps:[
-    {t:"Ein Verlauf beginnt bei 0: hinauf bis 2, waagrecht, hinunter bis −1, zurück auf 0.",a:function(V){ V.F(PER1,"--dx",0,{from:0,to:4}); }},
-    {t:"Genau derselbe Verlauf wiederholt sich von 4 bis 8 und von 8 bis 12.",a:function(V){ V.F(PER1,"--dy",0,{from:4,to:8}); V.F(PER1,"--dx",.5,{from:8,to:12}); }},
-    {t:"Gleiche Höhen gibt es auch in kürzeren Abständen, etwa 0 bei "+M("x = 0")+" und bei etwa "+M("x = 3,3")+". Dort geht es aber einmal hinauf und einmal hinunter. Erst nach 4 wiederholt sich alles.",m:M("p = 4")}]}
-}; });
 
 var CB=knotCurve(-5,2,[[-3,-2],[0,3],[3,-1]],5,4);
 T("f5",1,"L","fu.extr","Extremstellen ablesen",SRC_K,function(){ return {
@@ -2802,13 +2747,6 @@ T("f13",1,"M","fu.extr","Den tiefsten Punkt finden",SRC_O,function(){ return {
     "Der Tiefpunkt bei 3 ist nur lokal: In seiner Umgebung ist er der tiefste, im ganzen Bereich nicht. Der größte Wert liegt übrigens am Rand, bei 5."]}
 }; });
 
-T("f14",1,"M","fu.sym","Ungerade Funktionen",SRC_S,function(){ return {
-  fmt:"mc",pick:"x",q:"Kreuze alle Funktionen an, die ungerade sind.",calc:true,
-  items:[{s:M("f(x) = x^3 - 4x"),r:1,w:"Nur ungerade Hochzahlen."},{s:M("f(x) = x^4 + x^2"),r:0,w:"Nur gerade Hochzahlen: gerade Funktion."},
-    {s:M("f(x) = 2x - x^5"),r:1,w:M("f(-x) = -2x + x^5 = -f(x)")+"."},{s:M("f(x) = x^3 + 1"),r:0,w:M("f(-x) = -x^3 + 1")+", das ist nicht "+M("-f(x) = -x^3 - 1")+"."},
-    {s:M("f(x) = {3/x}"),r:1,w:M("{3/-x} = -{3/x}")+"."}],
-  tips:["Prüf "+M("f(-x) = -f(x)")+".","Ein konstanter Summand zerstört die Punktsymmetrie, weil der Graph dann nicht mehr durch den Ursprung geht."],
-  sol:symSol()}; });
 
 /* ---------- Zone 3 · Matura ---------- */
 var CF=knotCurve(-6,-1,[[-4,2],[-1,-1],[2,3]],5,-1);
@@ -2854,19 +2792,6 @@ T("f17",1,"X","fu.lok","Extremstelle begründen",SRC_O,function(){ return {
     "Kein Funktionswert in der Nähe ist größer als "+M("f(1)")+": lokales Maximum."]}
 }; });
 
-var PER2=sawP(3,[[0,-1],[1,1.5],[3,-1]]), PER3=sawP(4,[[0,0],[1,1.5],[2,0],[3,-1.5],[4,0]]);
-function perMini(f){ return function(){ return mini(function(P){ P.fn(f,"--dx",2.6); },{W:300,H:150,xr:[0,12],yr:[-2,2],sy:1}); }; }
-T("f18",1,"X","fu.per","Graph und Periode",SRC_O,function(){
-  return zuOf([{s:perMini(PER2),key:"3",w:"Die Zacke wiederholt sich alle 3 Einheiten."},{s:perMini(PER3),key:"4",w:"Eine Welle hinauf und hinunter dauert 4 Einheiten. Nach 2 Einheiten ist der Graph zwar wieder bei 0, läuft dann aber nach unten."}],
-    [{key:"2",s:M("p = 2")},{key:"3",s:M("p = 3")},{key:"4",s:M("p = 4")},{key:"6",s:M("p = 6")}],
-    {keep:true,q:"Ordne den beiden Graphen periodischer Funktionen jeweils ihre kleinste Periode "+M("p")+" zu. Ein Kästchen ist eine Einheit.",
-     tips:["Such bei jedem Graphen einen markanten Punkt, etwa eine Spitze, und zähl die Kästchen bis zur nächsten gleichen Spitze.","Achtung bei Nulldurchgängen: Der Graph muss danach auch gleich weiterlaufen."],
-     sol:{viz:vPlane([0,12],[-2,2],{W:600,H:240,yl:"f(x)",pre:function(P){ P.fn(PER3,"--ink-3",2.6); }}),merk:"Die kleinste Periode ist der kürzeste Abstand, nach dem sich der ganze Verlauf wiederholt.",steps:[
-       {t:"Beim zweiten Graphen: Die Spitzen liegen bei 1, 5 und 9.",m:M("5 - 1 = 4"),a:function(V){ V.Pt(1,1.5,"","--dy"); V.Pt(5,1.5,"","--dy",.3); V.Pt(9,1.5,"","--dy",.6); }},
-       {t:"Bei 2 geht der Graph durch 0, aber nach unten statt nach oben. 2 ist keine Periode.",a:function(V){ V.Pt(2,0,"","--fall",0,{r:5}); V.F(PER3,"--fall",.2,{from:2,to:3}); }},
-       "Beim ersten Graphen liegen die Spitzen bei 1, 4, 7 und 10: Periode 3. Die Perioden 2 und 6 bleiben übrig. 6 wäre zwar auch eine Periode des ersten Graphen, aber nicht die kleinste."]}});
-});
-
 T("f19",1,"X","fu.skizze","Graph mit Eigenschaften",SRC_K,function(){ return {
   fmt:"kurve",q:"Eine Funktion "+M("f")+" hat folgende Eigenschaften:<ul class='plist'><li>"+M("f")+" ist für "+M("x <= -2")+" streng monoton steigend,</li><li>im Intervall "+M("[-2; 2]")+" streng monoton fallend</li><li>und für "+M("x >= 2")+" wieder streng monoton steigend.</li><li>Der Tiefpunkt ist "+M("(2 | -1)")+".</li><li>Die Stelle −4 ist eine Nullstelle.</li></ul>Skizziere den Graphen einer solchen Funktion im Bereich von −6 bis 6.",
   W:560,H:420,xr:[-6.5,6.5],yr:[-5,5],yl:"f(x)",kx:[-6,-4,-2,0,2,4,6],snapY:.5,model:[-3,0,3,1,-1,1,3],
@@ -2894,19 +2819,6 @@ T("f20",1,"X","fu.nullb","Nullstellen berechnen",SRC_O,function(){ return {
     "Ein Produkt ist 0, wenn einer der Faktoren 0 ist."]}
 }; });
 
-var BREATH=function(t){ return .25-.25*Math.cos(2*Math.PI*t/4); };
-T("f21",1,"X","fu.per","Atmung in Ruhe",SRC_K,function(){ return {
-  fmt:"offen",q:"<p>Die Abbildung zeigt, wie viel Luft (in Litern) eine erwachsene Person in Ruhe in Abhängigkeit von der Zeit "+M("t")+" (in Sekunden) durch die Lunge strömt.</p><p>Die Atemfrequenz einer gesunden erwachsenen Person liegt in Ruhe bei 12 bis 16 Atemzügen pro Minute. Bewerte die Atmung dieser Person im Hinblick auf ihre Gesundheit.</p>",
-  fig:gfig(620,260,[0,32],[0,.7],"t in s","L in l",2,.2,function(P){ P.fn(BREATH,"--dx",3); }),figWide:true,
-  model:"Die kleinste Periode beträgt 4 s: Ein Atemzug dauert 4 Sekunden. In einer Minute sind das 60 : 4 = 15 Atemzüge. 15 liegt zwischen 12 und 16, die Atmung ist im gesunden Bereich.",
-  points:["Periode 4 s aus dem Graphen abgelesen","15 Atemzüge pro Minute berechnet","mit 12 bis 16 verglichen und eine Bewertung formuliert"],
-  tips:["Ein Atemzug entspricht einer Periode. Lies sie zwischen zwei Spitzen ab.","Wie viele Perioden passen in 60 Sekunden?"],
-  sol:{viz:vPlane([0,32],[0,.7],{W:620,H:260,xl:"t in s",yl:"L in l",sx:2,sy:.2,pre:function(P){ P.fn(BREATH,"--ink-3",2.6); }}),merk:"Periode und Frequenz hängen zusammen: Frequenz = 1 : Periode, hier umgerechnet auf eine Minute.",steps:[
-    {t:"Die Spitzen liegen bei 2 s, 6 s, 10 s, …",a:function(V){ [2,6,10,14].forEach(function(x,i){ V.Pt(x,.5,"","--dy",i*.15,{r:5}); }); }},
-    {t:"Ein Atemzug dauert also 4 s.",m:M("p = 4")+" s",a:function(V){ V.F(BREATH,"--dx",0,{from:2,to:6}); }},
-    {t:"Pro Minute.",m:M("60 : 4 = 15")+" Atemzüge"},
-    "15 liegt im Bereich von 12 bis 16. Die Atmung ist unauffällig."]}
-}; });
 
 T("f22",1,"X","fu.verk","Verkettung prüfen",SRC_S,function(){ return {
   fmt:"mc",pick:2,q:"Gegeben sind "+M("f(x) = 2x + 1")+" und "+M("g(x) = x^2")+". Kreuze die beiden zutreffenden Aussagen an.",
@@ -2920,16 +2832,6 @@ T("f22",1,"X","fu.verk","Verkettung prüfen",SRC_S,function(){ return {
     {t:"Umgekehrt.",m:M("g(f(x)) = (2x + 1)^2 = 4x^2 + 4x + 1")}]}
 }; });
 
-T("f23",1,"X","fu.sym","Ungerade Funktion",SRC_O,function(){ return {
-  fmt:"mc",pick:1,q:"Von einer ungeraden Funktion "+M("f: ℝ → ℝ")+" ist bekannt: "+M("f(2) = 5")+". Kreuze die Aussage an, die sicher zutrifft.",
-  items:[{s:M("f(-2) = -5"),r:1,w:"Ungerade: "+M("f(-x) = -f(x)")+"."},{s:M("f(-2) = 5"),r:0,w:"Das gilt für gerade Funktionen."},
-    {s:M("f(5) = 2"),r:0,w:"Das wäre eine Aussage über die Umkehrfunktion, nicht über die Symmetrie."},{s:M("f(-5) = -2"),r:0,w:"Stelle und Wert vertauscht und das Vorzeichen geändert. Über die Stelle −5 ist nichts bekannt."},
-    {s:M("f(0) = 5"),r:0,w:"Eine ungerade Funktion auf ganz "+RR+" geht durch den Ursprung: "+M("f(0) = 0")+"."}],
-  tips:["Ungerade heißt punktsymmetrisch zum Ursprung.","Spiegle den Punkt "+M("(2 | 5)")+" am Ursprung."],
-  sol:{viz:vPlane([-3,3],[-6,6],{W:400,H:420,yl:"f(x)",sy:2}),merk:"Ungerade: Mit "+M("(a | b)")+" liegt auch "+M("(-a | -b)")+" auf dem Graphen.",steps:[
-    {t:"Der bekannte Punkt.",a:function(V){ V.Pt(2,5,"(2 | 5)","--dx",0,{dx:-10,anchor:"end"}); }},
-    {t:"Spiegelung am Ursprung.",m:M("(2 | 5)")+" → "+M("(-2 | -5)"),a:function(V){ V.Sg(2,5,-2,-5,"--gold",0,{dash:"5 5",w:2}); V.Pt(-2,-5,"(−2 | −5)","--dy",.4); }}]}
-}; });
 
 /* ---------- Linie 1 · Generatoren und Formatvarianten ---------- */
 function nn(v){ return num(v); }
@@ -3011,68 +2913,6 @@ GV("fu.mono","bereich",function(){
       {t:"Der "+(p.up?"steigende":"fallende")+" Abschnitt um diese Stelle.",m:M(iv(p.x1,p.x2)),a:function(V){ V.F(C.f,p.up?"--rise":"--fall",0,{from:p.x1,to:p.x2}); }}]}};
 });
 
-var SYMPOOL=SYMS.concat([{t:"x^6 + 3",k:"g",w:"Gerade Hochzahl und eine Konstante: beides gerade."},{t:"2x^3",k:"u",w:M("2(-x)^3 = -2x^3")+"."},{t:"x^4 - x",k:"k",w:"Die Hochzahlen 4 und 1 sind gemischt."},
-  {t:"-x^2 + 4",k:"g",w:M("(-x)^2 = x^2")+"."},{t:"x - x^3",k:"u",w:"Nur ungerade Hochzahlen."},{t:"(x - 1)^2",k:"k",w:"Ausmultipliziert "+M("x^2 - 2x + 1")+": gemischte Hochzahlen."},
-  {t:"{1/x}",k:"u",w:M("{1/-x} = -{1/x}")+"."},{t:"x^2 + {1/x^2}",k:"g",w:"Beide Summanden sind gerade."}]);
-G("fu.sym",1,"L","Gerade, ungerade oder keins?",function(){
-  var c; do{ c=sample(SYMPOOL,6); }while(["g","u","k"].some(function(k){ return !c.some(function(s){ return s.k===k; }); }));
-  return {fmt:"sort",q:"Sortiere die Funktionen "+M("f")+" mit den angegebenen Termen "+M("f(x)")+".",bins:SYMB,cards:c.map(function(s){ return {s:M(s.t),k:s.k,w:s.w}; }),
-    tips:["Ersetze "+M("x")+" durch "+M("-x")+" und vereinfache.","Gerade Hochzahlen schlucken das Minus, ungerade lassen es stehen."],sol:symSol()};
-});
-GV("fu.sym","xaus5",function(){
-  var want=pick(["u","g"]), its=pickPool(SYMPOOL.map(function(s){ return {s:M("f(x) = "+s.t),r:s.k===want,w:s.w}; }),5,"x");
-  return {fmt:"mc",pick:"x",calc:true,q:"Kreuze alle Funktionen an, die "+(want==="u"?"ungerade":"gerade")+" sind.",items:its,
-    tips:["Prüf "+(want==="u"?M("f(-x) = -f(x)"):M("f(-x) = f(x)"))+".","Konstante Summanden sind gerade."],sol:symSol()};
-});
-GV("fu.sym","1aus5",function(){
-  var odd=Math.random()<.5, a=ri(1,6), b; do{ b=nz(-7,7); }while(Math.abs(b)===a);
-  var A=nn(a), B=nn(b), mA=nn(-a), mB=nn(-b);
-  var its=[{s:M("f(-"+A+") = "+(odd?mB:B).replace("−","-")),r:1,w:odd?"Ungerade: "+M("f(-x) = -f(x)")+".":"Gerade: "+M("f(-x) = f(x)")+"."},
-    {s:M("f(-"+A+") = "+(odd?B:mB).replace("−","-")),r:0,w:odd?"Das gilt für gerade Funktionen.":"Das gilt für ungerade Funktionen."},
-    {s:M("f("+B.replace("−","-")+") = "+A),r:0,w:"Stelle und Wert getauscht: Das hat mit Symmetrie nichts zu tun."},
-    {s:M("f("+mB.replace("−","-")+") = "+mA.replace("−","-")),r:0,w:"Über die Stelle "+mB+" ist nichts bekannt."},
-    odd?{s:M("f(0) = "+B.replace("−","-")),r:0,w:"Eine ungerade Funktion auf ganz "+RR+" hat "+M("f(0) = 0")+"."}:{s:M("f(0) = 0"),r:0,w:"Gerade Funktionen müssen nicht durch den Ursprung gehen."}];
-  return {fmt:"mc",pick:1,q:"Von einer "+(odd?"ungeraden":"geraden")+" Funktion "+M("f: ℝ → ℝ")+" ist bekannt: "+M("f("+A+") = "+B.replace("−","-"))+". Kreuze die Aussage an, die sicher zutrifft.",items:shuffle(its),
-    tips:[odd?"Ungerade heißt punktsymmetrisch zum Ursprung.":"Gerade heißt symmetrisch zur "+M("y")+"-Achse.","Spiegle den Punkt "+M("("+A+" | "+B.replace("−","-")+")")+"."],
-    sol:{steps:[{t:"Der bekannte Punkt.",m:M("("+A+" | "+B.replace("−","-")+")")},{t:odd?"Spiegelung am Ursprung.":"Spiegelung an der "+M("y")+"-Achse.",m:M("(-"+A+" | "+(odd?mB:B).replace("−","-")+")")}],merk:"Gerade: "+M("f(-x) = f(x)")+". Ungerade: "+M("f(-x) = -f(x)")+"."}};
-});
-
-function perPattern(p){
-  var g=0, pat, f;
-  do{ pat=[[0,0]]; for(var i=1;i<p;i++) pat.push([i,pick([-1,0,1,2,1.5,-.5])]); pat.push([p,0]); f=sawP(p,pat); g++;
-    var smaller=false; for(var q=1;q<p;q++){ if(p%q) continue; var same=true; for(var x=0;x<p;x+=.25) if(Math.abs(f(x)-f(x+q))>1e-9) same=false; if(same) smaller=true; }
-    var flat=pat.every(function(t){ return t[1]===0; });
-  }while((smaller||flat)&&g<200);
-  return f;
-}
-G("fu.per",1,"L","Periode ablesen",function(){
-  var p=pick([2,3,4,5,6]), f=perPattern(p), xr=[-2,Math.max(12,3*p)+1];
-  return {fmt:"input",q:"Die Abbildung zeigt einen Ausschnitt des Graphen einer periodischen Funktion "+M("f")+". Gib die kleinste Periode "+M("p")+" an.",
-    fig:gfig(600,260,xr,[-2,3],"x","f(x)",1,1,function(P){ P.fn(f,"--dx",3); }),figWide:true,
-    fields:[{l:M("p ="),r:p,w:"Nach "+p+" Einheiten wiederholt sich der Verlauf."}],
-    tips:["Such ein markantes Stück, etwa eine Spitze, und zähl die Kästchen bis zur nächsten gleichen Stelle.","Gleiche Höhe allein genügt nicht. Der Graph muss danach auch gleich weiterlaufen."],
-    sol:{viz:vPlane(xr,[-2,3],{W:600,H:260,yl:"f(x)",pre:function(P){ P.fn(f,"--ink-3",2.6); }}),merk:"Periode "+M("p")+": "+M("f(x + p) = f(x)")+" für alle "+M("x")+".",steps:[
-      {t:"Ein Verlauf von 0 bis "+p+".",a:function(V){ V.F(f,"--dx",0,{from:0,to:p}); }},{t:"Derselbe Verlauf von "+p+" bis "+2*p+".",a:function(V){ V.F(f,"--dy",0,{from:p,to:2*p}); }},{t:"Also",m:M("p = "+p)}]}};
-});
-GV("fu.per","2zu4",function(){
-  var ps=sample([2,3,4,6],2), opts=[2,3,4,6].map(function(v){ return {key:String(v),s:M("p = "+v)}; });
-  return zuOf(ps.map(function(p){ return {s:perMini(perPattern(p)),key:String(p),w:"Der Verlauf wiederholt sich alle "+p+" Einheiten."}; }),opts,{keep:true,
-    q:"Ordne den beiden Graphen periodischer Funktionen jeweils ihre kleinste Periode "+M("p")+" zu. Ein Kästchen ist eine Einheit.",
-    tips:["Such bei jedem Graphen einen markanten Punkt und zähl die Kästchen bis zur nächsten gleichen Stelle.","Achte darauf, dass der Graph danach auch gleich weiterläuft."],
-    sol:{steps:["Bei jedem Graphen eine Spitze wählen.","Die Kästchen bis zur nächsten gleichen Spitze zählen.","Das Vielfache einer Periode ist auch eine Periode, aber nicht die kleinste."],merk:"Die kleinste Periode ist der kürzeste Abstand, nach dem sich der ganze Verlauf wiederholt."}});
-});
-GV("fu.per","offen",function(){
-  var ctx=pick([{n:"Atmung",per:pick([3,4,5,6]),lo:12,hi:16,u:"Atemzüge",was:"Luft (in Litern) eine erwachsene Person in Ruhe durch die Lunge strömt",yl:"L in l",amp:.5},
-    {n:"Herzschlag",per:pick([.5,.75,.6,1.2,1.5]),lo:60,hi:100,u:"Herzschläge",was:"sich der Druck in einer Arterie einer erwachsenen Person in Ruhe ändert (vereinfacht)",yl:"Druck",amp:1}]);
-  var p=ctx.per, f60=r2(60/p), ok=f60>=ctx.lo&&f60<=ctx.hi, F=function(t){ return ctx.amp/2-ctx.amp/2*Math.cos(2*Math.PI*t/p); }, xmax=Math.max(8*p,ctx.n==="Atmung"?30:8);
-  var sx=p<1?.5:p<=2?1:2;
-  return {fmt:"offen",q:"<p>Die Abbildung zeigt, wie "+ctx.was+", in Abhängigkeit von der Zeit "+M("t")+" in Sekunden.</p><p>In Ruhe gelten "+ctx.lo+" bis "+ctx.hi+" "+ctx.u+" pro Minute als unauffällig. Bewerte den abgebildeten Verlauf.</p>",
-    fig:gfig(620,240,[0,xmax],[0,ctx.amp*1.3],"t in s",ctx.yl,sx,ctx.amp/2,function(P){ P.fn(F,"--dx",3); }),figWide:true,
-    model:"Die kleinste Periode beträgt "+num(p)+" s. In einer Minute sind das 60 : "+num(p)+" = "+num(f60)+" "+ctx.u+". "+(ok?num(f60)+" liegt zwischen "+ctx.lo+" und "+ctx.hi+", der Verlauf ist unauffällig.":num(f60)+" liegt "+(f60<ctx.lo?"unter "+ctx.lo:"über "+ctx.hi)+", der Wert ist "+(f60<ctx.lo?"zu niedrig":"zu hoch")+"."),
-    points:["Periode "+num(p)+" s abgelesen",num(f60)+" "+ctx.u+" pro Minute berechnet","mit dem Bereich "+ctx.lo+" bis "+ctx.hi+" verglichen und bewertet"],
-    tips:["Eine volle Schwingung entspricht einem Atemzug oder Herzschlag. Lies ihre Dauer zwischen zwei Spitzen ab.","Wie oft passt diese Dauer in 60 Sekunden?"],
-    sol:{steps:["Periode ablesen: der Abstand zweier benachbarter Spitzen.",{t:"Umrechnen auf eine Minute.",m:M("60 : "+num(p)+" = "+num(f60))},"Mit dem angegebenen Bereich vergleichen."],merk:"Anzahl pro Minute = 60 : Periode in Sekunden."}};
-});
 
 G("fu.extr",1,"L","Extremstellen ablesen",function(){
   var C, g=0; do{ C=rCurve(); g++; }while(C.ext.length<2&&g<50);
@@ -3240,6 +3080,132 @@ G("fu.skizze",1,"X","Graph skizzieren",function(){
     sol:{viz:vPlane([-6.5,6.5],[-6,6],{W:560,H:420,yl:"f(x)"}),steps:[{t:"Feste Punkte.",a:function(V){ V.Pt(Z,0,"","--rise"); V.Pt(X2,v,"","--dy",.3); }},
       {t:"Bei "+nn(X1)+" liegt ein "+(upFirst?"Hoch":"Tief")+"punkt.",a:function(V){ V.Pt(X1,y[t1],"","--dy"); }},{t:"Eine mögliche Skizze.",a:function(V){ V.F(mCubic(kx,y),"--dx",0,{from:-6,to:6}); }}],merk:"Monotoniewechsel ergeben Extremstellen."}};
 });
+
+/* ══════════ Linie 1 · Ersatz für Symmetrie (gerade/ungerade) und Periode ══════════
+   Funktionswerte, Stellen zu Werten, Funktionsbegriff, Term und Eigenschaft, Begründen mit Funktionswerten, Eigenschaften quadratischer Funktionen. */
+function sgnN(v){ return num(v).replace("−","-"); }
+
+/* ---- Funktionswerte berechnen ---- */
+function mkWert(c,x1,x2){
+  var f=pEval(c), T=polyStr(c), y1=f(x1), y2=f(x2);
+  function calc(x){ var X=x<0?"("+sgnN(x)+")":sgnN(x), parts=[];
+    if(c[0]) parts.push((c[0]===1?"":c[0]===-1?"-":sgnN(c[0])+" * ")+X+"^2");
+    if(c[1]) parts.push((parts.length?(c[1]<0?" - ":" + "):(c[1]<0?"-":""))+(Math.abs(c[1])===1?"":num(Math.abs(c[1]))+" * ")+X);
+    if(c[2]) parts.push((parts.length?(c[2]<0?" - ":" + "):(c[2]<0?"-":""))+num(Math.abs(c[2])));
+    return M("f("+sgnN(x)+") = "+parts.join("")+" = "+sgnN(f(x))); }
+  return {fmt:"input",q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = "+T)+". Berechne die Funktionswerte.",
+    fields:[{l:M("f("+sgnN(x1)+") ="),r:y1,w:calc(x1)+"."},{l:M("f("+sgnN(x2)+") ="),r:y2,w:calc(x2)+"."}],
+    tips:["Setz die Zahl für jedes "+M("x")+" ein.","Negative Zahlen in Klammern setzen: "+M("(-2)^2 = 4")+", aber "+M("-2^2 = -4")+"."],
+    sol:{merk:"Der Funktionswert "+M("f(a)")+" entsteht, wenn man im Term jedes "+M("x")+" durch "+M("a")+" ersetzt.",steps:[{t:"Erster Wert.",m:calc(x1)},{t:"Zweiter Wert.",m:calc(x2)},
+      "Kontrolle mit dem Taschenrechner: Klammern um negative Zahlen nicht vergessen."]}};
+}
+G("fu.wert",1,"L","Funktionswerte berechnen",function(){
+  var a=pick([1,-1,2]), b=ri(-4,4), c=ri(-5,5), x1=ri(-3,-1), x2=ri(1,4);
+  return mkWert([a,b,c],x1,x2);
+});
+T("f3",1,"L","fu.wert","Funktionswerte berechnen",SRC_O,function(){ return mkWert([1,-3,1],-2,3); });
+
+/* ---- Stelle zu einem Funktionswert ---- */
+function mkArg(k,d,x0){
+  var w=k*x0+d, L=lin(k,d);
+  return {fmt:"input",q:"Gegeben ist die lineare Funktion "+M("f")+" mit "+M("f(x) = "+L)+". An welcher Stelle nimmt "+M("f")+" den Wert "+sgnN(w).replace("-","−")+" an?",
+    fields:[{l:M("x ="),r:x0,w:M(L+" = "+sgnN(w))+" ergibt "+M("x = "+sgnN(x0))+"."}],
+    tips:["Gesucht ist das "+M("x")+" mit "+M("f(x) = "+sgnN(w))+".","Setz den Term gleich "+sgnN(w).replace("-","−")+" und löse nach "+M("x")+"."],
+    sol:{merk:"Funktionswert gegeben, Stelle gesucht: Gleichung "+M("f(x) = w")+" lösen.",steps:[{t:"Ansatz.",m:M(L+" = "+sgnN(w))},
+      {t:"Auflösen.",m:M(fk(k)+"x = "+sgnN(w-d))+" &nbsp; ⇔ &nbsp; "+M("x = "+sgnN(x0))},{t:"Probe.",m:M("f("+sgnN(x0)+") = "+sgnN(w))}]}};
+}
+G("fu.arg",1,"L","Stelle zu einem Funktionswert",function(){
+  var k=pick([-3,-2,2,3,4]), x0=nz(-5,6), d=nz(-6,6); return mkArg(k,d,x0);
+});
+T("f4",1,"L","fu.arg","Stelle zu einem Funktionswert",SRC_O,function(){ return mkArg(2,-5,6); });
+
+/* ---- Funktion oder nicht? ---- */
+var FKTPOOL=[
+  {s:"Jeder Schülerin und jedem Schüler der Klasse wird die Körpergröße in cm zugeordnet.",r:1,w:"Jede Person hat genau eine Körpergröße."},
+  {s:"Jeder reellen Zahl wird ihr Quadrat zugeordnet.",r:1,w:"Jede Zahl hat genau ein Quadrat."},
+  {s:"Jeder positiven Zahl werden die beiden Zahlen zugeordnet, deren Quadrat sie ist.",r:0,w:"Zu 4 gehören 2 und −2: zwei Werte für ein Argument."},
+  {s:"Jedem Tag des Jahres 2026 wird die Höchsttemperatur in Knittelfeld zugeordnet.",r:1,w:"An jedem Tag gibt es genau eine Höchsttemperatur."},
+  {s:"Jeder Körpergröße in cm wird eine Person mit dieser Größe zugeordnet.",r:0,w:"Mehrere Personen können gleich groß sein, die Zuordnung ist nicht eindeutig."},
+  {s:"Jeder Fahrzeit in Stunden wird der Weg zugeordnet, den ein Auto bei konstant 80 km/h zurücklegt.",r:1,w:"Zu jeder Fahrzeit gehört genau ein Weg: "+M("s = 80 * t")+"."},
+  {s:"Jedem Vornamen wird eine Person mit diesem Vornamen zugeordnet.",r:0,w:"Viele Personen tragen denselben Vornamen."},
+  {s:"Jeder Zahl "+M("x")+" zwischen −5 und 5 werden alle Zahlen "+M("y")+" mit "+M("x^2 + y^2 = 25")+" zugeordnet.",r:0,w:"Zu "+M("x = 3")+" gehören "+M("y = 4")+" und "+M("y = -4")+"."},
+  {s:"Jedem Kreisradius wird der Flächeninhalt des Kreises zugeordnet.",r:1,w:"Zu jedem Radius gehört genau ein Flächeninhalt: "+M("A = r^2 * π")+"."},
+  {s:"Jeder Uhrzeit eines Tages wird die Anzahl der Personen im Schulgebäude zugeordnet.",r:1,w:"Zu jedem Zeitpunkt gibt es genau eine Anzahl."}
+];
+function mkFkt(its){
+  return {fmt:"tf",yes:"Funktion",no:"keine Funktion",q:"Entscheide bei jeder Zuordnung, ob es sich um eine Funktion handelt.",items:its,
+    tips:["Bei einer Funktion wird jedem Argument genau ein Wert zugeordnet.","Such ein Argument, zu dem zwei verschiedene Werte passen. Gibt es eines, ist es keine Funktion."],
+    sol:{merk:"Funktion: Jedem Element der Definitionsmenge wird genau ein Wert zugeordnet. Verschiedene Argumente dürfen denselben Wert haben.",steps:[
+      "Für jede Zuordnung fragen: Kann ein Argument zwei verschiedene Werte bekommen?",
+      "Wenn ja, ist es keine Funktion. Dass zwei Argumente denselben Wert haben, stört dagegen nicht."]}};
+}
+G("fu.fkt",1,"M","Funktion oder nicht?",function(){
+  var its; do{ its=sample(FKTPOOL,6); }while(its.filter(function(i){ return i.r; }).length<2||its.filter(function(i){ return !i.r; }).length<2);
+  return mkFkt(its.map(function(i){ return {s:i.s,r:i.r,w:i.w}; }));
+});
+T("f14",1,"M","fu.fkt","Funktion oder nicht?",SRC_O,function(){ return mkFkt([0,2,4,5,7,8].map(function(i){ var x=FKTPOOL[i]; return {s:x.s,r:x.r,w:x.w}; })); });
+
+/* ---- Term und Eigenschaft (2 zu 4) ---- */
+var PROPPOOL=[
+  {t:"-2x + 3",p:"ist auf ganz "+RR+" streng monoton fallend",key:"A",w:"Gerade mit negativer Steigung."},
+  {t:"x^2 - 4",p:"hat an der Stelle 0 ein lokales Minimum",key:"B",w:"Nach oben offene Parabel mit Scheitel bei "+M("(0 | -4)")+"."},
+  {t:"-x^2 + 1",p:"hat an der Stelle 0 ein lokales Maximum",key:"C",w:"Nach unten offene Parabel mit Scheitel bei "+M("(0 | 1)")+"."},
+  {t:"3x - 1",p:"ist auf ganz "+RR+" streng monoton steigend",key:"D",w:"Gerade mit positiver Steigung."},
+  {t:"x^3 - 3x",p:"hat genau zwei lokale Extremstellen",key:"E",w:"Hochpunkt bei −1, Tiefpunkt bei 1."},
+  {t:"5",p:"ist konstant",key:"F",w:"Der Term enthält kein "+M("x")+"."}
+];
+function mkProp(ik,ok){
+  var by={}; PROPPOOL.forEach(function(o){ by[o.key]=o; });
+  return zuOf(ik.map(function(k){ return {s:M("f(x) = "+by[k].t),key:k,w:by[k].w}; }),ok.map(function(k){ return {s:"Die Funktion "+by[k].p+".",key:k}; }),
+    {q:"Ordne den beiden Funktionen "+M("f")+" jeweils die zutreffende Eigenschaft aus A bis D zu.",
+     tips:["Lineare Funktionen haben keine Extremstellen. Bei Parabeln entscheidet das Vorzeichen vor "+M("x^2")+".","Skizzier jeden Graphen grob, etwa mit drei Funktionswerten."],
+     sol:{merk:"Lineare Funktion: Steigung entscheidet über steigend oder fallend. Quadratische Funktion: ein Scheitel, nach oben offen ergibt ein Minimum, nach unten offen ein Maximum.",
+       steps:ik.map(function(k){ return M("f(x) = "+by[k].t)+": "+by[k].w; }).concat(["Die übrigen zwei Eigenschaften passen zu keiner der beiden Funktionen."])}});
+}
+G("fu.prop",1,"X","Term und Eigenschaft",function(){
+  var ks=shuffle(PROPPOOL.map(function(o){ return o.key; })), ik=ks.slice(0,2), ok=ks.slice(0,4);
+  return mkProp(ik,ok);
+});
+T("f18",1,"X","fu.prop","Term und Eigenschaft",SRC_O,function(){ return mkProp(["B","E"],["B","C","D","E"]); });
+
+/* ---- Begründen mit Funktionswerten (offen) ---- */
+function mkBegr(p){
+  var T=polyStr([1,-2*p,0]), f=function(x){ return x*x-2*p*x; }, b=2*p+1;
+  return {fmt:"offen",q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = "+T)+".<br>Zeige mithilfe von zwei Funktionswerten, dass "+M("f")+" im Intervall "+M("[0; "+b+"]")+" nicht streng monoton steigend ist.",
+    model:"Wähle zum Beispiel die Stellen 0 und "+p+". Es gilt "+M("0 < "+p)+", aber "+M("f(0) = 0")+" und "+M("f("+p+") = "+sgnN(f(p)))+". Der Funktionswert an der größeren Stelle ist kleiner, also ist "+M("f")+" in diesem Intervall nicht streng monoton steigend.",
+    points:["zwei Stellen "+M("a < b")+" aus dem Intervall gewählt","beide Funktionswerte richtig berechnet","festgehalten, dass "+M("f(b) < f(a)")+" (oder gleich) der Monotonie widerspricht"],
+    tips:["Streng monoton steigend heißt: Aus "+M("a < b")+" folgt immer "+M("f(a) < f(b)")+".","Ein einziges Gegenbeispiel reicht. Probier kleine Stellen wie 0, 1, 2."],
+    sol:{merk:"Um eine Monotonie zu widerlegen, genügt ein Gegenbeispiel: zwei Stellen, bei denen die Funktionswerte in die falsche Richtung gehen.",
+      steps:[{t:"Zwei Stellen wählen.",m:M("0 < "+p)},{t:"Funktionswerte.",m:M("f(0) = 0")+", "+M("f("+p+") = "+sgnN(f(p)))},
+        "Die größere Stelle hat den kleineren Wert. Damit ist "+M("f")+" in "+M("[0; "+b+"]")+" nicht streng monoton steigend."]}};
+}
+G("fu.begr",1,"X","Monotonie widerlegen",function(){ return mkBegr(pick([1,2,3])); });
+T("f21",1,"X","fu.begr","Monotonie widerlegen",SRC_O,function(){ return mkBegr(2); });
+
+/* ---- Eigenschaften einer quadratischen Funktion (1 aus 5) ---- */
+function mkQeig(a,p,q,trueKey){
+  var T=polyStr([a,-2*a*p,a*p*p+q]), mx=a<0, ty=mx?"Maximum":"Minimum", oty=mx?"Minimum":"Maximum";
+  var S={
+    ext:{s:M("f")+" hat an der Stelle "+sgnN(p).replace("-","−")+" ein lokales "+ty+".",w:"Der Scheitel liegt bei "+M("("+sgnN(p)+" | "+sgnN(q)+")")+", die Parabel ist nach "+(mx?"unten":"oben")+" offen."},
+    mono:{s:M("f")+" ist im Intervall "+M(iv(p-2,p))+" streng monoton "+(mx?"steigend":"fallend")+".",w:"Links vom Scheitel "+(mx?"steigt":"fällt")+" die Parabel."},
+    val:{s:M("f("+sgnN(p)+") = "+sgnN(q))+".",w:"Einsetzen ergibt genau diesen Wert."},
+    kr:{s:M("f")+" ist überall "+(mx?"rechtsgekrümmt":"linksgekrümmt")+".",w:"Eine nach "+(mx?"unten":"oben")+" offene Parabel wölbt sich wie "+(mx?"ein Hügel":"eine Schüssel")+"."}};
+  var F=[
+    {s:M("f")+" hat an der Stelle "+sgnN(p).replace("-","−")+" ein lokales "+oty+".",w:"Die Parabel ist nach "+(mx?"unten":"oben")+" offen: Am Scheitel liegt ein "+ty+"."},
+    {s:M("f")+" hat an der Stelle "+sgnN(p+1).replace("-","−")+" ein lokales "+ty+".",w:"Der Scheitel liegt bei "+sgnN(p).replace("-","−")+", nicht bei "+sgnN(p+1).replace("-","−")+"."},
+    {s:M("f")+" ist im Intervall "+M(iv(p,p+2))+" streng monoton "+(mx?"steigend":"fallend")+".",w:"Rechts vom Scheitel "+(mx?"fällt":"steigt")+" die Parabel."},
+    {s:M("f("+sgnN(p+1)+") = "+sgnN(q))+".",w:M("f("+sgnN(p+1)+") = "+sgnN(q+a))+"."},
+    {s:M("f")+" ist überall "+(mx?"linksgekrümmt":"rechtsgekrümmt")+".",w:"Umgekehrt: Die Parabel ist "+(mx?"rechtsgekrümmt":"linksgekrümmt")+"."}];
+  var tk=trueKey||pick(["ext","mono","val","kr"]);
+  var its=[{s:S[tk].s,r:1,w:S[tk].w}].concat(sample(F,4).map(function(o){ return {s:o.s,r:0,w:o.w}; }));
+  return {fmt:"mc",pick:1,q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = "+T)+". Kreuze die zutreffende Aussage an.",items:shuffle(its),
+    tips:["Bring den Term auf Scheitelform oder berechne ein paar Funktionswerte rund um "+M("x = "+sgnN(p))+".","Vorzeichen vor "+M("x^2")+": positiv heißt nach oben offen, negativ nach unten offen."],
+    sol:{merk:"Quadratische Funktion: Der Scheitel ist die einzige Extremstelle. Links und rechts davon wechselt die Monotonie, die Krümmung bleibt überall gleich.",
+      steps:[{t:"Scheitelform.",m:M("f(x) = "+(a===1?"":a===-1?"-":fk(a))+"(x "+(p<0?"+ "+(-p):"- "+p)+")^2 "+(q<0?"- "+(-q):"+ "+q))},
+        "Scheitel "+M("("+sgnN(p)+" | "+sgnN(q)+")")+", Parabel nach "+(mx?"unten":"oben")+" offen.",S[tk].w]}};
+}
+G("fu.qeig",1,"X","Eigenschaften einer Parabel",function(){ return mkQeig(pick([-1,1,-2,2]),ri(-2,3),ri(-3,5)); });
+T("f23",1,"X","fu.qeig","Eigenschaften einer Parabel",SRC_O,function(){ return mkQeig(-1,2,4,"ext"); });
 
 /* ══════════ Linie 2 · Änderungsmaße ══════════ */
 var AM_MERK="Absolute Änderung: "+M("f(b) - f(a)")+". Relative Änderung: "+M("{f(b) - f(a)/f(a)}")+", meist in Prozent. Mittlere Änderungsrate: "+M("{f(b) - f(a)/b - a}")+", also Änderung pro Einheit.";
@@ -4187,7 +4153,7 @@ T("y4",4,"L","pf.typ","Welche Gleichung passt?",SRC_P("1_437"),function(){ retur
   fmt:"mc",pick:1,calc:true,q:"Die Abbildung zeigt den Graphen einer Potenzfunktion "+M("f")+" mit "+M("f(x) = a * x^z")+", "+M("a ≠ 0")+", "+M("z ∈ ℤ")+". Kreuze die passende Gleichung an.",
   fig:gfig(460,380,[-3.5,3.5],[-4,1.5],"x","f(x)",1,1,function(P){ var f=function(x){ return -1/(x*x); }; P.fn(f,"--dx",3,{from:-3.5,to:-.05}); P.fn(f,"--dx",3,{from:.05,to:3.5}); }),
   items:[{s:M("f(x) = 2 * x^(-4)"),r:0,w:"Positive Werte."},{s:M("f(x) = -x^(-2)"),r:1,w:"Negativ, symmetrisch, an der Stelle 0 nicht definiert, "+M("f(1) = -1")+"."},{s:M("f(x) = -x^2"),r:0,w:"Eine Parabel ist bei 0 definiert."},
-    {s:M("f(x) = -x^(-1)"),r:0,w:"Ungerade: Die Äste lägen in verschiedenen Quadranten."},{s:M("f(x) = x^(-2)"),r:0,w:"Positive Werte."},{s:M("f(x) = x^(-1)"),r:0,w:"Ungerade."}],
+    {s:M("f(x) = -x^(-1)"),r:0,w:"Ungerade Hochzahl: Die Äste lägen in verschiedenen Quadranten."},{s:M("f(x) = x^(-2)"),r:0,w:"Positive Werte."},{s:M("f(x) = x^(-1)"),r:0,w:"Ungerade Hochzahl."}],
   tips:["Bei 0 nicht definiert: negative Hochzahl.","Beide Äste unter der Achse: gerade Hochzahl und negatives "+M("a")+"."],
   sol:{merk:PF_MERK,steps:["Der Graph hat bei 0 eine Lücke und nähert sich den Achsen: "+M("z < 0")+".","Symmetrisch zur "+M("y")+"-Achse: "+M("z")+" gerade.","Unter der Achse: "+M("a < 0")+". Probe: "+M("f(1) = -1")+"."]}
 }; });
@@ -4385,7 +4351,7 @@ GV("pf.eig","2aus5",function(){
   var z=pick([-2,-1,2,3]), Z=z<0?"("+z+")":z, pool=[];
   var ev=z%2===0;
   pool.push({s:M("f(-x) = "+(ev?"f(x)":"-f(x)")),r:1,w:ev?"Gerade Hochzahl.":"Ungerade Hochzahl."});
-  pool.push({s:M("f(-x) = "+(ev?"-f(x)":"f(x)")),r:0,w:ev?"Gerade: "+M("f(-x) = f(x)")+".":"Ungerade: "+M("f(-x) = -f(x)")+"."});
+  pool.push({s:M("f(-x) = "+(ev?"-f(x)":"f(x)")),r:0,w:ev?"Bei gerader Hochzahl gilt "+M("f(-x) = f(x)")+".":"Bei ungerader Hochzahl gilt "+M("f(-x) = -f(x)")+"."});
   pool.push({s:M("f(2x) = "+Math.pow(2,z)+" * f(x)").replace("0.25","{1/4}").replace("0.5","{1/2}"),r:1,w:M("(2x)^"+Z+" = 2^"+Z+" * x^"+Z)+"."});
   pool.push({s:M("f(2x) = 2 * f(x)"),r:0,w:"Der Faktor ist "+M("2^"+Z)+"."});
   pool.push({s:M("f(1) = 1"),r:0,w:M("f(1) = a")+"."});
@@ -4708,8 +4674,8 @@ G("ex.offen",5,"X","Stellung nehmen",function(){ var b=pick(EOFP); return {fmt:"
 
 /* ============ Welche Aufgabenart bekommt welches Werkzeug ============ */
 var HELP={
-  "fu.mono":helpMono,"fu.extr":helpGipfel,"fu.eig":helpGipfel,"fu.kruem":helpKruemm,"fu.sym":helpSpiegel,"fu.per":helpPeriode,
-  "fu.umk":helpUmkehr,"fu.verk":helpVerk,"fu.lok":helpMono,"fu.sicher":helpMono,"fu.skizze":helpGipfel,
+  "fu.mono":helpMono,"fu.extr":helpGipfel,"fu.eig":helpGipfel,"fu.kruem":helpKruemm,
+  "fu.umk":helpUmkehr,"fu.verk":helpVerk,"fu.lok":helpMono,"fu.prop":helpMono,"fu.begr":helpMono,"fu.qeig":helpGipfel,"fu.sicher":helpMono,"fu.skizze":helpGipfel,
   "am.abs":helpFaktor,"am.rel":helpFaktor,"am.fakt":helpFaktor,"am.proz":helpFaktor,"am.vgl":helpFaktor,"am.mar":helpAend,"am.dq":helpAend,"am.sek":helpAend,"am.konstr":helpAend,"am.deut":helpAend,"am.kontext":helpAend,"am.terms":helpAend,
   "po.regel":helpPotenz,"po.vereinf":helpPotenz,"po.luecke":helpPotenz,"po.begr":helpPotenz,"po.neg":helpPotenz,"po.wert":helpWurzel,"po.aequiv":helpWurzel,"po.wurzel":helpWurzel,"po.groesse":helpWurzel,"po.zahl":helpWurzel,
   "pf.typ":helpPotLab,"pf.param":helpPotLab,"pf.eig":helpPotLab,"pf.indir":helpPotLab,"pf.art":helpPotLab,"py.grad":helpPolyBau,"py.verlauf":helpPolyBau,"py.berg":helpGipfel,"py.mono":helpMono,"py.kruem":helpKruemm,"py.glob":helpGipfel,"py.prof":helpGipfel,"py.tour":helpMono,"py.skizze":helpPolyBau,"py.begr":helpPolyBau,"py.anz":helpPolyBau,
@@ -4760,7 +4726,7 @@ KNOTEN.push({id:"n1",title:"Fußball im Park",sub:"ein Schuss als Polynomfunktio
     tips:["Einheit: Meter Höhe pro Meter Entfernung.","„Im Mittel“ ist nicht „genau“."],sol:{merk:"Mittlere Änderungsrate: Änderung pro Einheit, gemittelt über das Intervall.",steps:["Zähler: Höhenänderung in m. Nenner: 6 m waagrecht.","Also im Mittel 0,216 m Höhe pro Meter."]} }; }},
   {title:"Eigenschaften der Flugbahn",marks:["h"],mk:function(){ return {
     fmt:"mc",pick:2,help:helpPolyBau(),q:"Kreuze die beiden Aussagen an, die auf die Funktion "+M("h")+" (auf ganz "+RR+" betrachtet) zutreffen.",
-    items:[{s:M("h")+" hat höchstens zwei lokale Extremstellen.",r:1,w:"Grad 3."},{s:M("h")+" hat genau eine Wendestelle.",r:1,w:"Grad 3: genau eine, hier bei 6."},{s:M("h")+" ist eine gerade Funktion.",r:0,w:"Gemischte Hochzahlen."},
+    items:[{s:M("h")+" hat höchstens zwei lokale Extremstellen.",r:1,w:"Grad 3."},{s:M("h")+" hat genau eine Wendestelle.",r:1,w:"Grad 3: genau eine, hier bei 6."},{s:M("h")+" hat drei verschiedene Nullstellen.",r:0,w:"Nur 0 und 18. Bei 0 berührt der Graph die Achse bloß."},
       {s:M("h")+" hat genau zwei Nullstellen, also kann sie nicht vom Grad 3 sein.",r:0,w:"Doppelte Nullstelle bei 0."},{s:"Für "+M("x > 18")+" ist "+M("h(x) > 0")+".",r:0,w:"Negativ: Der Graph fällt weiter."}],
     tips:["Grad bestimmen.","Bei 0 berührt der Graph die Achse nur."],sol:{merk:PY_MERK,steps:["Grad 3: höchstens 2 Extremstellen, genau 1 Wendestelle.","Bei 0 eine doppelte Nullstelle."]} }; }},
   {title:"Ein zweiter Schuss",marks:[],note:"Zweiter Schuss: "+M("k(x) = -0,004x^3 + 0,06x^2")+", landet bei 15 m, höchstens 2 m hoch",mk:function(){ return {
