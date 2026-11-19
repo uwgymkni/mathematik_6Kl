@@ -711,6 +711,14 @@ body.slim:not(.nar) .rnav .lbadge{min-width:34px;height:34px;border-radius:9px;t
 .btn.off{opacity:.42;pointer-events:none}
 @media (max-width:640px){ .pr-bar{flex-wrap:wrap} .cutrow .nm{min-width:7.5em} }
 
+/* ---- Abbildungen vergrößern ---- */
+.tleft .fig,.angabe svg,.asheet svg,.stem svg{cursor:zoom-in}
+.helpbox .fig,.helpbox svg{cursor:auto}
+.zoomer{position:fixed;inset:0;z-index:200;background:color-mix(in srgb,var(--bg) 92%,transparent);display:flex;align-items:center;justify-content:center;padding:24px;cursor:zoom-out;animation:rise .2s ease both}
+.zoomer .zin{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;max-width:96vw;max-height:92vh;display:flex}
+.zoomer .zsvg{width:min(92vw,1300px);height:auto;max-height:86vh;display:block}
+.zoomer .zx{position:fixed;top:14px;right:14px;width:44px;height:44px;border-radius:999px;background:var(--panel);border:1.5px solid var(--line)}
+
 </style>
 <script>
 (function(){
@@ -1584,20 +1592,6 @@ function helpVerk(){ return {name:"Verkettungs-Maschine",hint:"Zwei Beispielmasc
   }
   host.append(hStep("Eingabe "+M("x"),x,-5,5,1,null,function(z){ x=z; draw(); }),out); draw();
 }}; }
-/* ---- Fixpunkt-Sucher ---- */
-function helpFix(){ return {name:"Fixpunkt-Sucher",hint:"Am Beispiel "+M("g(x) = {1/2}x^2 - 4")+": Eine Stelle ist ein Fixpunkt, wenn die Funktion sie auf sich selbst abbildet.",build:function(host){
-  var x=1, say=hSay(), pl=hPlane(host,[-4,5],[-4.5,5],{W:520,H:380,yl:"y"});
-  function g(z){ return z*z/2-4; }
-  function draw(){ pl.draw(function(P){
-    var e=P.line(1,0,"--gold",2.4); if(e) e.setAttribute("stroke-dasharray","7 6");
-    P.label(4.2,4.6,"y = x","--gold",{anchor:"end"});
-    P.fn(g,"--dx",3.2);
-    var y=g(x); P.seg(x,0,x,y,"--ink-3",1.5,{dash:"4 4"}); P.pt(x,y,"--dx","",{r:6}); P.pt(x,x,"--gold","",{r:5});
-    say.innerHTML=M("g("+num(x)+") = "+num(y))+" &nbsp; "+(Math.abs(y-x)<1e-9?"<b class='cG'>Gleich der Stelle selbst: Fixpunkt.</b> Graph und erste Mediane schneiden einander hier.":"Ungleich "+num(x)+": kein Fixpunkt.");
-  }); }
-  host.append(hRange("Stelle "+M("x"),-3,4,.5,x,null,function(v){ x=v; draw(); }),say); draw();
-}}; }
-
 /* ══════════ Linie 2 · Änderungsmaße ══════════ */
 /* ---- Änderungs-Messer ---- */
 function helpAend(){ return {name:"Änderungs-Messer",hint:"Am Beispiel einer Wassertemperatur "+M("T(t)")+" (in °C nach "+M("t")+" Minuten): Wähl zwei Zeitpunkte. Das Werkzeug zeigt alle drei Änderungsmaße und die Sekante.",build:function(host){
@@ -2630,17 +2624,18 @@ var MONO_TIP=["Streng monoton steigend auf einem Intervall heißt: Je weiter rec
 var EXT_MERK="Die Extremstelle ist ein "+M("x")+"-Wert. Der Funktionswert dort heißt Maximum oder Minimum. Lokal zählt die Umgebung, global der ganze Bereich. In diesem Lehrgang sind lokale Extremstellen immer Stellen im Inneren des Bereichs.";
 
 /* ---------- Zone 1 ---------- */
-T("f1",1,"L","fu.null","Nullstelle oder Fixpunkt?",SRC_K,function(){ return {
+T("f1",1,"L","fu.null","Nullstelle oder nicht?",SRC_K,function(){ return {
   fmt:"tf",yes:"trifft zu",no:"trifft nicht zu",q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = x^2 - 2x")+". Entscheide in jeder Zeile.",
   items:[{s:"0 ist eine Nullstelle von "+M("f")+".",r:1,w:M("f(0) = 0 - 0 = 0")+"."},{s:"2 ist eine Nullstelle von "+M("f")+".",r:1,w:M("f(2) = 4 - 4 = 0")+"."},
-    {s:"−1 ist eine Nullstelle von "+M("f")+".",r:0,w:M("f(-1) = 1 + 2 = 3")+"."},{s:"3 ist ein Fixpunkt von "+M("f")+".",r:1,w:M("f(3) = 9 - 6 = 3")+": Die Stelle wird auf sich selbst abgebildet."},
-    {s:"1 ist ein Fixpunkt von "+M("f")+".",r:0,w:M("f(1) = 1 - 2 = -1")+", nicht 1."},{s:"0 ist ein Fixpunkt von "+M("f")+".",r:1,w:M("f(0) = 0")+". Die Stelle 0 ist zugleich Nullstelle und Fixpunkt."}],
-  tips:["Nullstelle: "+M("f(a) = 0")+". Fixpunkt: "+M("f(a) = a")+".","Setz jede Zahl in den Term ein und vergleiche das Ergebnis mit 0 und mit der Zahl selbst."],
-  sol:{viz:vPlane([-2,4],[-2,5],{W:460,H:400,yl:"y",pre:function(P){ P.fn(function(x){ return x*x-2*x; },"--ink-3",2.6); var e=P.line(1,0,"--gold",2); if(e) e.setAttribute("stroke-dasharray","6 6"); }}),
-    merk:"Nullstellen liegen dort, wo der Graph die "+M("x")+"-Achse trifft. Fixpunkte dort, wo er die erste Mediane "+M("y = x")+" trifft.",steps:[
-    {t:"Nullstellen: Wo ist "+M("f(x) = 0")+"? Herausheben hilft.",m:M("x^2 - 2x = x(x - 2) = 0")+" &nbsp; also &nbsp; "+M("x = 0")+" oder "+M("x = 2"),a:function(V){ V.Pt(0,0,"0","--rise",0,{dx:-10,anchor:"end",dy:18}); V.Pt(2,0,"2","--rise",.3,{dy:18}); }},
-    {t:"Fixpunkte: Wo ist "+M("f(x) = x")+"?",m:M("x^2 - 2x = x")+" &nbsp; ⇔ &nbsp; "+M("x^2 - 3x = x(x - 3) = 0")+" &nbsp; also &nbsp; "+M("x = 0")+" oder "+M("x = 3"),a:function(V){ V.Pt(3,3,"(3 | 3)","--dy",0,{dx:-10,anchor:"end"}); }},
-    "Die Stelle 0 erfüllt beide Bedingungen. Die Stellen −1 und 1 erfüllen keine."]}
+    {s:"−1 ist eine Nullstelle von "+M("f")+".",r:0,w:M("f(-1) = 1 + 2 = 3")+", nicht 0."},{s:"1 ist eine Nullstelle von "+M("f")+".",r:0,w:M("f(1) = 1 - 2 = -1")+", nicht 0."},
+    {s:"Der Graph von "+M("f")+" geht durch den Ursprung.",r:1,w:M("f(0) = 0")+", also liegt "+M("(0 | 0)")+" auf dem Graphen."},
+    {s:M("f")+" kann mehr als zwei Nullstellen haben.",r:0,w:"Eine Polynomfunktion vom Grad 2 hat höchstens zwei Nullstellen."}],
+  tips:["Nullstelle: "+M("f(a) = 0")+".","Setz jede Zahl in den Term ein und schau, ob 0 herauskommt."],
+  sol:{viz:vPlane([-2,4],[-2,5],{W:460,H:400,yl:"y",pre:function(P){ P.fn(function(x){ return x*x-2*x; },"--ink-3",2.6); }}),
+    merk:"Nullstellen liegen dort, wo der Graph die "+M("x")+"-Achse trifft. Eine Polynomfunktion vom Grad "+M("n")+" hat höchstens "+M("n")+" Nullstellen.",steps:[
+    {t:"Nullstellen: Wo ist "+M("f(x) = 0")+"? Herausheben hilft.",m:M("x^2 - 2x = x(x - 2) = 0")+" &nbsp; also &nbsp; "+M("x = 0")+" oder "+M("x = 2"),a:function(V){ V.Pt(0,0,"0","--rise",0,{dx:-10,anchor:"end"}); V.Pt(2,0,"2","--rise",.3,{dy:20}); }},
+    "Bei −1 und 1 kommt nicht 0 heraus: "+M("f(-1) = 3")+", "+M("f(1) = -1")+".",
+    "Grad 2 heißt: höchstens zwei Nullstellen. Mit 0 und 2 sind beide gefunden."]}
 }; });
 
 var CA=knotCurve(-6,-1,[[-3,3],[1,-2],[4,2]],6,-1);
@@ -2703,14 +2698,14 @@ T("f5",1,"L","fu.extr","Extremstellen ablesen",SRC_K,function(){ return {
     {t:"Der Wert −1 ist eine Höhe, keine Stelle. Und der Randpunkt bei 5 liegt zwar am höchsten, ist aber kein Hochpunkt im Inneren.",a:function(V){ V.Pt(5,4,"Rand","--ink-2",0,{dx:-10,anchor:"end"}); }}]}
 }; });
 
-T("f6",1,"L","fu.null","Nullstelle und Fixpunkt berechnen",SRC_O,function(){ return {
-  fmt:"input",q:"Gegeben ist die lineare Funktion "+M("f")+" mit "+M("f(x) = 2x - 6")+". Berechne ihre Nullstelle und ihren Fixpunkt.",
-  fields:[{l:"Nullstelle: "+M("x ="),r:3,w:M("2x - 6 = 0")+" ergibt "+M("x = 3")+"."},{l:"Fixpunkt: "+M("x ="),r:6,w:M("2x - 6 = x")+" ergibt "+M("x = 6")+"."}],
-  tips:["Nullstelle: Funktionsterm gleich 0 setzen.","Fixpunkt: Funktionsterm gleich "+M("x")+" setzen und nach "+M("x")+" auflösen."],
-  sol:{viz:vPlane([-1,8],[-7,8],{W:460,H:420,yl:"y",pre:function(P){ var e=P.line(1,0,"--gold",2); if(e) e.setAttribute("stroke-dasharray","6 6"); }}),merk:"Nullstelle: "+M("f(x) = 0")+". Fixpunkt: "+M("f(x) = x")+". Im Bild: Schnitt mit der "+M("x")+"-Achse und Schnitt mit der ersten Mediane.",steps:[
+T("f6",1,"L","fu.null","Nullstelle und Achsenschnitt",SRC_O,function(){ return {
+  fmt:"input",q:"Gegeben ist die lineare Funktion "+M("f")+" mit "+M("f(x) = 2x - 6")+". Berechne die Nullstelle und gib an, wo der Graph die "+M("y")+"-Achse schneidet.",
+  fields:[{l:"Nullstelle: "+M("x ="),r:3,w:M("2x - 6 = 0")+" ergibt "+M("x = 3")+"."},{l:"Schnitt mit der "+M("y")+"-Achse: "+M("y ="),r:-6,w:M("f(0) = -6")+"."}],
+  tips:["Nullstelle: Funktionsterm gleich 0 setzen.","Die "+M("y")+"-Achse liegt bei "+M("x = 0")+". Berechne "+M("f(0)")+"."],
+  sol:{viz:vPlane([-1,8],[-7,8],{W:460,H:420,yl:"y"}),merk:"Nullstelle: "+M("f(x) = 0")+". Schnitt mit der "+M("y")+"-Achse: "+M("f(0)")+".",steps:[
     {t:"Der Graph ist eine Gerade.",a:function(V){ V.L(2,-6,"--dx"); }},
     {t:"Nullstelle.",m:M("2x - 6 = 0")+" &nbsp; ⇔ &nbsp; "+M("2x = 6")+" &nbsp; ⇔ &nbsp; "+M("x = 3"),a:function(V){ V.Pt(3,0,"3","--rise",0,{dy:20,dx:6}); }},
-    {t:"Fixpunkt.",m:M("2x - 6 = x")+" &nbsp; ⇔ &nbsp; "+M("x = 6"),a:function(V){ V.Pt(6,6,"(6 | 6)","--dy",0,{dx:-10,anchor:"end"}); }}]}
+    {t:"Schnitt mit der "+M("y")+"-Achse.",m:M("f(0) = 2 * 0 - 6 = -6"),a:function(V){ V.Pt(0,-6,"(0 | −6)","--dy",0,{dx:10}); }}]}
 }; });
 
 T("f7",1,"L","fu.umk","Umkehrbar oder nicht?",SRC_S,function(){ return {
@@ -2847,16 +2842,16 @@ T("f16",1,"X","fu.sicher","Was folgt sicher?",SRC_K,function(){ return {
     "Kein Graph kann aber zwischen 0 und 4 streng steigen, wenn er bei 0 und bei 4 gleich hoch ist."]}
 }; });
 
-T("f17",1,"X","fu.fix","Fixpunkt mit Begründung",SRC_K,function(){ return {
-  fmt:"luecke",q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = x + 3")+". Ergänze den Satz so, dass eine richtige Aussage entsteht.",
-  satz:"Die Funktion "+M("f")+" hat ___, weil ___.",
-  gaps:[{o:["keinen Fixpunkt","genau einen Fixpunkt","unendlich viele Fixpunkte"],r:0,w:"Die Gerade ist parallel zur ersten Mediane und schneidet sie nie."},
-    {o:["die Gleichung "+M("x + 3 = x")+" keine Lösung hat",M("f")+" keine Nullstelle hat","der Graph die "+M("y")+"-Achse bei 3 schneidet"],r:0,w:"Ein Fixpunkt ist eine Lösung von "+M("f(x) = x")+". Hier ergibt sich "+M("3 = 0")+". Eine Nullstelle hat "+M("f")+" übrigens, bei −3."}],
-  tips:["Fixpunkt: "+M("f(x) = x")+". Setz an und versuche aufzulösen.","Die Steigung von "+M("f")+" ist 1, genau wie bei der ersten Mediane."],
-  sol:{viz:vPlane([-5,4],[-4,6],{W:440,H:400,yl:"y"}),merk:"Lineare Funktionen mit Steigung 1 haben keinen Fixpunkt, außer "+M("f(x) = x")+" selbst. Bei jeder anderen Steigung gibt es genau einen.",steps:[
-    {t:"Ansatz.",m:M("x + 3 = x")+" &nbsp; ⇔ &nbsp; "+M("3 = 0")+" &nbsp; (falsch)"},
-    {t:"Im Bild: Der Graph von "+M("f")+" und die erste Mediane sind parallel.",a:function(V){ V.L(1,0,"--gold"); V.L(1,3,"--dx",.4); }},
-    {t:"Die Nullstelle bei −3 hat mit Fixpunkten nichts zu tun.",a:function(V){ V.Pt(-3,0,"−3","--rise",0,{dy:20}); }}]}
+T("f17",1,"X","fu.lok","Extremstelle begründen",SRC_O,function(){ return {
+  fmt:"luecke",q:"Die Funktion "+M("f")+" ist im Intervall "+M("[-2; 1]")+" streng monoton steigend und im Intervall "+M("[1; 4]")+" streng monoton fallend. Ergänze den Satz so, dass eine richtige Aussage entsteht.",
+  satz:"Die Funktion "+M("f")+" hat an der Stelle 1 ___, weil ___.",
+  gaps:[{o:["ein lokales Maximum","ein lokales Minimum","keine lokale Extremstelle"],r:0,w:"Bis 1 geht es bergauf, danach bergab: Bei 1 liegt ein Gipfel."},
+    {o:[M("f")+" links von 1 steigt und rechts davon fällt",M("f")+" links von 1 fällt und rechts davon steigt",M("f")+" links und rechts von 1 gleich monoton ist"],r:0,w:"Ein Wechsel von steigend zu fallend ergibt ein lokales Maximum."}],
+  tips:["Stell dir den Graphen als Wanderweg vor.","Bergauf, dann bergab: Was liegt dazwischen?"],
+  sol:{viz:vPlane([-2.5,4.5],[-2,5],{W:440,H:380,yl:"y"}),merk:"Wechselt "+M("f")+" an einer Stelle von steigend zu fallend, liegt dort ein lokales Maximum. Von fallend zu steigend ergibt ein lokales Minimum.",steps:[
+    {t:"Ein möglicher Graph.",a:function(V){ V.F(function(x){ return 3-(x-1)*(x-1)/3; },"--dx"); }},
+    {t:"Links von 1 steigt der Graph, rechts davon fällt er.",a:function(V){ V.Pt(1,3,"(1 | f(1))","--dy",0,{dy:-12}); }},
+    "Kein Funktionswert in der Nähe ist größer als "+M("f(1)")+": lokales Maximum."]}
 }; });
 
 var PER2=sawP(3,[[0,-1],[1,1.5],[3,-1]]), PER3=sawP(4,[[0,0],[1,1.5],[2,0],[3,-1.5],[4,0]]);
@@ -2889,13 +2884,14 @@ T("f19",1,"X","fu.skizze","Graph mit Eigenschaften",SRC_K,function(){ return {
     {t:"Eine mögliche Skizze. Die genaue Höhe des Hochpunkts und der Verlauf ganz außen sind frei.",a:function(V){ V.F(mCubic([-6,-4,-2,0,2,4,6],[-3,0,3,1,-1,1,3]),"--dx",0,{from:-6,to:6}); }}]}
 }; });
 
-T("f20",1,"X","fu.fix","Fixpunkte berechnen",SRC_O,function(){ return {
-  fmt:"input",q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = {1/2}x^2 - x")+". Berechne alle Fixpunkte von "+M("f")+".",
-  fields:[{l:"kleinerer Fixpunkt: "+M("x ="),r:0,w:M("f(0) = 0")+"."},{l:"größerer Fixpunkt: "+M("x ="),r:4,w:M("f(4) = 8 - 4 = 4")+"."}],
-  tips:["Setz "+M("f(x) = x")+" an und bring alles auf eine Seite.","Danach kannst du "+M("x")+" herausheben."],
-  sol:{viz:vPlane([-2,6],[-2,6],{W:440,H:400,yl:"y",pre:function(P){ var e=P.line(1,0,"--gold",2); if(e) e.setAttribute("stroke-dasharray","6 6"); }}),merk:"Fixpunkte: "+M("f(x) = x")+" lösen. Im Bild sind es die Schnittstellen mit der ersten Mediane.",steps:[
-    {t:"Ansatz.",m:M("{1/2}x^2 - x = x")+" &nbsp; ⇔ &nbsp; "+M("{1/2}x^2 - 2x = 0"),a:function(V){ V.F(function(x){ return x*x/2-x; },"--dx"); }},
-    {t:"Herausheben.",m:M("x * ({1/2}x - 2) = 0")+" &nbsp; also &nbsp; "+M("x = 0")+" oder "+M("x = 4"),a:function(V){ V.Pt(0,0,"(0 | 0)","--dy",0,{dx:-10,anchor:"end"}); V.Pt(4,4,"(4 | 4)","--dy",.3,{dx:-10,anchor:"end"}); }}]}
+T("f20",1,"X","fu.nullb","Nullstellen berechnen",SRC_O,function(){ return {
+  fmt:"input",q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = {1/2}x^2 - 2x")+". Berechne alle Nullstellen von "+M("f")+".",
+  fields:[{l:"kleinere Nullstelle: "+M("x ="),r:0,w:M("f(0) = 0")+"."},{l:"größere Nullstelle: "+M("x ="),r:4,w:M("f(4) = 8 - 8 = 0")+"."}],
+  tips:["Setz "+M("f(x) = 0")+" an.","Danach kannst du "+M("x")+" herausheben."],
+  sol:{viz:vPlane([-2,6],[-3,4],{W:440,H:380,yl:"y"}),merk:"Nullstellen: "+M("f(x) = 0")+" lösen. Fehlt das konstante Glied, hilft Herausheben.",steps:[
+    {t:"Ansatz.",m:M("{1/2}x^2 - 2x = 0"),a:function(V){ V.F(function(x){ return x*x/2-2*x; },"--dx"); }},
+    {t:"Herausheben.",m:M("x * ({1/2}x - 2) = 0")+" &nbsp; also &nbsp; "+M("x = 0")+" oder "+M("x = 4"),a:function(V){ V.Pt(0,0,"0","--rise",0,{dx:-10,anchor:"end"}); V.Pt(4,0,"4","--rise",.3,{dy:20}); }},
+    "Ein Produkt ist 0, wenn einer der Faktoren 0 ist."]}
 }; });
 
 var BREATH=function(t){ return .25-.25*Math.cos(2*Math.PI*t/4); };
@@ -2974,30 +2970,29 @@ function curveSol(C,merk){ return {viz:cviz(C),merk:merk||EXT_MERK,steps:[
   {t:"Die Krümmung wechselt jeweils in der Mitte zwischen einem Hoch- und einem Tiefpunkt.",a:function(V){ C.wende.forEach(function(w,i){ V.Pt(w,C.f(w),"WP","--gold",i*.2,{r:5}); }); }},
   "Mit diesen Markierungen lässt sich jede Aussage einzeln prüfen. Die Begründungen stehen oben bei den Antworten."]}; }
 
-G("fu.null",1,"L","Nullstelle oder Fixpunkt?",function(){
+G("fu.null",1,"L","Nullstelle oder nicht?",function(){
   var r1=nz(-4,4), r2; do{ r2=ri(-4,4); }while(r2===r1);
-  var c=polyC([r1,r2],1), f=pEval(c), fx=[];
-  for(var x=-8;x<=8;x++) if(f(x)===x) fx.push(x);
+  var c=polyC([r1,r2],1), f=pEval(c);
   var its=[], used={};
-  function add(a,typ){ var key=typ+a; if(used[key]) return; used[key]=1; var v=f(a);
-    var r=typ==="N"?v===0:v===a;
-    its.push({s:nn(a)+" ist "+(typ==="N"?"eine Nullstelle":"ein Fixpunkt")+" von "+M("f")+".",r:r?1:0,w:M("f("+nn(a).replace("−","-")+") = "+nn(v).replace("−","-"))+(r?".":typ==="N"?", nicht 0.":", nicht "+nn(a)+".")}); }
-  add(r1,"N"); add(r2,"N");
-  if(fx.length) add(pick(fx),"F");
-  while(its.length<6){ var a=ri(-4,5), typ=pick(["N","F"]); add(a,typ); }
-  its=shuffle(its); if(its.every(function(i){ return i.r; })||its.every(function(i){ return !i.r; })) return GEN["fu.null"].make();
+  function add(a){ if(used[a]) return; used[a]=1; var v=f(a), r=v===0;
+    its.push({s:nn(a)+" ist eine Nullstelle von "+M("f")+".",r:r?1:0,w:M("f("+nn(a).replace("−","-")+") = "+nn(v).replace("−","-"))+(r?".":", nicht 0.")}); }
+  add(r1); add(r2);
+  var g=0; while(its.length<5&&g<200){ add(ri(-5,5)); g++; }
+  its.push({s:M("f")+" hat höchstens zwei Nullstellen.",r:1,w:"Der Grad ist 2, also gibt es höchstens zwei Nullstellen."});
+  its=shuffle(its);
   return {fmt:"tf",yes:"trifft zu",no:"trifft nicht zu",q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = "+polyStr(c))+". Entscheide in jeder Zeile.",items:its,
-    tips:["Nullstelle: "+M("f(a) = 0")+". Fixpunkt: "+M("f(a) = a")+".","Setz jede Zahl ein. Vorsicht bei negativen Zahlen: "+M("(-2)^2 = 4")+"."],
-    sol:{steps:["Für jede Zahl "+M("a")+" wird "+M("f(a)")+" berechnet.","Ist das Ergebnis 0, ist "+M("a")+" eine Nullstelle. Ist es "+M("a")+" selbst, ist "+M("a")+" ein Fixpunkt.",
-      {t:"Die Nullstellen lassen sich aus der Produktform ablesen.",m:M("f(x) = (x "+(r1<0?"+ "+(-r1):"- "+r1)+")(x "+(r2<0?"+ "+(-r2):"- "+r2)+")")}],merk:"Nullstelle: "+M("f(a) = 0")+". Fixpunkt: "+M("f(a) = a")+"."}};
+    tips:["Nullstelle: "+M("f(a) = 0")+".","Setz jede Zahl ein. Vorsicht bei negativen Zahlen: "+M("(-2)^2 = 4")+"."],
+    sol:{steps:["Für jede Zahl "+M("a")+" wird "+M("f(a)")+" berechnet. Ist das Ergebnis 0, ist "+M("a")+" eine Nullstelle.",
+      {t:"Zur Kontrolle: Die Nullstellen sind "+M(nn(Math.min(r1,r2)).replace("−","-"))+" und "+M(nn(Math.max(r1,r2)).replace("−","-"))+"."},
+      "Grad 2 heißt: höchstens zwei Nullstellen."],merk:"Nullstelle: "+M("f(a) = 0")+". Eine Polynomfunktion vom Grad "+M("n")+" hat höchstens "+M("n")+" Nullstellen."}};
 });
 GV("fu.null","input",function(){
-  var z,p,k,d,g=0; do{ z=nz(-6,6); p=ri(-8,8); g++; if(p===z) continue; k=p/(p-z); d=-k*z; }while(g<2000&&!([-3,-2,-1,-.5,.5,2,3].indexOf(k)>=0&&Math.abs(d*2-Math.round(d*2))<1e-9&&p!==z&&Math.abs(d)<=12));
-  return {fmt:"input",q:"Gegeben ist die lineare Funktion "+M("f")+" mit "+M("f(x) = "+lin(k,d))+". Berechne ihre Nullstelle und ihren Fixpunkt.",
-    fields:[{l:"Nullstelle: "+M("x ="),r:z,w:M(lin(k,d)+" = 0")+" ergibt "+M("x = "+fk(z))+"."},{l:"Fixpunkt: "+M("x ="),r:p,w:M(lin(k,d)+" = x")+" ergibt "+M("x = "+fk(p))+"."}],
-    tips:["Nullstelle: Funktionsterm gleich 0 setzen.","Fixpunkt: Funktionsterm gleich "+M("x")+" setzen. Bring alle Glieder mit "+M("x")+" auf eine Seite."],
-    sol:{steps:[{t:"Nullstelle.",m:M(lin(k,d)+" = 0")+" &nbsp; ⇔ &nbsp; "+M("x = "+fk(z))},{t:"Fixpunkt.",m:M(lin(k,d)+" = x")+" &nbsp; ⇔ &nbsp; "+M(lin(k-1,d)+" = 0")+" &nbsp; ⇔ &nbsp; "+M("x = "+fk(p))},
-      "Probe: "+M("f("+fk(p)+") = "+fk(k*p+d))+"."],merk:"Nullstelle: "+M("f(x) = 0")+". Fixpunkt: "+M("f(x) = x")+"."}};
+  var k,z,d,g=0; do{ k=pick([-3,-2,-1,-.5,.5,2,3]); z=nz(-6,6); d=-k*z; g++; }while(g<500&&!(Math.abs(d*2-Math.round(d*2))<1e-9&&Math.abs(d)<=9&&d!==0));
+  return {fmt:"input",q:"Gegeben ist die lineare Funktion "+M("f")+" mit "+M("f(x) = "+lin(k,d))+". Berechne die Nullstelle und gib an, wo der Graph die "+M("y")+"-Achse schneidet.",
+    fields:[{l:"Nullstelle: "+M("x ="),r:z,w:M(lin(k,d)+" = 0")+" ergibt "+M("x = "+fk(z))+"."},{l:"Schnitt mit der "+M("y")+"-Achse: "+M("y ="),r:d,w:M("f(0) = "+fk(d))+"."}],
+    tips:["Nullstelle: Funktionsterm gleich 0 setzen.","Die "+M("y")+"-Achse liegt bei "+M("x = 0")+". Berechne "+M("f(0)")+"."],
+    sol:{steps:[{t:"Nullstelle.",m:M(lin(k,d)+" = 0")+" &nbsp; ⇔ &nbsp; "+M("x = "+fk(z))},{t:"Schnitt mit der "+M("y")+"-Achse.",m:M("f(0) = "+fk(d))},
+      "Probe: "+M("f("+fk(z)+") = 0")+"."],merk:"Nullstelle: "+M("f(x) = 0")+". Schnitt mit der "+M("y")+"-Achse: "+M("f(0)")+"."}};
 });
 
 G("fu.mono",1,"L","Monotonie am Graphen",function(){
@@ -3202,25 +3197,26 @@ G("fu.sicher",1,"X","Was folgt sicher?",function(){
     sol:{steps:["Die vier Punkte einzeichnen.","Zu jeder Aussage einen Graphen suchen, der durch die Punkte geht und die Aussage widerlegt.","Nur eine Aussage lässt sich so nicht widerlegen."],merk:"Aus einzelnen Werten folgt nur, was jeder mögliche Graph erfüllen muss."}};
 });
 
-G("fu.fix",1,"X","Fixpunkte begründen",function(){
-  var kind=pick(["kein","einer","einer","alle"]), k, d;
-  if(kind==="kein"){ k=1; d=nz(-5,5); } else if(kind==="alle"){ k=1; d=0; } else { do{ k=pick([2,3,-1,-2,.5]); d=nz(-6,6); }while(Math.abs(d/(1-k)*2-Math.round(d/(1-k)*2))>1e-9); }
-  var fs=kind==="alle"?"x":lin(k,d), eq=M(fs+" = x");
-  var r1={kein:0,einer:1,alle:2}[kind], r2=r1;
-  var g1={o:["keinen Fixpunkt","genau einen Fixpunkt","unendlich viele Fixpunkte"],r:r1,w:kind==="kein"?"Der Graph ist parallel zur ersten Mediane.":kind==="alle"?"Der Graph ist die erste Mediane selbst.":"Die Gerade schneidet die erste Mediane genau einmal, bei "+M("x = "+fk(d/(1-k)))+"."};
-  var g2={o:["die Gleichung "+eq+" keine Lösung hat","die Gleichung "+eq+" genau eine Lösung hat","die Gleichung "+eq+" für jedes "+M("x")+" stimmt"],r:r2,w:"Fixpunkte sind die Lösungen von "+M("f(x) = x")+"."};
-  return {fmt:"luecke",q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = "+fs)+". Ergänze den Satz so, dass eine richtige Aussage entsteht.",
-    satz:"Die Funktion "+M("f")+" hat ___, weil ___.",gaps:[shGap(g1.o,g1.r),shGap(g2.o,g2.r)].map(function(g,i){ g.w=[g1,g2][i].w; return g; }),
-    tips:["Fixpunkt: "+M("f(x) = x")+".","Versuch, die Gleichung nach "+M("x")+" aufzulösen."],
-    sol:{steps:[{t:"Ansatz.",m:eq},kind==="kein"?{t:"Es bleibt ein Widerspruch.",m:M(fk(d)+" = 0")}:kind==="alle"?"Die Gleichung stimmt für jede Zahl.":{t:"Auflösen.",m:M("x = "+fk(d/(1-k)))}],merk:"Lineare Funktionen mit Steigung 1 haben keinen oder unendlich viele Fixpunkte, alle anderen genau einen."}};
+G("fu.lok",1,"X","Extremstelle begründen",function(){
+  var kind=pick(["max","min","keine"]), b=ri(-2,3), a=b-ri(2,4), c=b+ri(2,4), up=Math.random()<.5;
+  var m1=kind==="max"?"steigend":kind==="min"?"fallend":(up?"steigend":"fallend"), m2=kind==="max"?"fallend":kind==="min"?"steigend":m1;
+  var r={max:0,min:1,keine:2}[kind], B=nn(b);
+  var g1={o:["ein lokales Maximum","ein lokales Minimum","keine lokale Extremstelle"],r:r,w:kind==="max"?"Bergauf, dann bergab: ein Gipfel.":kind==="min"?"Bergab, dann bergauf: eine Senke.":"Der Weg geht durchgehend "+(up?"bergauf":"bergab")+"."};
+  var g2={o:[M("f")+" links von "+B+" steigt und rechts davon fällt",M("f")+" links von "+B+" fällt und rechts davon steigt",M("f")+" links und rechts von "+B+" gleich monoton ist"],r:r,w:"Entscheidend ist, ob sich die Monotonie bei "+B+" ändert."};
+  return {fmt:"luecke",q:"Die Funktion "+M("f")+" ist im Intervall "+M("["+fk(a)+"; "+fk(b)+"]")+" streng monoton "+m1+" und im Intervall "+M("["+fk(b)+"; "+fk(c)+"]")+" streng monoton "+m2+". Ergänze den Satz so, dass eine richtige Aussage entsteht.",
+    satz:"Die Funktion "+M("f")+" hat an der Stelle "+B+" ___, weil ___.",gaps:[shGap(g1.o,g1.r),shGap(g2.o,g2.r)].map(function(g,i){ g.w=[g1,g2][i].w; return g; }),
+    tips:["Stell dir den Graphen als Wanderweg vor.","Ändert sich bei "+B+" die Richtung, oder geht es gleich weiter?"],
+    sol:{steps:["Links von "+B+": "+m1+". Rechts von "+B+": "+m2+".",kind==="keine"?"Die Monotonie ändert sich nicht, also gibt es bei "+B+" keine lokale Extremstelle.":"Die Monotonie wechselt, also liegt bei "+B+" ein lokales "+(kind==="max"?"Maximum":"Minimum")+"."],
+      merk:"Steigend, dann fallend: lokales Maximum. Fallend, dann steigend: lokales Minimum. Kein Wechsel: keine Extremstelle."}};
 });
-GV("fu.fix","input",function(){
-  var a,b,q,g=0; do{ a=pick([.5,1,2,-1,-.5]); b=ri(-3,3); q=(1-b)/a; g++; }while((Math.abs(q-Math.round(q))>1e-9||q===0||Math.abs(q)>8)&&g<200);
-  var lo=Math.min(0,q), hi=Math.max(0,q);
-  return {fmt:"input",q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = "+polyStr([a,b,0]))+". Berechne alle Fixpunkte von "+M("f")+".",
-    fields:[{l:"kleinerer Fixpunkt: "+M("x ="),r:lo},{l:"größerer Fixpunkt: "+M("x ="),r:hi}],
-    tips:["Setz "+M("f(x) = x")+" an und bring alles auf eine Seite.","Dann "+M("x")+" herausheben."],
-    sol:{steps:[{t:"Ansatz.",m:M(polyStr([a,b,0])+" = x")+" &nbsp; ⇔ &nbsp; "+M(polyStr([a,b-1,0])+" = 0")},{t:"Herausheben.",m:M("x * ("+polyStr([a,b-1])+") = 0")+" &nbsp; also &nbsp; "+M("x = 0")+" oder "+M("x = "+fk(q))}],merk:"Fixpunkte: "+M("f(x) = x")+"."}};
+G("fu.nullb",1,"X","Nullstellen berechnen",function(){
+  var a,q,g=0; do{ a=pick([.5,1,2,-1,-.5,-2,3]); q=nz(-6,6); g++; }while(Math.abs(a*q-Math.round(a*q))>1e-9&&g<200);
+  var b=-a*q, lo=Math.min(0,q), hi=Math.max(0,q);
+  return {fmt:"input",q:"Gegeben ist die Funktion "+M("f")+" mit "+M("f(x) = "+polyStr([a,b,0]))+". Berechne alle Nullstellen von "+M("f")+".",
+    fields:[{l:"kleinere Nullstelle: "+M("x ="),r:lo},{l:"größere Nullstelle: "+M("x ="),r:hi}],
+    tips:["Setz "+M("f(x) = 0")+" an.","Dann "+M("x")+" herausheben."],
+    sol:{steps:[{t:"Ansatz.",m:M(polyStr([a,b,0])+" = 0")},{t:"Herausheben.",m:M("x * ("+polyStr([a,b])+") = 0")+" &nbsp; also &nbsp; "+M("x = 0")+" oder "+M("x = "+fk(q))},
+      "Ein Produkt ist 0, wenn einer der Faktoren 0 ist."],merk:"Nullstellen: "+M("f(x) = 0")+" lösen."}};
 });
 
 G("fu.skizze",1,"X","Graph skizzieren",function(){
@@ -4713,7 +4709,7 @@ G("ex.offen",5,"X","Stellung nehmen",function(){ var b=pick(EOFP); return {fmt:"
 /* ============ Welche Aufgabenart bekommt welches Werkzeug ============ */
 var HELP={
   "fu.mono":helpMono,"fu.extr":helpGipfel,"fu.eig":helpGipfel,"fu.kruem":helpKruemm,"fu.sym":helpSpiegel,"fu.per":helpPeriode,
-  "fu.umk":helpUmkehr,"fu.verk":helpVerk,"fu.null":helpFix,"fu.fix":helpFix,"fu.sicher":helpMono,"fu.skizze":helpGipfel,
+  "fu.umk":helpUmkehr,"fu.verk":helpVerk,"fu.lok":helpMono,"fu.sicher":helpMono,"fu.skizze":helpGipfel,
   "am.abs":helpFaktor,"am.rel":helpFaktor,"am.fakt":helpFaktor,"am.proz":helpFaktor,"am.vgl":helpFaktor,"am.mar":helpAend,"am.dq":helpAend,"am.sek":helpAend,"am.konstr":helpAend,"am.deut":helpAend,"am.kontext":helpAend,"am.terms":helpAend,
   "po.regel":helpPotenz,"po.vereinf":helpPotenz,"po.luecke":helpPotenz,"po.begr":helpPotenz,"po.neg":helpPotenz,"po.wert":helpWurzel,"po.aequiv":helpWurzel,"po.wurzel":helpWurzel,"po.groesse":helpWurzel,"po.zahl":helpWurzel,
   "pf.typ":helpPotLab,"pf.param":helpPotLab,"pf.eig":helpPotLab,"pf.indir":helpPotLab,"pf.art":helpPotLab,"py.grad":helpPolyBau,"py.verlauf":helpPolyBau,"py.berg":helpGipfel,"py.mono":helpMono,"py.kruem":helpKruemm,"py.glob":helpGipfel,"py.prof":helpGipfel,"py.tour":helpMono,"py.skizze":helpPolyBau,"py.begr":helpPolyBau,"py.anz":helpPolyBau,
@@ -5012,24 +5008,33 @@ function pNote(S,pts){ var m=pMax(S);
   return 4; }
 
 /* ---- Aufgaben auswählen ---- */
-function pSpec(cands){
-  var ks=shuffle(cands), last=null;
-  for(var i=0;i<ks.length;i++) for(var g=0;g<8;g++){ var sp=trainMake(ks[i]); last={k:ks[i],sp:sp}; if(sp.fmt!=="offen") return last; }
-  return last;
+/* Nur echte Schularbeits- und Maturaformate: 1 aus 5, 2 aus 5, Zuordnung 2 zu 4, Lückentext, halboffen, grafisch */
+var P_FMT=["1aus5","2aus5","2zu4","luecke","halboffen","grafisch"];
+function pOK(sp){ try{ return P_FMT.indexOf(fmtKey(sp))>=0; }catch(e){ return false; } }
+function pSpec(cands,want){
+  var ks=shuffle(cands);
+  for(var i=0;i<ks.length;i++) for(var g=0;g<14;g++){ var sp=trainMake(ks[i]); if(pOK(sp)&&(!want||fmtKey(sp)===want)) return {k:ks[i],sp:sp}; }
+  return null;
 }
 function pBuild(S){
   var order=shuffle(S.lines), slots=[], i, used={}, W={L:.25,M:.4,X:.35};
   for(i=0;i<P_N1;i++) slots.push(order[i%order.length]);
   slots=shuffle(slots);
+  /* die drei Kernformate kommen sicher vor, je dreimal */
+  var wants=shuffle(["1aus5","1aus5","1aus5","2aus5","2aus5","2aus5","2zu4","2zu4","2zu4"]);
   var t1=slots.map(function(ch){
     var kinds=Object.keys(GEN).filter(function(k){ return GEN[k].ch===ch; });
     var free=kinds.filter(function(k){ return !used[k]; });
     if(!free.length){ kinds.forEach(function(k){ delete used[k]; }); free=kinds; }
     var r=Math.random(), lv=r<W.L?"L":r<W.L+W.M?"M":"X";
     var cand=free.filter(function(k){ return GEN[k].lv===lv; }); if(!cand.length) cand=free;
-    var o=pSpec(cand); used[o.k]=1;
+    var want=wants.length?wants[0]:null, o=pSpec(cand,want)||pSpec(free,want)||pSpec(kinds,want);
+    if(o&&want) wants.shift();
+    if(!o) o=pSpec(cand)||pSpec(free)||pSpec(kinds)||pSpec(Object.keys(GEN));
+    used[o.k]=1;
     return {teil:1,ch:ch,kind:o.k,lv:GEN[o.k].lv,sp:o.sp,title:GEN[o.k].name,w:P_W1};
   });
+  t1=shuffle(t1);
   var kn=sample(pKnoten(S),2).sort(function(a,b){ return KNOTEN.indexOf(a)-KNOTEN.indexOf(b); });
   var t2=kn.map(function(K){ return K.parts.map(function(p,i){
     return {teil:2,K:K,part:i,kind:null,lv:"X",sp:p.mk(),title:PL[i]+") "+p.title,w:P_W2/K.parts.length,note:p.note}; }); });
@@ -5075,6 +5080,7 @@ function pPts(it){
   var bx=it.card.querySelectorAll(".chk input[type=checkbox]");
   if(bx.length){ var c=0; [].forEach.call(bx,function(b){ if(b.checked) c++; }); return Math.round(it.w*c/bx.length*100)/100; }
   if(r.ok) return it.w;
+  if(it.teil===1) return 0;
   return r.frac!=null&&r.frac>=0.5?it.w/2:0;
 }
 function pGrade(it){
@@ -5132,7 +5138,7 @@ function probeSetup(){
   });
   var hist=pHist();
   view.append(h("p",{class:"kicker"},"OpenMath · 6. Klasse AHS · Übungsmodul"),h("h1",{},"Probeschularbeit"),
-    h("p",{class:"lead"},"Eine Schularbeit zum Üben unter Prüfungsbedingungen. Teil 1 mischt Aufgaben aus den Antwortformaten der Matura, Teil 2 besteht aus Knoten mit mehreren Teilaufgaben. Die Aufgaben werden bei jedem Start neu gezogen."),
+    h("p",{class:"lead"},"Eine Schularbeit zum Üben unter Prüfungsbedingungen. Teil 1 bringt 16 Aufgaben in den Formaten der Schularbeit: 1 aus 5, 2 aus 5, Zuordnung 2 zu 4, Lückentext, halboffen und grafisch. Punkte gibt es dort nur für die ganz richtige Lösung. Teil 2 besteht aus Knoten mit mehreren Teilaufgaben. Die Aufgaben werden bei jedem Start neu gezogen."),
     h("section",{class:"pr-set"},
       h("div",{class:"pr-row"},h("h3",{},"Stoff"),lineBox,warn),
       h("div",{class:"pr-row"},h("h3",{},"Zeit"),seg2([{v:100,t:"100 Minuten"},{v:0,t:"Ohne Zeitlimit"}],S.time,function(v){ S.time=v; pSave(S); upd(); })),
@@ -5719,6 +5725,22 @@ function route(){
   } else { drawNav(null); home(); }
   try{ window.scrollTo(0,0); }catch(e){}
 }
+/* ============ Abbildungen vergrößern ============
+   Antippen einer Abbildung in Angabe oder Aufgabenstellung öffnet sie groß. Antwort-Zeichenflächen und Werkzeuge bleiben ausgenommen. */
+var ZSEL=".tleft .fig, .angabe svg, .asheet svg, .stem svg";
+function zoomable(t){ var f=t.closest&&t.closest(ZSEL); if(!f||f.closest(".helpbox,.ans,.zoomer")) return null; return f; }
+function openZoom(f){
+  var svg=f.tagName.toLowerCase()==="svg"?f:f.querySelector("svg"); if(!svg) return;
+  var c=svg.cloneNode(true); c.removeAttribute("width"); c.removeAttribute("height"); c.removeAttribute("style"); c.setAttribute("class",(svg.getAttribute("class")||"")+" zsvg");
+  var close=h("button",{type:"button",class:"hx zx","aria-label":"Vergrößerung schließen",html:IC.close});
+  var box=h("div",{class:"zoomer",role:"dialog","aria-modal":"true","aria-label":"Abbildung vergrößert"},h("div",{class:"zin"},c),close);
+  function shut(){ box.remove(); document.removeEventListener("keydown",esc); }
+  function esc(e){ if(e.key==="Escape") shut(); }
+  box.addEventListener("click",shut); document.addEventListener("keydown",esc);
+  document.body.append(box); try{ close.focus(); }catch(e){}
+}
+document.addEventListener("click",function(e){ var f=zoomable(e.target); if(f){ e.preventDefault(); openZoom(f); } });
+document.addEventListener("mouseover",function(e){ var f=zoomable(e.target); if(f&&!f.classList.contains("zable")){ f.classList.add("zable"); f.setAttribute("title","Antippen zum Vergrößern"); } });
 window.addEventListener("hashchange",route);
 window.OM={probe:function(){ return PX; },KNOTEN:KNOTEN,TASKS:TASKS,GEN:GEN,VAR:VAR,sigOf:sigOf,moreMake:moreMake,trainMake:trainMake,BY:BY,HELP:HELP,MATURA:MATURA,fmtKey:fmtKey,taskCard:taskCard,TE:TE,route:route,M:M,setZ:setZ,setFs:setFs,keyOf:keyOf,FMT:FMT};
 route();
